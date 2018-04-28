@@ -1,0 +1,262 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+% \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading nips_2018
+
+% ready for submission
+\usepackage{nips_2018}
+
+% to compile a preprint version, e.g., for submission to arXiv, add
+% add the [preprint] option:
+% \usepackage[preprint]{nips_2018}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+% \usepackage[final]{nips_2018}
+
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{nips_2018}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+\usepackage{float}
+\usepackage{url}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{todonotes}
+\usepackage{amsthm} 
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e} 
+\usepackage{makecell}
+\usepackage{upgreek}
+\onehalfspacing
+\usepackage{pdfpages}
+\usepackage{times}
+\usepackage{multirow}
+\usepackage[toc,page]{appendix}
+\usepackage{listings}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+\usepackage{color,soul}
+
+
+\DeclareMathOperator{\supp}{support}
+\DeclareMathOperator{\support}{support}
+\DeclareMathOperator{\Trim}{Trim}
+\DeclareMathOperator{\LTrim}{LTrim}
+\SetKwFunction{mEqOne}{mEqOne} 
+\DeclareMathOperator{\KlmApprox}{KolmogorovApprox}
+
+\title{Kolmogorov Approximation}
+
+\begin{document}
+% \nipsfinalcopy is no longer used
+
+\maketitle
+
+
+
+\begin{lemma}
+For any discrete random variable $X$ and any $m \in \mathbb{N}$, there exists $X'$ with  $\support(X')=m$ such that $d_K(X,X')$ \hl{is minimal}, and $\support(X')\subseteq\support(X)$.
+\end{lemma}
+
+\begin{proof}
+Assume there is a random variable $X''$ with support size $m$ such that $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$.
+We will show how to transform $X''$ support such that it will be contained in $\support(X)$. Let $v'$ be the first $v'\in\support(X'')$ and $v' \not\in\support(X)$. Let $v=\max\{i: i<v' \wedge i\in\support(X)\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
+$F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
+Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
+
+\end{proof}
+
+Let $H=\{h_1,\cdots,h_m\}$ where $0\leq h_1\leq \cdots \leq h_m \leq n$ be an allocation of the (at most) $m$ bits in $X'$. Then we have that  $p_j=0$ for every $J$ that is not among the $h_i$'s. For simplicity set $h_0=-1$ and $h_{m+1}=n+1$. For every $0\leq i\leq m$, denote by $B_i$ the block $(h_i+1,h_i+2,\cdots h_{i+1}-1)$ (it may be that some of these blocks will be empty). Note that for every $j\in B_i$ we have that $p'j=0$. Let $Sum_p(B_i)=\sum_{j\in B_i}p_j$. Finally for every $i$ let $S_0=Sum_p(B_0), S_m = Sum_p(B_m)$, and $S_i=Sum_p(B_i)/2$ for $0<i<m$.
+
+The following two claims set the foundations for our algorithm.
+
+\begin{claim}\label{clm:geq}
+	Let $X'$ be a random variable with a bit allocation of $H=\{h_1,\cdots,h_m$ as above. Then $Dis(X,X')\geq \max_j S_j$. 
+\end{claim}
+
+\begin{proof}
+	Note that in every block we need to set the corresponding $p'_i$s to $0$. Therefore in any setting of $X'$ (i.e. choosing $p'$) we have $F_p(h_1-1)=Sum_p(B_0)= S_0$ and $F_{p'}(h_1-1)=0$. Therefore $|F_p(h_1-1)-F_{p'}(h_1-1)|=S_0$. Same, since $\sum_ip_i = \sum_ip'_i=1$, we have for the last block $B_m$ that $F_p(h_m-1)=1-Sum_p(B_m)$ and $F_{p'}(h_m-1)=1$ (since $p'_i=0$ for every $i\in B_m$) and therefore $|F_p(h_1-1)-F_{p'}(h_1-1)|=Sum_p(B_m) = S_m$.
+	
+	Finally for $0<i<m$, let $C_i = F_p(h_i-1)-F_{p'}(h_i-1)$. Then either $|C_i|>Sum_p(B_i)/2=S_i/2$ or we have $-S_i/2\leq C_i \leq S_i/2$.
+	For the later we have that $F_p(h_{i+1}-1)-F_{p'}(h_{i+1}-1)= C_i+Sum_p(B_i)$, therefore if $-S_i/2\leq C_i$ then $|F_p(h_{i+1}-1)-F_{p'}(h_{i+1}-1)|\geq Sum_p(B_i)/2=S_i/2$. 
+\end{proof}
+
+\begin{claim}\label{clm:eq}
+	Let $H=\{h_1,\cdots,h_m\}$ be a bit allocation as above. Then there is a random variable $X'$ that respects $H$ such that $Dis(X,X')= \max_j S_j$. 
+\end{claim}
+
+\begin{proof}
+	We define $p'$, the bits of $X'$ as follows. For every $j\in B_i$ we set $p'_i=0$ to respect the allocation $H$.
+	We  set the bits $p'_{h_i}$ for $h_i\in H$ as follows. For $1\leq i\leq m$ we set $p'_{h_i}=p_{h_i}+S_{i-1}+S_i$. (note that it may be that the block $B_i,B_{i+1}$ are empty and then $p_{h_i}=p'_{h_i}$.).
+	
+	We see that $Dis(X,X')= \max_j S_j$. For that we do as follows:
+	
+	first see by induction that for every $i\geq 1$ we have that $F_p(h_{i})-F_{p'}(h_{i})= -S_{i}$. 
+	For $i=1$ we saw in the previous proof that $F_p(h_1-1)-F_{p'}(h_1-1)=S_0$ and therefore  $F_p(h_1)-F_{p'}(h_1) = S_0+p_{h_1}-(p_{h_1}+S_0+S_1)=-S_1$. Suppose that $F_p(h_i)-F_{p'}(h_i)= -S_{i}$. 
+	Since $i<m$ then $Sum_p(B_i)=2S_i$, therefore
+	
+	\begin{multline}
+	F_p(h_{i+1})-F_{p'}(h_{i+1})=F_p(h_i)+Sum_p(B_i)+p_{h_{i+1}}-(F_{p'}(h_i)+p_{h_{i+1}}+S_{i}+S_{i+1}) =\\ -S_i+2S_i+p_{h+1}-S_i-p_{h+1}-S_{i+1} = -S_{i+1}
+	\end{multline}
+	
+	
+	
+	
+	So for every $h_i\in H$ we have $|F_p(h_{i}))-F_{p'}(h_{i})|= S_{i}$.
+	
+	Next let $j\not\in H$, so assume $j\in B_i$ for some $i$. Then 
+	
+	$$F_p(j)-F_{p'}(j) = F_p(h_i)+\sum_{h_i<l\leq j}p_l-F_{p'}(h_i) \leq Sum_p(B_i)-S_i = S_i$$
+	
+	So $-S_i\leq F_p(j)-F_{p'}(j)\leq S_i$ so $|F_p(j)-F_{p'}(j)|\leq S_i$. 
+\end{proof}
+
+
+Therefore from these two claims, we get that for every bit allocation $H$ we can have the minimal $X'$ that respects $H$. Therefore we need to find the exact bit allocation $H$ for that. We denote the minimal random variable that is obtained from allocation $H$ as described in Claim \ref{clm:eq} by $X_H$.
+From the two claims above, we get two facts that can be of help: (1) If a block $B_i$ is contained in a block $B_j$ then $Sum_p(B_i)\leq Sum_p(B_j)$; (2) there are only small $(O(n^2))$ values of $Dist(X,X')$ that the minimal solution can have. 
+Using these insights we present a solution in two steps:
+
+
+\begin{definition}\label{def:RVpartition}
+	We say that a random variable $X'$ is a \emph{consecutive approximation} of a random variable $X$ if there is a consecutive partition $P=\{B_1,\dots,B_n\}$ of $\support(X)$ such that the probability mass function (PMF) of $X'$ is 
+	$$f_{X'}(t) = 
+	\begin{cases} 
+	Pr(X {\in} B_i) &  \text{if $t = \min(B_i)$ for some $i$;}\\
+	0          &  \text{otherwise.}
+	\end{cases}$$
+\end{definition}
+
+Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
+
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes $\infty$ and $-\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by on of two cases. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
+The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G)$. The goal is to find the path $l^*$ in $paths(G)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon^*$, \hl{defined in Definition}~\ref{def:optimalapprox}. $X'$ is then derived from the resulting path $l^*$ (lines 10-17). Every node $n \in l^*$ represent a value in the new calculated random variable $X'$, we than iterate the path $l^*$ to fine the probability of the event $f_{X'}(n)$. For every edge $(i,j)\in l^*$ we determine: if $(i,j)$ is the first edge in the path $ l^*$ (i.e.  $i==-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l^*$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l^*$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
+
+
+\begin{algorithm}\label{alg:optapprox}
+	\DontPrintSemicolon
+	\SetKwFunction{Convolv}{Conv}
+	\SetKwFunction{getPartition}{getPartition}
+	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
+	$S = \support(X)\cup \{\infty\} \cup \{-\infty\}$\;
+	$G=(V,E)=(S, \{ (i,j) \in S^2 \colon  j>i \})$ \;
+	
+	\ForEach{$e=(i,j) \in  E $ }{
+		\If {$i==\infty \text{ OR } j==-\infty$}{
+			$w(e) = Pr(i<X<j)$
+		}
+		\Else{$w(e) = Pr(i<X<j)/2$}
+	}
+	
+	/* The following can be obtained, e.g., using the Bellman-Ford algorithm */\;
+	$l^*= \operatorname{argmin}\limits_{l \in paths(G),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$ \;
+	
+	\ForEach{$e=(i,j) \in  l^* $ }{
+		\If {$i==-\infty$}{
+			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
+		}
+		\ElseIf{$j==\infty$}{
+			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
+		}
+		\Else{
+			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
+			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
+		}
+		
+	}	
+	\Return $X'$\;
+	
+	\caption{$\KlmApprox (X, m)$}  
+	\label{alg:sequence}
+\end{algorithm}
+
+\begin{theorem}\label{the:complexity}
+	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
+\end{theorem}
+
+\begin{proof}
+	Constructing the graph $G$ takes $O(n^2)$. The number of edges is $O(E)\approx O(n^2)$ and for every edge the weight is at most the sum of all probabilities between the source node $-\infty$ and the target node $\infty$, which can be done efficiently by aggregating the weights of already calculated edges. 
+	The construction is also the only stage that requires memory allocation, specifically $O(E+V)=O(n^2)$.
+	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. Since $G$ id DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
+	Deriving the new random variable $X'$ from the computed path $l^*$ takes $O(mn)$. For every node in $l^*$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$. 
+	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+\end{proof}
+
+\begin{example}\textbf{Why one sided Kolmogorov approximation in not sufficient in this case?}
+	Consider the following random variable $X$: 
+	$$
+	f_{X}(t) = \begin{cases}
+	1/3           & \text{if $t=1$ or $t=2$} ;  \\ 
+	1/6           & \text{if $t=3$ or $t=4$};  \\  
+	0             & \text{otherwise.}
+	\end{cases}
+	$$
+	
+	There are various partitioned random variables of size $m=2$ which provide some approximation in regards to Kolmogorov distance, some are presented as follows:
+	$$
+	f_{X'_1}(t) = \begin{cases}
+	2/3           & \text{if } t=1;  \\ 
+	1/3           & \text{if } t=3;  \\  
+	0             & \text{otherwise.}
+	\end{cases}
+	$$
+	In this case $d_K(X, X'_1) = 1/3$.
+	
+	$$
+	f_{X'_2}(t) = \begin{cases}
+	1/3           & \text{if } t=1;  \\ 
+	2/3           & \text{if } t=2;  \\  
+	0             & \text{otherwise.}
+	\end{cases}
+	$$
+	In this case $d_K(X, X'_2) = 1/3$.
+	
+	$$
+	f_{X'_3}(t) = \begin{cases}
+	2/3           & \text{if } t=2;  \\ 
+	1/3           & \text{if } t=3;  \\  
+	0             & \text{otherwise.}
+	\end{cases}
+	$$
+	In this case $d_K(X, X'_3) = 1/3$.
+	
+	However, none of the above random variables provides an optimal approximation. Here is an optimal approximation which can not be achieved by a regular partitioned random variable:
+	
+	$$ 	f_{X''}(t) = \begin{cases}
+	1/2           & \text{if } t=1;  \\ 
+	1/2           & \text{if } t=3;  \\  
+	0             & \text{otherwise.}
+	\end{cases}
+	$$
+	In this case $d_K(X, X'') = 1/6$.
+\end{example}
+
+\bibliography{library,Trim_Optimum}{}
+\bibliographystyle{apalike}
+
+\end{document}
+
