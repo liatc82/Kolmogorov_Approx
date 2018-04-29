@@ -71,31 +71,71 @@
 
 \title{Kolmogorov Approximation}
 
+
+
 \begin{document}
 % \nipsfinalcopy is no longer used
 
 \maketitle
 
 
+\begin{definition}
+A random variable $X'$ is an $m$-optimal-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
+\end{definition}
 
 \begin{lemma}
-For any discrete random variable $X$ and any $m \in \mathbb{N}$, there exists $X'$ with  $\support(X')=m$ such that $d_K(X,X')$ \hl{is minimal}, and $\support(X')\subseteq\support(X)$.
+	For any discrete random variable $X$ and any $m \in \mathbb{N}$, there is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
-
 \begin{proof}
 Assume there is a random variable $X''$ with support size $m$ such that $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$.
 We will show how to transform $X''$ support such that it will be contained in $\support(X)$. Let $v'$ be the first $v'\in\support(X'')$ and $v' \not\in\support(X)$. Let $v=\max\{i: i<v' \wedge i\in\support(X)\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
 $F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
 Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
-
 \end{proof}
+
+
+
+\begin{lemma}\label{lem:geq}
+	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
+	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
+\end{lemma}
+\begin{proof}
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{ F_X(x_1) \}$
+\end{proof}
+
+
+\begin{lemma}\label{lem:geq2}
+	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1=-\infty$ or  $x_2=\infty$, if $P(x_1 < X' < x_2)=0$  then 
+	$d_k(X,X') \geq P(x_1 < X < x_2)$.
+\end{lemma}
+\begin{proof}
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. 
+\end{proof}
+
+
+\begin{definition} Let:
+	\[
+	w(x_1,x_2)=
+	\begin{cases}
+		P(x_1 < X < x_2) & \text{if $x_1=-\infty$ or $x_2 = \infty$;} \\
+		P(x_1 < X < x_2)/2 & \text{otherwise.} \\	
+	\end{cases}
+	\]
+\end{definition} 
+
+
+
+
+
+
+
 
 Let $H=\{h_1,\cdots,h_m\}$ where $0\leq h_1\leq \cdots \leq h_m \leq n$ be an allocation of the (at most) $m$ bits in $X'$. Then we have that  $p_j=0$ for every $J$ that is not among the $h_i$'s. For simplicity set $h_0=-1$ and $h_{m+1}=n+1$. For every $0\leq i\leq m$, denote by $B_i$ the block $(h_i+1,h_i+2,\cdots h_{i+1}-1)$ (it may be that some of these blocks will be empty). Note that for every $j\in B_i$ we have that $p'j=0$. Let $Sum_p(B_i)=\sum_{j\in B_i}p_j$. Finally for every $i$ let $S_0=Sum_p(B_0), S_m = Sum_p(B_m)$, and $S_i=Sum_p(B_i)/2$ for $0<i<m$.
 
 The following two claims set the foundations for our algorithm.
 
 \begin{claim}\label{clm:geq}
-	Let $X'$ be a random variable with a bit allocation of $H=\{h_1,\cdots,h_m$ as above. Then $Dis(X,X')\geq \max_j S_j$. 
+	Let $X'$ be a random variable with a bit allocation of $H=\{h_1,\cdots,h_m\}$ as above. Then $Dis(X,X')\geq \max_j S_j$. 
 \end{claim}
 
 \begin{proof}
@@ -162,11 +202,11 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{Convolv}{Conv}
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
-	$S = \support(X)\cup \{\infty\} \cup \{-\infty\}$\;
-	$G=(V,E)=(S, \{ (i,j) \in S^2 \colon  j>i \})$ \;
+	$S = \support(X)\cup \{\infty,-\infty\}$\;
+	$G=(V,E)=(S, \{ (x_i,x_j) \in S^2 \colon  j>i \})$ \;
 	
 	\ForEach{$e=(i,j) \in  E $ }{
-		\If {$i==\infty \text{ OR } j==-\infty$}{
+		\If {$i=\infty \text{ OR } j=-\infty$}{
 			$w(e) = Pr(i<X<j)$
 		}
 		\Else{$w(e) = Pr(i<X<j)/2$}
@@ -176,7 +216,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	$l^*= \operatorname{argmin}\limits_{l \in paths(G),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$ \;
 	
 	\ForEach{$e=(i,j) \in  l^* $ }{
-		\If {$i==-\infty$}{
+		\If {$i=-\infty$}{
 			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
 		}
 		\ElseIf{$j==\infty$}{
