@@ -134,11 +134,20 @@ Clearly this is true. Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ a
 	\]
 \end{definition} 
 
-\begin{lemma}
-Given any sequence $x_1 < x_2 <\cdots < x_{l}$ such that $x_1=-\infty$. $x_l=\infty$ and $x_i \in \support(X)$ for all $i{=}2,\dots,l-1$, there exists $X'$ such that $d_k(X,X') = \max\limits_{i=1,..,l-1} w(x_{i}, x_{i+1})$ and $P(x_{i} < X < x_{i+1}) = 0$ for all $i = 1,..,l-1$.
-\end{lemma}
+
+\begin{claim}
+	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is no random variable $X'$ such that $\support(X')=S$ and $d(X,X') < \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
+\end{claim}
 \begin{proof}
-Define $X'$ by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=2,\dots,l-1$ and $f_{X'}(x)=0$ for $x \notin \{x_1,\dots,x_l\}$.
+	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq1}.
+\end{proof}
+
+
+\begin{claim}
+	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is a random variable $X'$ such that $\support(X')=S$ and $d(X,X')= \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
+\end{claim}
+\begin{proof}
+Define $X'$ by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 \end{proof}
 
 \begin{definition}\label{def:RVpartition}
