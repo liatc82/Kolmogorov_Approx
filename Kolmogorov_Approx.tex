@@ -102,7 +102,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 	$max\{|a|,|b|\} \geq 1/2|a-b|$
 \end{observation}
 \begin{proof}
-Clearly this is true. Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume WLOG $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible iff $|a|<|b|$, in contradiction to that $|a|>|b|$.
+Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume without loss of generality that $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible if and only if $|a|<|b|$, in contradiction to that $|a|>|b|$.
 \end{proof}
 
 \begin{lemma}\label{lem:geq}
@@ -110,7 +110,7 @@ Clearly this is true. Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ a
 	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
 \end{lemma}
 \begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_X'(x_1)|, |F_X(\hat x) - F_X'(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_X'(x_1)- F_X'(\hat x)|$. Since it is given that $P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X \leq x_2)/2$.
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_X'(x_1)|, |F_X(\hat x) - F_X'(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_X'(x_1)- F_X'(\hat x)|$. Since it is given that $P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
 \end{proof}
 
 
@@ -120,7 +120,7 @@ Clearly this is true. Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ a
 \end{lemma}
 \begin{proof}
 	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_X'(x_1)|, |F_X(\hat x) - F_X'(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_X'(\hat x)| \}$ since $F_X(-\infty) = F_X'(-\infty) = 0$. Furthermore, $F_X'(\hat x) = 0$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X \leq x_2)$. 
-	If $x_1=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_X'(x_1)| \}$ since $F_X(\infty) = F_X'(\infty) = 1$. Furthermore, $F_X'(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X \leq x_2)$.
+	If $x_1=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_X'(x_1)| \}$ since $F_X(\infty) = F_X'(\infty) = 1$. Furthermore, $F_X'(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
 \end{proof}
 
 
@@ -136,15 +136,15 @@ Clearly this is true. Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ a
 
 
 \begin{claim}
-	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is no random variable $X'$ such that $\support(X')=S$ and $d(X,X') < \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
+	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is no random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') < \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
 \end{claim}
 \begin{proof}
-	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq1}.
+	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
 \end{proof}
 
 
 \begin{claim}
-	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is a random variable $X'$ such that $\support(X')=S$ and $d(X,X')= \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
+	For a random variable $X$, an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$, $x_0=-\infty$ and $x_{n+1}=\infty$, there is a random variable $X'$ such that $\support(X')=S$ and $d_k(X,X')= \max\limits_{i=0,..,m} w(x_{i}, x_{i+1})$.
 \end{claim}
 \begin{proof}
 Define $X'$ by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
