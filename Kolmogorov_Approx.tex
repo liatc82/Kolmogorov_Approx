@@ -170,15 +170,45 @@ The source node of the shortest path problem at hand corresponds to the $-\infty
 The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G)$. The goal is to find the path $l^*$ in $paths(G)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon^*$, \hl{defined in Definition}~\ref{def:optimalapprox}. $X'$ is then derived from the resulting path $l^*$ (lines 10-17). Every node $n \in l^*$ represent a value in the new calculated random variable $X'$, we than iterate the path $l^*$ to fine the probability of the event $f_{X'}(n)$. For every edge $(i,j)\in l^*$ we determine: if $(i,j)$ is the first edge in the path $ l^*$ (i.e.  $i==-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l^*$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l^*$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
 
 
+
 \begin{algorithm}\label{alg:optapprox}
 	\DontPrintSemicolon
 	\SetKwFunction{Convolv}{Conv}
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x_i,x_j) \in S^2 \colon  j>i \})$ \;
+	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$  \;
+	$ l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
 	
-	\ForEach{$e=(i,j) \in  E $ }{
+	\ForEach{$e=(x,y) \in  l$ }{
+		\If {$x \neq -\infty \wedge y \neq \infty$}{
+			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
+		}
+		\ElseIf{$j==\infty$}{
+			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
+		}
+		\Else{
+			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
+			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
+		}
+		
+	}	
+	\Return $X'$\;
+	
+	\caption{$\KlmApprox (X, m)$}  
+	\label{alg:sequence}
+\end{algorithm}
+
+
+\begin{algorithm}\label{alg:optapprox}
+	\DontPrintSemicolon
+	\SetKwFunction{Convolv}{Conv}
+	\SetKwFunction{getPartition}{getPartition}
+	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
+	$S = \support(X)\cup \{\infty,-\infty\}$\;
+	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$ \;
+	
+	\ForEach{$e=(x,y) \in  E $ }{
 		\If {$i=\infty \text{ OR } j=-\infty$}{
 			$w(e) = Pr(i<X<j)$
 		}
