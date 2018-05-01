@@ -99,10 +99,11 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \end{proof}
 
 \begin{observation}\label{obs:ab}
-	$max\{|a|,|b|\} \geq 1/2|a-b|$
+	$max\{|a|,|b|\} \geq |a-b|/2$
 \end{observation}
 \begin{proof}
-Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume without loss of generality that $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible if and only if $|a|<|b|$, in contradiction to that $|a|>|b|$.
+	By the triangle inequality, the sum of $|a|$ and $|b|$ is greater or equal to $|a-b|$, thus one of them must be larger or equal to half of it. 
+%Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume without loss of generality that $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible if and only if $|a|<|b|$, in contradiction to that $|a|>|b|$.
 \end{proof}
 
 \begin{lemma}\label{lem:geq}
