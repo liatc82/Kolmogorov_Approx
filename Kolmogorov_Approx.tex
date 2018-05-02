@@ -103,7 +103,8 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 	$max\{|a|,|b|\} \geq |a-b|/2$
 \end{observation}
 \begin{proof}
-	By the triangle inequality, the sum of $|a|$ and $|b|$ is greater or equal to $|a-b|$, thus one of them must be larger or equal to half of it. 
+$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
+%By the triangle inequality, the sum of $|a|$ and $|b|$ is greater or equal to $|a-b|$, thus one of them must be larger or equal to half of it. 
 %Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume without loss of generality that $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible if and only if $|a|<|b|$, in contradiction to that $|a|>|b|$.
 \end{proof}
 
@@ -112,7 +113,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
 \end{lemma}
 \begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_X'(x_1)|, |F_X(\hat x) - F_X'(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_X'(x_1)- F_X'(\hat x)|$. Since it is given that $P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) + F_X(\hat x) - F_{X'}(x_1)- F_{X'}(\hat x)|$. Since it is given that $P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
 \end{proof}
 
 
