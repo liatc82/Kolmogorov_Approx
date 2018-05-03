@@ -114,18 +114,16 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \begin{observation}\label{obs:ab}
 	$max\{|a|,|b|\} \geq |a-b|/2$
 \end{observation}
-\begin{proof}
-$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
-%By the triangle inequality, the sum of $|a|$ and $|b|$ is greater or equal to $|a-b|$, thus one of them must be larger or equal to half of it. 
-%Assume by contradiction that $max\{|a|,|b|\} < 1/2|a-b|$ and assume without loss of generality that $|a|>|b|$. We get that $2|a|<|a-b|$ which is possible if and only if $|a|<|b|$, in contradiction to that $|a|>|b|$.
-\end{proof}
+%\begin{proof}
+%$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
+%\end{proof}
 
 \begin{lemma}\label{lem:geq}
 	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
 	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
 \end{lemma}
 \begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) + F_X(\hat x) - F_{X'}(x_1)- F_{X'}(\hat x)|$. Since it is given that $P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_{X'}(\hat x) - F_{X'}(x_1)|$. Since it is given that $F_{X'}(\hat x) - F_{X'}(x_1) = P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
 \end{proof}
 
 
@@ -134,12 +132,12 @@ $$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
 	$d_k(X,X') \geq P(x_1 < X < x_2)$.
 \end{lemma}
 \begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_X'(x_1)|, |F_X(\hat x) - F_X'(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_X'(\hat x)| \}$ since $F_X(-\infty) = F_X'(-\infty) = 0$. Furthermore, $F_X'(\hat x) = 0$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X \leq x_2)$. 
-	If $x_1=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_X'(x_1)| \}$ since $F_X(\infty) = F_X'(\infty) = 1$. Furthermore, $F_X'(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
+	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_{X'}(\hat x)| \}$ since $F_X(-\infty) = F_{X'}(-\infty) = 0$. Furthermore, $F_{X'}(\hat x) = P(x_1 < X' < x_2)=0$. Therefore $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$. 
+	If $x_2=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_{X'}(x_1)| \}$ since $F_X(\hat{x}) = F_{X'}(\hat{x}) = F_X(\infty) = F_{X'}(\infty) = 1$. Furthermore, $F_{X'}(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
 \end{proof}
 
 
-\begin{definition} Let:
+\begin{definition} For $x_1,x_2 \in \support(X) \cap \{-\infty,\infty\}$ let
 	\[
 	w(x_1,x_2)=
 	\begin{cases}
@@ -151,7 +149,7 @@ $$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
 
 
 \begin{proposition}
-	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is no random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') < \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{n+1}=\infty$.
+	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is no random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') < \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
 \end{proposition}
 \hl{$x_{n+1}=\infty$ n or m?}
 \begin{proof}
@@ -160,7 +158,7 @@ $$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
 
 
 \begin{proposition}
-	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is a random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{n+1}=\infty$.
+	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is a random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
 \end{proposition}
 \hl{$x_{n+1}=\infty$ n or m?}
 \begin{proof}
