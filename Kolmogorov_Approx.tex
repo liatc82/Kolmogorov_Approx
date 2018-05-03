@@ -91,15 +91,15 @@ In this work, motivated by the problem of estimating the probability of meeting 
 A random variable $X'$ is an $m$-optimal-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
 \end{definition}
 
-\begin{definition}\label{def:kolapprox}
-	For two discrete random variables $X_1$ and $X_2$, we say that $X_2$ is a \emph{Kolmogorov approximation} of $X_1$ with the parameters $\varepsilon$ and $m$, denoted by 
-	$X_1 \preceq_{\varepsilon,m} X_2$, if $\sup_t |F_X(t) - F_{X'}(t)| \leq \varepsilon$, for all $t$, and if $|\support(X_2)| \leq m$. 
-\end{definition}
-
-\begin{definition}\label{def:optimalapprox}
-	For a random variable $X$ and $m \in \mathbb{N}$, 
-	let $\varepsilon^* = \varepsilon^* (X,m)=\inf\{\varepsilon \colon \exists X'. X \preceq_{\varepsilon,m} X'\}$ be the \emph{optimal approximation error} for $X$ with a random variable whose support is of size $m$. 
-\end{definition}
+%\begin{definition}\label{def:kolapprox}
+%	For two discrete random variables $X_1$ and $X_2$, we say that $X_2$ is a \emph{Kolmogorov approximation} of $X_1$ with the parameters $\varepsilon$ and $m$, denoted by 
+%	$X_1 \preceq_{\varepsilon,m} X_2$, if $\sup_t |F_X(t) - F_{X'}(t)| \leq \varepsilon$, for all $t$, and if $|\support(X_2)| \leq m$. 
+%\end{definition}
+%
+%\begin{definition}\label{def:optimalapprox}
+%	For a random variable $X$ and $m \in \mathbb{N}$, 
+%	let $\varepsilon^* = \varepsilon^* (X,m)=\inf\{\varepsilon \colon \exists X'. X \preceq_{\varepsilon,m} X'\}$ be the \emph{optimal approximation error} for $X$ with a random variable whose support is of size $m$. 
+%\end{definition}
 
 \begin{lemma}
 	For any discrete random variable $X$ and any $m \in \mathbb{N}$, there is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
