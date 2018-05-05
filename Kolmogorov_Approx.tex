@@ -87,7 +87,7 @@
 \maketitle
 In this work, motivated by the problem of estimating the probability of meeting deadlines, we focus on the Kolmogorov distance $d_K(X,X')= \sup_t |F_X(t) - F_{X'}(t)|$ where $F_X$ and $F_{X'}$ are the CDFs of $X$ and $X'$, respectively.
 
-\hl{$m$-optimal-approximation vs. $\varepsilon$-approximation}
+
 \begin{definition}
 A random variable $X'$ is an $m$-optimal-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
 \end{definition}
@@ -152,7 +152,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \begin{proposition}
 	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is no random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') < \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
 \end{proposition}
-\hl{$x_{n+1}=\infty$ n or m?}
+
 \begin{proof}
 	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
 \end{proof}
@@ -161,7 +161,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \begin{proposition}
 	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is a random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
 \end{proposition}
-\hl{$x_{n+1}=\infty$ n or m?}
+
 \begin{proof}
 Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 \end{proof}
