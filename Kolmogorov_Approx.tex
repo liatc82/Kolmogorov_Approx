@@ -88,14 +88,16 @@
 
 \section{Introduction}
 
-\section{An Algorithm for Optimal Approximation}
-
 In this work, motivated by the problem of estimating the probability of meeting deadlines, we focus on the Kolmogorov distance $d_k(X,X')= \sup_t |F_X(t) - F_{X'}(t)|$ where $F_X$ and $F_{X'}$ are the CDFs of $X$ and $X'$, respectively.
 
 
 \begin{definition}
-A random variable $X'$ is an $m$-optimal-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
+	A random variable $X'$ is an $m$-optimal-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
 \end{definition}
+
+
+\section{An Algorithm for Optimal Approximation}
+
 
 \begin{itemize}
 	\item We now start our story: Given $X$ and $m$ how can we find $X'$?
