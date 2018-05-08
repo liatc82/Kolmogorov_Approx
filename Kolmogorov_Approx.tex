@@ -114,6 +114,11 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 %$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
 %\end{proof}
 
+\begin{itemize}
+	\item The next lemma states a lower bound on the distance $d_K(X,X')$ when a range of elements is excluded from the support of $X'$.
+\end{itemize}
+
+
 \begin{lemma}\label{lem:geq}
 	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
 	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
@@ -121,6 +126,11 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \begin{proof}
 	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_{X'}(\hat x) - F_{X'}(x_1)|$. Since it is given that $F_{X'}(\hat x) - F_{X'}(x_1) = P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
 \end{proof}
+
+
+\begin{itemize}
+	\item The next lemma strengthen the lower bound.
+\end{itemize}
 
 
 \begin{lemma}\label{lem:geq2}
@@ -133,7 +143,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \end{proof}
 
 
-\begin{definition} For $x_1,x_2 \in \support(X) \cap \{-\infty,\infty\}$ let
+\begin{definition} For $x_1,x_2 \in \support(X) \cup \{-\infty,\infty\}$ let
 	\[
 	w(x_1,x_2)=
 	\begin{cases}
