@@ -304,21 +304,10 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$  \;
+	$G=(V,E)=(S, \{ e=(x,y) \in S^2 \colon  x<y \})$  \;
 	$ l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
-	
-	\ForEach{$e=(x,y) \in  l$ }{
-		\If {$x \neq -\infty \wedge y \neq \infty$}{
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
-		}
-		\ElseIf{$j==\infty$}{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
-		}
-		\Else{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
-		}
-		
+	\For{$0<i<m+1$ }{
+		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
 	}	
 	\Return $X'$\;
 	
@@ -333,7 +322,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$ \;
+	$G=(V,E)=(S, \{e= (x,y) \in S^2 \colon  x<y \})$ \;
 	
 	\ForEach{$e=(x,y) \in  E $ }{
 		\If {$i=\infty \text{ OR } j=-\infty$}{
