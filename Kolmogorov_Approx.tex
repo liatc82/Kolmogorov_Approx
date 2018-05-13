@@ -173,7 +173,7 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 \end{definition} 
 
 
-\begin{definition} For $S=\{x_1<\dots<x_m\} \subseteq \support(X)$, $x_0=-\infty$, and $x_{m+1}=\infty$, let
+\begin{definition}\label{def:error} For $S=\{x_1<\dots<x_m\} \subseteq \support(X)$, $x_0=-\infty$, and $x_{m+1}=\infty$, let
 	\[
 	\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1}).
 	\]
@@ -192,31 +192,60 @@ Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d
 	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
 \end{proof}
 
+\begin{definition}\label{def:construction}
 Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+\end{definition}
 
 \begin{lemma}
-	For $i>1$, if $F_{X'}(x_{i-1})-F_{X}(x_{i-1}) = w(x_{i-1}, x_{i})$ then $F_{X'}(x_{i})-F_{X}(x_i) = w(x_i, x_{i+1})$.
+	For $i>1$, if $F_{X'}(x_{i})-F_{X}(x_{i}) = w(x_{i}, x_{i+1})$ then $F_{X'}(x_{i+1})-F_{X}(x_{i+1}) = w(x_{i+1}, x_{i+2})$.
 \end{lemma}
 \begin{proof}
-	% TODO switch tdirections to fit the statement of the lemma
-	% TODO \eqref,  aligment
 	\begin{align}
-	&F_X(x_i)-F_{X'}(x_i) = \\
-	&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\ \nonumber
-	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
-	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
-	&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
-	& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
-	&- w(x_i,x_{i+1})
+	&F_{X'}(x_{i+1})-F_{X}(x_{i+1}) = \\ \nonumber
+	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - P(X<x_{i+1}) + P(X'<x_{i+1})  \\ \nonumber
+	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - F_X(x_{i}) - P(x_{i}< X < x_{i+1}) + F_{X'}(x_{i}) \\ 
+	\label{eq:weight}
+	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - F_X(x_{i}) - 2w(x_{i},x_{i+1}) + F_{X'}(x_{i})  \\ \label{eq:indHip}
+	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - 2w(x_{i},x_{i+1}) +w(x_{i}, x_{i+1})  \\ \label{eq:construction}
+	& = w(x_{i},x_{i+1}) +w(x_{i+1},x_{i+2}) - 2w(x_{i},x_{i+1}) +w(x_{i}, x_{i+1}) \\ \nonumber
+	& = w(x_{i+1},x_{i+2}) \nonumber
 	\end{align}
-	$*$ by induction hypothesis.
-	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by Definition~\ref{def:weight}, and
-	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
+	
+	By Definition~\ref{def:weight} the probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ as in Equation~\eqref{eq:weight}. Equation~\eqref{eq:indHip} is deduced by the induction hypothesis and Equation~\eqref{eq:construction} where
+	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ is true by construction, see Definition\ref{def:construction}.
 \end{proof}
 
+%\begin{lemma}
+%	For $i>1$, if $F_{X'}(x_{i-1})-F_{X}(x_{i-1}) = w(x_{i-1}, x_{i})$ then $F_{X'}(x_{i})-F_{X}(x_i) = w(x_i, x_{i+1})$.
+%\end{lemma}
+%\begin{proof}
+%	% TODO switch tdirections to fit the statement of the lemma
+%	% TODO \eqref,  aligment
+%	\begin{align}
+%	&F_X(x_i)-F_{X'}(x_i) = \\
+%	&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\ \nonumber
+%	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
+%	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
+%	&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
+%	& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
+%	&- w(x_i,x_{i+1})
+%	\end{align}
+%	$*$ by induction hypothesis.
+%	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by Definition~\ref{def:weight}, and
+%	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
+%\end{proof}
+
 \begin{lemma}
-	$F_{X'}(x_{1})-F_{X}(x_{1}) = w(x_{1}, x_{2})$.
+	Base case: $i = 1, F_{X'}(x_{1})-F_{X}(x_{1}) = w(x_{1}, x_{2})$.
 \end{lemma}
+\begin{proof}
+	\begin{align*}
+	F_{X'}(x_{1})-F_{X}(x_{1}) &= \\
+	& = f_{X'}(x_{1}) - f_{X}(x_{1}) - w(x_0, x_1)  \\
+	& = w(x_{0},x_1) + w(x_1,x_{2}) - w(x_0, x_1)  \\
+	& = w(x_1,x_{2})
+	\end{align*}
+\end{proof}
 
 
 
@@ -224,23 +253,23 @@ Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ fo
 \begin{proposition}
 	There exists $X'$ such that $\support(X')=S$ and $d_k(X,X') = \varepsilon(X,S)$.
 \end{proposition}
-\begin{proof}
-	Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
-	We need to show that $F_X(x_i)-F_{X'}(x_i) = -w(x_i, x_{i+1})$. Assume this is true for every $j<i$, the induction hypothesis hereby: $F_X(x_{i-1})-F_{X'}(x_{i-1}) = -w(x_{i-1}, x_{i})$.
-	\begin{align*}
-		&F_X(x_i)-F_{X'}(x_i) = \\
-		&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\
-		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
-		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
-		&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
-		& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
-		&- w(x_i,x_{i+1})
-	\end{align*}
-	$*$ by induction hypothesis.
-	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by definition~\ref{def:weight}, and
-	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
-	
-\end{proof}
+%\begin{proof}
+%	Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+%	We need to show that $F_X(x_i)-F_{X'}(x_i) = -w(x_i, x_{i+1})$. Assume this is true for every $j<i$, the induction hypothesis hereby: $F_X(x_{i-1})-F_{X'}(x_{i-1}) = -w(x_{i-1}, x_{i})$.
+%	\begin{align*}
+%		&F_X(x_i)-F_{X'}(x_i) = \\
+%		&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\
+%		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
+%		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
+%		&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
+%		& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
+%		&- w(x_i,x_{i+1})
+%	\end{align*}
+%	$*$ by induction hypothesis.
+%	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by definition~\ref{def:weight}, and
+%	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
+%	
+%\end{proof}
 
 
 
@@ -267,9 +296,9 @@ Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ fo
 
 Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes $\infty$ and $-\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by on of two cases. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
 The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l^*$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon^*$, \hl{defined in Definition}~\ref{def:optimalapprox}. $X'$ is then derived from the resulting path $l^*$ (lines 10-17). Every node $n \in l^*$ represent a value in the new calculated random variable $X'$, we than iterate the path $l^*$ to fine the probability of the event $f_{X'}(n)$. For every edge $(i,j)\in l^*$ we determine: if $(i,j)$ is the first edge in the path $ l^*$ (i.e.  $i==-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l^*$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l^*$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 10-17). Every node $n \in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to fine the probability of the event $f_{X'}(n)$ as described in Definition~\ref{def:construction}. For every edge $(i,j)\in l$ we determine: if $(i,j)$ is the first edge in the path $ l$ (i.e.  $i==-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
 
 
 
@@ -279,21 +308,10 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$  \;
+	$G=(V,E)=(S, \{ e=(x,y) \in S^2 \colon  x<y \})$  \;
 	$ l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
-	
-	\ForEach{$e=(x,y) \in  l$ }{
-		\If {$x \neq -\infty \wedge y \neq \infty$}{
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
-		}
-		\ElseIf{$j==\infty$}{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
-		}
-		\Else{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
-		}
-		
+	\For{$0<i<m+1$ }{
+		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
 	}	
 	\Return $X'$\;
 	
@@ -308,7 +326,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x,y) \in S^2 \colon  x<y \})$ \;
+	$G=(V,E)=(S, \{e= (x,y) \in S^2 \colon  x<y \})$ \;
 	
 	\ForEach{$e=(x,y) \in  E $ }{
 		\If {$i=\infty \text{ OR } j=-\infty$}{
@@ -339,6 +357,11 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\label{alg:sequence}
 \end{algorithm}
 
+\begin{theorem}\label{the:algo}
+	$\KlmApprox(X,m) = X' $ where $X'$ is an $m$-optimal-approximation.
+\end{theorem}
+
+
 \begin{theorem}\label{the:complexity}
 	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
 \end{theorem}
@@ -346,8 +369,8 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 \begin{proof}
 	Constructing the graph $G$ takes $O(n^2)$. The number of edges is $O(E)\approx O(n^2)$ and for every edge the weight is at most the sum of all probabilities between the source node $-\infty$ and the target node $\infty$, which can be done efficiently by aggregating the weights of already calculated edges. 
 	The construction is also the only stage that requires memory allocation, specifically $O(E+V)=O(n^2)$.
-	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. Since $G$ id DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
-	Deriving the new random variable $X'$ from the computed path $l^*$ takes $O(mn)$. For every node in $l^*$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$. 
+	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. Since $G$ is DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
+	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$. 
 	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
@@ -490,95 +513,75 @@ The primitive tasks in all the trees are modeled as discrete random variables wi
 	
 \end{figure}  
 
-We implemented the approximation algorithm for solving the deadline problem with four different methods of approximation. The first two are for achieving a one-sided Kolmogorov approximation -- the $\OptTrim$ and \hl{the $\Trim$ operators}, and a simple sampling scheme which we used as comparison to the  Kolmogorov approximation with the $\KlmApprox$ algorithm. 
-The parameter $m$ of $\OptTrim$ and $\KlmApprox$ corresponds to the inverse of $\varepsilon$ given to the $\Trim$ operator. Note that in order to obtain some error $\varepsilon$, one must take into consideration the size of the task tree, $N$, therefore, $m/N=1/(\varepsilon\cdot N)$. We ran the algorithm for exact computation as reference, the approximation algorithm using $\KlmApprox$ as its operator with $m=10\cdot N$, the $\OptTrim$ as its operator with $m=10\cdot N$, the $\Trim$ as operator with $\varepsilon={0.1/N}$, and two simple simulations, with a different samples number $s=10^4$ and $s=10^6$. 
+We implemented the approximation algorithm for solving the deadline problem with four different methods of approximation. The first two are for achieving a one-sided Kolmogorov approximation -- the $\OptTrim$~\cite{CohenGW18} and the $\Trim$~\cite{cohen2015estimating} operators, and the third is a simple sampling scheme. We used those methods as a comparison to the Kolmogorov approximation with the suggested $\KlmApprox$ algorithm. 
+The parameter $m$ of $\OptTrim$ and $\KlmApprox$ corresponds to the inverse of $\varepsilon$ given to the $\Trim$ operator. Note that in order to obtain some error $\varepsilon$, one must take into consideration the size of the task tree $N$, therefore, $m/N=1/(\varepsilon\cdot N)$. We ran also an exact computation as a reference to the approximated one in order to calculate the error. The experiments conducted with the following operators and their parameters: $\KlmApprox$ operator with $m=10\cdot N$, the $\OptTrim$ operator with $m=10\cdot N$, the $\Trim$ as operator with $\varepsilon={0.1/N}$, and two simple simulations, with a different samples number $s=10^4$ and $s=10^6$. 
 \begin{table}[th]
 	\scriptsize
 	\centering
 	\renewcommand{\arraystretch}{1.3}
-	\begin{tabular}{|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
-		\multirow{2}{*}{Task Tree} & \multirow{2}{*}{$M$} & {$\OptTrim$} & {$\Trim$} & \multicolumn{2}{c|}{Sampling} \\ \cline{3-6} 
-		&	& $m/N{=}10$  & $\varepsilon\cdot N{=}0.1$ & $s{=}10^{4}$& $s{=}10^{6}$ \\ \hline
+		\multirow{2}{*}{Task Tree} & \multirow{2}{*}{$M$} & {$\KlmApprox$} & {$\OptTrim$} & {$\Trim$} & \multicolumn{2}{c|}{Sampling} \\ \cline{3-7} 
+		&	& $m/N{=}10$ & $m/N{=}10$ & $\varepsilon\cdot N{=}0.1$ & $s{=}10^{4}$& $s{=}10^{6}$ \\ \hline
 		\hline
 		
 		%N=34
 		
-		\multirow{2}{*}{Logistics} & 2& 0 &  0.0019 &  0.007 & 0.0009  \\ \Xcline{2-6}{1pt}
-		{\tiny $(N=34)$}& 4& 0.0046&  0.0068  &   0.0057 & 0.0005 \\\Xhline{1pt}
+		\multirow{2}{*}{Logistics} & 2& 0 & 0 &  0.0019 &  0.007 & 0.0009  \\ \Xcline{2-7}{1pt}
+		{\tiny $(N=34)$}& 4& 0 & 0.0046&  0.0068  &   0.0057 & 0.0005 \\\Xhline{1pt}
 		
 		%N=45
-		\multirow{2}{*}{Logistics}  & {2} & 0.0005 &  0.002 &  0.015& 0.001
-		\\ \Xcline{2-6}{1pt} 
-		{\tiny $(N{=}45)$} & {4} & 0.003 & 0.004 & 0.008 & 0.0006  
+		\multirow{2}{*}{Logistics}  & {2} & 0.0002 & 0.0005 &  0.002 &  0.015& 0.001
+		\\ \Xcline{2-7}{1pt} 
+		{\tiny $(N{=}45)$} & {4} & 0 & 0.003 & 0.004 & 0.008 & 0.0006  
 		\\\Xhline{1pt}
 		
 		%N=47
 		\multirow{2}{*}{DRC-Drive}  
-		&2	&	0.004&  0.009  & 0.0072 & 0.0009  
-		\\ \Xcline{2-6}{1pt}
+		&2	& 0 & 0.004&  0.009  & 0.0072 & 0.0009  
+		\\ \Xcline{2-7}{1pt}
 		
-		{\tiny $(N{=}47)$}& {4}& 0.008&  0.019   & 0.0075  & 0.0011 
+		{\tiny $(N{=}47)$}& {4}& 0 & 0.008&  0.019   & 0.0075  & 0.0011 
 		\\  \Xhline{1pt}
 		
 		
 		%N=10
-		\multirow{2}{*}{Sequential}  & {4} & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xcline{2-6}{1pt}  
-		
-		{\tiny $(N{=}10)$} & {10} & 0.028  &  0.06  & 0.0117  & 0.001 \\\Xhline{1pt}
+		\multirow{3}{*}{Sequential}  & {2} & 0.009 & 0.015 &  0.024 & 0 & 0 \\ \Xcline{2-7}{1pt}  
+		& {4} & 0.001 & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xcline{2-7}{1pt} 
+		{\tiny $(N{=}10)$} & {10} & 0 & 0.028  &  0.06  & 0.0117  & 0.001 \\\Xhline{1pt}
 		
 		
 		
 	\end{tabular}
-	\caption{Comparison of estimation errors with respect to the reference exact computation on various task trees.}
+	\caption{Comparison of estimated errors with respect to the reference exact computation on various task trees.}
 	\label{tab:errors}
 	
 \end{table}
 
 Table~\ref{tab:errors} shows the results of the main experiment. The quality of the solutions provided by using the $\OptTrim$ operator are better (lower errors) than those provided by the $\Trim$ operator, following the optimality guarantees, but is interesting to see that the quality gaps happen in practice in each of the examined task trees. However, in some of the task trees the sampling method produced better results than the approximation algorithm with $\OptTrim$. Nevertheless, the approximation algorithm comes with an inherent advantage of providing an exact quality guarantees, as opposed to the probabilistic guarantees provided by sampling.
 
-In order to better understand the quality gaps in practice between $\OptTrim$ and $\Trim$, we investigate their relative errors when applied on single random variables with different sizes of the support ($M$), and different support sizes of the resulting random variable approximation ($m$). In each instance of this experiment, a random variable is randomly generated by choosing the probabilities of each element in the support from a uniform distribution and then normalizing these probabilities so that they sum to one.
+In order to better understand the quality gaps in practice between $\KlmApprox$, $\OptTrim$, and $\Trim$, we investigate their relative errors when applied on single random variables with support size $n = 100$, and different support sizes of the resulting random variable approximation ($m$). In each instance of this experiment, a random variable is randomly generated by choosing the probabilities of each element in the support from a uniform distribution and then normalizing these probabilities so that they sum to one.
 
-Tables~\ref{tab:trimvsoptrim} and~\ref{tab:trimvsoptrim2} present the error produced by $\OptTrim$ and $\Trim$ on random variables with supports sizes of $M=100$ and $M=1000$, respectively. The depicted results in these tables are averages over several instances of random variables for each entry (50 instances in Table~\ref{tab:trimvsoptrim} and 10 instances in Table~\ref{tab:trimvsoptrim2}). The two central columns in each table show the average error of each method, whereas the right column presents the average percentage of the relative error of the $\Trim$ operator with respect to the error of the optimal approximation provided by $\OptTrim$; the relative error of each instance is calculated by $(\Trim/\OptTrim)-1$. According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in both methods. However, the interesting phenomenon is that the relative error percentage of $\Trim$ grows with the increase of $m$.
+Tables~\ref{tab:trimvsoptrim} and Figure~\ref{fig:error} present the error produced by the above methods. The depicted results in the table are averages over several instances of random variables for each entry (50 instances). The columns in the table show the average percentage of the relative error of the $\OptTrim$ and $\Trim$ operators with respect to the error of the optimal approximation provided by $\KlmApprox$; the relative error of each instance is calculated by $(\OptTrim/\KlmApprox)-1$, $(\Trim/\KlmApprox)-1$, respectively. The figure shows the average error of each method, whereas each curve represent a different method as a function of $m$.  
+
+According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
 \begin{table}[tbp]
 	\scriptsize
 	\centering
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabular}{|c|c|c|}
 		\hline
-		m  & $\OptTrim$	& $\Trim$	& Relative error  \\ \hline
-		2  & 0.491			& 0.493		& 0.4\%            \\ \hline
-		4  & 0.242			& 0.247 	& 2.1\%            \\ \hline
-		8  & 0.118 			& 0.123 	& 4.4\%            \\ \hline
-		10 & 0.093			& 0.099		& 6\%              \\ \hline
-		20 & 0.043			& 0.049		& 15\%             \\ \hline
-		50 & 0.013 			& 0.019 	& 45.4\%           \\ \hline
+		m  & Relative error Kolmogorov Vs. $\OptTrim$ 	& Relative error Kolmogorov Vs. $\Trim$	  \\ \hline
+		2  & 1.0054			& 0.994		            \\ \hline
+		4  & 1.0373			& 1.000 	            \\ \hline
+		8  & 1.096 			& 1.002 	            \\ \hline
+		10 & 1.1221			& 0.9946		             \\ \hline
+		20 & 1.2986			& 1.001		             \\ \hline
+		50 & 1.888 			& 0.994 	           \\ \hline
 	\end{tabular}
-	\caption{$\OptTrim$ vs. $\Trim$ on randomly generated random variables with original support size $M=100$.}
+	\caption{Relative error $\KlmApprox$ Vs. $\OptTrim$ and $\KlmApprox$ Vs. $\Trim$ on randomly generated random variables with original support size $n=100$.}
 	\label{tab:trimvsoptrim}
 \end{table}
-
-
-
-\begin{table}[tbp]
-	\scriptsize
-	\centering
-	\begin{tabular}{|c|c|c|c|}
-		\hline
-		m   & $\OptTrim$	& $\Trim$	& Relative error  \\ \hline
-		50  & 0.0193			& 0.0199	& 3.4\%            \\ \hline
-		100 & 0.0093			& 0.0099	& 7.1\%            \\ \hline
-		200 & 0.0043			& 0.0049	& 15.7\%           \\ \hline
-	\end{tabular}
-	\caption{$\OptTrim$ vs. $\Trim$ on randomly generated random variables with original support size $M=1000$.}
-	\label{tab:trimvsoptrim2}
-\end{table}
-
-The above experiments display the quality of approximation provided by the $\OptTrim$ algorithm, but it comes with a price tag in the form of run-time performance. The time complexity of both the $\Trim$ operator and the sampling method is linear in the number of variables, resulting in much faster run-time performances than $\OptTrim$, for which the time complexity is only polynomial (Theorem~\ref{the:complexity}), not linear. The run-time of the exact computation, however,  may grow exponentially. Therefore, we examine in the next experiment the problem sizes in which it becomes beneficial in terms of run-time to use the proposed approximation.
-
-Figure~\ref{fig:runtime} presents a comparison of the run-time performances of an exact computation and approximated computations with $\OptTrim$ and $\Trim$ as operators. The computation is a summation of a sequence of random variables with support size of $M{=}10$, where the number $N$ of variables varies from 6 to 19. In this experiment, we executed the $\OptTrim$ operator with $m{=}10$ after performing each convolution between two random variables, in order to maintain a support size of 10 in all intermediate computations. 
-Equivalently, we executed the $\Trim$ operator with $\varepsilon=0.1$.
-The results clearly show the exponential run-time of the exact computation, caused by the convolution between two consecutive random variables. In fact, in the experiment with $N{=}20$, the exact computation ran out of memory. These results illuminate the advantage of the proposed $\OptTrim$ algorithm that balances between solution quality and run-time performance -- while there exist other, faster, methods (e.g., $\Trim$), $\OptTrim$ provides high-quality solutions in reasonable (polynomial) time, which is especially important when an exact computation is not feasible, due to time or memory.
 
 \begin{figure}[htb]
 	\scriptsize	
@@ -586,11 +589,11 @@ The results clearly show the exponential run-time of the exact computation, caus
 	\begin{tikzpicture}
 	\begin{axis}[
 	scale=.95,
-	xlabel={Number of variables},
-	ylabel={Run-time (seconds)},
-	xmin=6, xmax=19,
-	ymin=0, ymax=327,
-	xtick={6,10,15,19},
+	xlabel={Support size $m$},
+	ylabel={Error},
+	xmin=2, xmax=50,
+	ymin=0, ymax=0.5,
+	xtick={2,4,8,10,20,50},
 	legend pos=north west,
 	ymajorgrids=true,
 	grid style=dashed,
@@ -601,72 +604,71 @@ The results clearly show the exponential run-time of the exact computation, caus
 	mark=square,
 	]
 	coordinates { 
-		(6 , 0.967791080475) 
-		(7 , 1.26214194298) 
-		(8 , 1.60830593109) 
-		(9 , 1.97642302513) 
-		(10, 2.28711390495) 
-		(11, 2.67097711563) 
-		(12, 3.01373195648) 
-		(13, 3.3420279026) 
-		(14, 3.71830201149) 
-		(15, 4.08019995689) 
-		(16, 4.3857190609) 
-		(17, 5.30444002151)
-		(18, 5.97745299339) 
-		(19, 5.91222810745) 
+		(2 , 0.246) 
+		(4 , 0.121) 
+		(8 , 0.0591) 
+		(10 , 0.046) 
+		(20, 0.0215) 
+		(50, 0.0068) 
+		
 	};
-	\addlegendentry{$\OptTrim$}
+	\addlegendentry{$\KlmApprox$}
 	
 	\addplot[
 	color=green,
 	mark=x,
 	]
 	coordinates {
-		(6  , 0.000465154647827)
-		(7  , 0.000580787658691)
-		(8  , 0.000672817230225)
-		(9  , 0.000787973403931)
-		(10 , 0.000914096832275)
-		(11 , 0.00101804733276)
-		(12 , 0.00112104415894)
-		(13 , 0.0012149810791)
-		(14 , 0.00134491920471)
-		(15 , 0.00143694877625)
-		(16 , 0.00155091285706)
-		(17 , 0.00166893005371)
-		(18 , 0.00178194046021)
-		(19 , 0.00198793411255)
+		(2 , 0.491) 
+		(4 , 0.2428) 
+		(8 , 0.1184) 
+		(10 , 0.0929) 
+		(20, 0.0430) 
+		(50, 0.0136) 
 	};
-	\addlegendentry{$\Trim$}
+	\addlegendentry{$\OptTrim$}
 	
 	\addplot[
 	color=red,
 	mark=x,
 	]
 	coordinates {
-		(6  , 0.00977492332458)
-		(7  , 0.0880949497223)
-		(8  , 0.556006193161)
-		(9  , 1.23386096954)
-		(10 , 2.37807798386)
-		(11 , 4.2376730442)
-		(12 , 6.03167200089)
-		(13 , 8.61568593979)
-		(14 , 14.1664741039)
-		(15 , 21.7874569893)
-		(16 , 30.5902190208)
-		(17 , 97.9485061169)
-		(18, 186.025614977) 
-		(19, 327.884781122) 
+		(2 , 0.494) 
+		(4 , 0.2473) 
+		(8 , 0.124) 
+		(10 , 0.0988) 
+		(20, 0.0494) 
+		(50, 0.01971)  
 	};
-	\addlegendentry{Exact (no trimming)}
+	\addlegendentry{$\Trim$}
 	
 	\end{axis}
 	\end{tikzpicture}
-	\caption{Run-time of a long computation with $\OptTrim$, with $\Trim$, and without any trimming (exact computation).}
-	\label{fig:runtime}
+	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
+	\label{fig:error}
 \end{figure}
+
+
+%\begin{table}[tbp]
+%	\scriptsize
+%	\centering
+%	\begin{tabular}{|c|c|c|c|}
+%		\hline
+%		m   & $\OptTrim$	& $\Trim$	& Relative error  \\ \hline
+%		50  & 0.0193			& 0.0199	& 3.4\%            \\ \hline
+%		100 & 0.0093			& 0.0099	& 7.1\%            \\ \hline
+%		200 & 0.0043			& 0.0049	& 15.7\%           \\ \hline
+%	\end{tabular}
+%	\caption{$\OptTrim$ vs. $\Trim$ on randomly generated random variables with original support size $M=1000$.}
+%	\label{tab:trimvsoptrim2}
+%\end{table}
+
+The above experiments display the quality of approximation provided by the $\KlmApprox$ algorithm, as proven before to be optimal approximation under the Kolmogorv metric. One may wonder the need of such an algorithm where the use of linear programing in an easy valid option described and discussed in previews works~\cite{pavlikov2016cvar}. In order to address this issue we executed an experiment to compare the run-time between $\KlmApprox$ algorithm and a simple linear programing algorithm. The LP algorithm implemented in Mathematics as \hl{follows:...}. The run-time comparison results were very clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 sec, where the $\KlmApprox$ algorithm run-time was $\approx$ 0 sec. Furthermore, for a random variable with support size $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 sec and the LP algorithm took significantly much longer, therefore, due to time limitations of the LP algorithm we did not proceed to examine it any farther.
+Since it is not trivial to deduce LP algorithm run-time we concluded by the conducted experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm were its run-time is proven to be polynomial~\ref{the:complexity}.
+
+
+%but it comes with a price tag in the form of run-time performance. The time complexity of both the $\Trim$ operator and the sampling method is linear in the number of variables, resulting in much faster run-time performances than $\KlmApprox$, for which the time complexity is only polynomial (Theorem~\ref{the:complexity}), not linear. The run-time of the exact computation, however,  may grow exponentially. Therefore, we examine in the next experiment the problem sizes in which it becomes beneficial in terms of run-time to use the proposed approximation.
+
 
 \bibliography{library,Trim_Optimum}{}
 \bibliographystyle{abbrv}
