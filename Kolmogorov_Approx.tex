@@ -318,7 +318,7 @@ Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a p
 
 The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
 The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 10-17). Every node $n \in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to fine the probability of the event $f_{X'}(n)$ as described in Definition~\ref{def:construction}. For every edge $(i,j)\in l$ we determine: if $(i,j)$ is the first edge in the path $ l$ (i.e.  $i==-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 10-17). Every node $n \in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to fine the probability of the event $f_{X'}(n)$ as described in Definition~\ref{def:construction}. For every edge $(i,j)\in l$ we determine: if $(i,j)$ is the first edge in the path $ l$ (i.e.  $i=-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
 
 
 
@@ -328,8 +328,8 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ e=(x,y) \in S^2 \colon  x<y \})$  \;
-	$ l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
+	$G=(V,E)=(S, \{ (x,y)  \colon  x<y \})$  \;
+	$(x_0,\dots,x_{m+1}) = l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
 	\For{$0<i<m+1$ }{
 		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
 	}	
@@ -600,7 +600,7 @@ According to the depicted results it is evident that increasing the support size
 		20 & 1.2986			& 1.001		             \\ \hline
 		50 & 1.888 			& 0.994 	           \\ \hline
 	\end{tabular}
-	\caption{Relative error $\KlmApprox$ Vs. $\OptTrim$ and $\KlmApprox$ Vs. $\Trim$ on randomly generated random variables with original support size $n=100$.}
+	\caption{Relative error $\KlmApprox$ vs. $\OptTrim$ and $\KlmApprox$ vs. $\Trim$ on randomly generated random variables with original support size $n=100$.}
 	\label{tab:trimvsoptrim}
 \end{table}
 
@@ -610,8 +610,8 @@ According to the depicted results it is evident that increasing the support size
 	\begin{tikzpicture}
 	\begin{axis}[
 	scale=.95,
-	xlabel={Support size $m$},
-	ylabel={Error},
+	xlabel={Support size, $m$},
+	ylabel={Error, $d_K(X,X')$},
 	xmin=2, xmax=50,
 	ymin=0, ymax=0.5,
 	xtick={2,4,8,10,20,50},
@@ -684,8 +684,9 @@ According to the depicted results it is evident that increasing the support size
 %	\label{tab:trimvsoptrim2}
 %\end{table}
 
-The above experiments display the quality of approximation provided by the $\KlmApprox$ algorithm, as proven before to be optimal approximation under the Kolmogorv metric. One may wonder the need of such an algorithm where the use of linear programing in an easy valid option described and discussed in previews works~\cite{pavlikov2016cvar}. In order to address this issue we executed an experiment to compare the run-time between $\KlmApprox$ algorithm and a simple linear programing algorithm. The LP algorithm implemented in Mathematics as \hl{follows:...}. The run-time comparison results were very clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 sec, where the $\KlmApprox$ algorithm run-time was $\approx$ 0 sec. Furthermore, for a random variable with support size $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 sec and the LP algorithm took significantly much longer, therefore, due to time limitations of the LP algorithm we did not proceed to examine it any farther.
-Since it is not trivial to deduce LP algorithm run-time we concluded by the conducted experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm were its run-time is proven to be polynomial~\ref{the:complexity}.
+%The above experiments display the quality of approximation provided by the $\KlmApprox$ algorithm, as proven before to be optimal approximation under the Kolmogorv metric. 
+We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
+Since it is not trivial to formally analyze the run-time of the LP algorithm, we conclude by the reported experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm whose complexity is proven to be polynomial in Theorem~\ref{the:complexity}.
 
 
 %but it comes with a price tag in the form of run-time performance. The time complexity of both the $\Trim$ operator and the sampling method is linear in the number of variables, resulting in much faster run-time performances than $\KlmApprox$, for which the time complexity is only polynomial (Theorem~\ref{the:complexity}), not linear. The run-time of the exact computation, however,  may grow exponentially. Therefore, we examine in the next experiment the problem sizes in which it becomes beneficial in terms of run-time to use the proposed approximation.
