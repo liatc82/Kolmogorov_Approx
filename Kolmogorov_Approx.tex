@@ -118,7 +118,7 @@ where $\|\alpha\|_0 = |\{ i : \alpha_i \neq 0, \, i=1,\ldots,p \}|$ is the $\ell
 
 In these terms, using also the $\ell_\infty$ norm that represents the maximal coordinate and the $\ell_1$ norm that represents the sum of the coordinates, our problem can be phrased as:
 $$
-\min_{\alpha \in \mathbb{R}^p_{\geq 0}}\|x - D\alpha\|_{\infty} \text{ subject to }  \|\alpha\|_0 = m \text{ and } \|\alpha\|_1=1.
+\min_{\alpha \in [0,\infty)^p}\|x - D\alpha\|_{\infty} \text{ subject to }  \|\alpha\|_0 = m \text{ and } \|\alpha\|_1=1.
 $$
 where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$ is one if $i\leq j$ and zero otherwise), $x$ is related to $X$ such that the $i$th coordinate of $x$ is $F_X(x_i)$ where $\support(X)=\{x_1 < x_2 < \cdots < x_n\}$ and $\alpha$ is related to $X'$ such that the $i$th coordinate of $\alpha$ is $f_{X'}(x'_i)$ where $\support(X')=\{x'_1 < x'_2 < \cdots < x'_m\}$. The functions $F_X$ and $f_{X'}$ represent, receptively, the cumulative distribution function of $X$ and the mass distribution function of $X'$. This, of course, means that the coordinates of $x$ are assumed to be positive and monotonically increasing and that the last coordinate of $x$ must be one. We demonstrate an application for this specific sparse representation problem and show that it can be solve in $O(n^2m)$ time and memory.
 
