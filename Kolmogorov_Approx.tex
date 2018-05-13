@@ -104,8 +104,25 @@ In summary, the exact notion of optimality of the approximation targeted in this
 
 The main contribution of the paper is a constructive proof of:
 \begin{theorem}
-	Given a random variable $X$ and a number $m$, there exists an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
+	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
 \end{theorem}
+
+\section{Related Work}
+The problem studied in this paper is related to the theory of Sparse Approximation (aka Sparse Representation) that deals with sparse solutions for systems of linear equations, as follows. 
+
+Given a matrix $D \in \mathbb{R}^{n \times p}$ and a vector $x \in \mathbb{R}^n$, the most studied sparse representation problem is finding the sparsest possible representation $\alpha \in \mathbb{R}^p$ satisfying $x = D\alpha$:
+$$
+\min_{\alpha \in \mathbb{R}^p} \|\alpha\|_0 \text{ subject to } x = D\alpha.
+$$
+where $\|\alpha\|_0 = |\{ i : \alpha_i \neq 0, \, i=1,\ldots,p \}|$ is the $\ell_0$ pseudo-norm, counting the number of non-zero coordinates of $\alpha$. This problem is known to be NP-Hard with a reduction to NP-complete subset selection problems.
+
+In these terms, our problem can be phrased as:
+$$
+\min_{\alpha \in \mathbb{R}^p} \|x - D\alpha\| \text{ subject to }  \|\alpha\|_0 = m \text{ and } \|\alpha\|_1=1.
+$$
+where $D$ is the all-ones triangular matrix (the value at row $i$ and column $j$ is one if $i\leq j$ and zero otherwise), $x$ is related to $X$ such that the $i$th coordinate of $x$ is $F_X(x_i)$ where $\support(X)=\{x_1 < x_2 < \cdots < x_n\}$ and $\alpha$ is related to $X'$ such that the $i$th coordinate of $\alpha$ is $f_{X'}(x'_i)$ where $\support(X')=\{x'_1 < x'_2 < \cdots < x'_m\}$. The functions $F_X$ and $f_{X'}$ represent, receptively, the cumulative distribution function of $X$ and the mass distribution function of $X'$.
+
+
 
 
 \section{An Algorithm for Optimal Approximation}
