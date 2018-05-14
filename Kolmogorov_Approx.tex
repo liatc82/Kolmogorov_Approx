@@ -102,10 +102,11 @@ In summary, the exact notion of optimality of the approximation targeted in this
 	A random variable $X'$ is an optimal $m$-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
 \end{definition}
 
-The main contribution of the paper is a constructive proof of:
-\begin{theorem} \label{thm:main}
-	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
-\end{theorem}
+The main contribution of the paper is an efficient algorithm that takes $X$ and $m$ as parameters and constructs an optimal $m$-approximation of $X$.
+
+%\begin{theorem} \label{thm:main}
+%	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
+%\end{theorem}
 
 The rest of the paper is organized as follows. In Section~\ref{sec:rel-work} we describe how our work relates to other algorithms and problems studied in the literature. In Section~\ref{sec:alg} we detail the proposed algorithm, analyze its properties, and prove Theorem~\ref{thm:main}. In Section~\ref{sec:exp} we demonstrate how the proposed approach performs on the problem of estimating the probability of hitting deadlines is plans and compare it to alternatives approximation approaches from the literature. We also demonstrate the performance of our approximation algorithm on some randomly generated random variables. The paper is concluded with a discussion in Section~\ref{sec:discussion}.
 
