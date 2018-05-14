@@ -103,7 +103,7 @@ In summary, the exact notion of optimality of the approximation targeted in this
 \end{definition}
 
 The main contribution of the paper is a constructive proof of:
-\begin{theorem}
+\begin{theorem} \label{thm:main}
 	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
 \end{theorem}
 
@@ -128,92 +128,162 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 
 
 
-\section{An Algorithm for Optimal Approximation}
+\section{An Algorithm for Optimal Approximation}\label{sec:alg}
 
 
-\begin{itemize}
-	\item We now start our story: Given $X$ and $m$ how can we find $X'$?
-	\item We first show that it is enough to limit our search to $X'$s such that $\support(X') \subseteq \support(X)$.
-\end{itemize}
+[[DF: move somewhere to intro: Obviously every random variable with support of size of at most $m$ serves as some approximation, the challenge is how to find an $m$-\textit{optimal} approximation for $X$.]]
+[[DF: move to intro: we call the distance between $X$ and the $m$-optimal-approximation random variable of $X$, the \textit{ $m$-optimal distance} from $X$. ]]
 
-\begin{lemma}
-	For any discrete random variable $X$ and any $m \in \mathbb{N}$, there is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
+
+We next describe in details the proof of theorem \ref{thm:main}. 
+
+%$\support(X)=\{x_1 < x_2 < \cdots < x_n\}$
+
+In the following we set $X$ as a random variable with a finite support of size $n$, and we set $0<m\leq n$. We need to find an $m$-optimal approximation random variable $X'$. 
+
+
+Our first step is to show that it is enough to limit our search to $X'$s such that $\support(X') \subseteq \support(X)$.
+
+
+\begin{lemma}\label{lem:supContained}
+	There is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
 \begin{proof}
-Assume there is a random variable $X''$ with support size $m$ such that $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$.
-We will show how to transform $X''$ support such that it will be contained in $\support(X)$. Let $v'$ be the first $v'\in\support(X'')$ and $v' \not\in\support(X)$. Let $v=\max\{i: i<v' \wedge i\in\support(X)\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
-$F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
-Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
-\end{proof}
-
-\begin{observation}\label{obs:ab}
-	$max\{|a|,|b|\} \geq |a-b|/2$
-\end{observation}
-%\begin{proof}
-%$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
-%\end{proof}
-
-\begin{itemize}
-	\item The next lemma states a lower bound on the distance $d_K(X,X')$ when a range of elements is excluded from the support of $X'$.
-\end{itemize}
-
-
-\begin{lemma}\label{lem:geq}
-	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
-	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
-\end{lemma}
-\begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_{X'}(\hat x) - F_{X'}(x_1)|$. Since it is given that $F_{X'}(\hat x) - F_{X'}(x_1) = P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
+	[[DF: This proof is unclear to me, please clean.]]
+	Assume for contradiction is a random variable $X''$ with support size $m$ such that $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$.
+	We will show how to transform $X''$ support such that it will be contained in $\support(X)$. Let $v'$ be the first $v'\in\support(X'')$ and $v' \not\in\support(X)$. Let $v=\max\{i: i<v' \wedge i\in\support(X)\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
+	$F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
+	Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
 \end{proof}
 
 
-\begin{itemize}
-	\item The next lemma strengthen the lower bound.
-\end{itemize}
+Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
+
+Since from Lemma \ref{lem:supContained} we can assume wlog that if  $X'$ is an $m$-optimal approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
+
+\subsection{Step 1}
 
 
-\begin{lemma}\label{lem:geq2}
-	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1=-\infty$ or  $x_2=\infty$, if $P(x_1 < X' < x_2)=0$  then 
-	$d_k(X,X') \geq P(x_1 < X < x_2)$.
-\end{lemma}
-\begin{proof}
-	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_{X'}(\hat x)| \}$ since $F_X(-\infty) = F_{X'}(-\infty) = 0$. Furthermore, $F_{X'}(\hat x) = P(x_1 < X' < x_2)=0$. Therefore $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$. 
-	If $x_2=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_{X'}(x_1)| \}$ since $F_X(\hat{x}) = F_{X'}(\hat{x}) = F_X(\infty) = F_{X'}(\infty) = 1$. Furthermore, $F_{X'}(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
-\end{proof}
+We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. To that, set $S=\{x_1<\dots<x_m\} \subseteq \support(X)$. To simplify the proofs set $x_0=-\infty$, and $x_{m+1}=\infty$. Then $x_0<x_1$ and $x_m<x_{m+1}$. In addition recall that for every random variable $X''$ $F_{X''}(-\infty) = 0$ and $F_{X''}(\infty)=1$.
+For the rest of this section we assume $S$ is fixed and therefore is not necessarily included in the notation.
 
+Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function that we use to find the $m$-optimal distance $\varepsilon(X,S)$. 
 
-\begin{definition}\label{def:weight} For $x_1,x_2 \in \support(X) \cup \{-\infty,\infty\}$ let
+\begin{definition}\label{def:weight} For $0\leq i < m$ let
 	\[
-	w(x_1,x_2)=
+	w(x_i,x_{i+1})=
 	\begin{cases}
-		P(x_1 < X < x_2) & \text{if $x_1=-\infty$ or $x_2 = \infty$;} \\
-		P(x_1 < X < x_2)/2 & \text{otherwise.} \\	
+	P(x_i < X < x_{i+1}) & \text{if $i=0$ or $i = m$;} \\
+	P(x_i < X < x_{i+1})/2 & \text{otherwise.} \\	
 	\end{cases}
 	\]
-\end{definition} 
+\end{definition}
+
+Note that when $i=0$ (resp. $i=m+1$) then $x_i = -\infty$ (resp. $x_i = \infty$).
+
+Finally define:
+
+\begin{equation}
+\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})
+\end{equation}
 
 
-\begin{definition}\label{def:error} For $S=\{x_1<\dots<x_m\} \subseteq \support(X)$, $x_0=-\infty$, and $x_{m+1}=\infty$, let
-	\[
-	\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1}).
-	\]
-\end{definition} 
+We first show that $\varepsilon(X,S)$ is a lower bound. That is, every random variable in $\mathbb{X}_S$ has a distance at least $\varepsilon(X,S)$. Then, we present a random variable $X'\in \mathbb{X}_S$ with distance $\varepsilon(X,S)$. It then follows that such $X'$ is an $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$.
 
-\begin{itemize}
-	\item From here on, until the end of the section, $S$ is fixed.
-\end{itemize}
+The intuition behind choosing these specific weights and $\varepsilon(X,S)$ being a lower bound is as follows. For every $1\leq i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$. Then since for every $X'\in\mathbb{X}_S$ the probability values of $X'$ for the elements not in $S$ are set to $0$, we have that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$. Therefore the distance between $X'$ and $X$ at points $x_i$ and $\hat x_{i+1}$ is increased by $F_X(\hat x_{i+1})-F_X(x_i) = P(x_i < X < x_{i+1})$.
 
+Formally we have the following.
 
-
-\begin{proposition}
-	There is no $X'$ such that $\support(X')=S$ and $d_k(X,X') < \varepsilon(X,S)$.
+\begin{proposition}\label{prop:minimal}
+	For every random variable $X'$ with $\support(X')=S$ we have $d_k(X,X') \geq \varepsilon(X,S)$.
 \end{proposition}
+
 \begin{proof}
-	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
+	
+	
+	Let $X'$ be a random variable with support $S$. Then by definition, for every $0\leq i\leq m$, $d_k(X,X') \geq \max \{|F_X(x_i) - F_{X'}(x_i)|, |F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})| \}$. Note that $F_{X'}(x_i)=F_{X'}(\hat x_{i+1})$ since the probability value for all the elements not in $S$ is set to $0$.
+	
+	If $i=0$, that is $x_i=-\infty$, we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ and therefore $d_k(X,X') \geq ||F_X(\hat x_{i+1}| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1})== w(x_i,x_{i+1})$.
+	
+	If $i =m$, that is $x_{i+1}=\infty$, note that $F_{X}(\hat x_{i+1})=F_{X'}(\hat x_{i+1})=1$. Therefore $F_{X'}(x_i)=1$ as well.
+	Therefore $d_k(X,X') \geq ||F_X(\hat x_i| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1}) = w(x_i,x_{i+1})$. [[DF: fix]]
+	
+	%  we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ 
+	% 
+	% 
+	% 
+	% We break the proof for the closed intervals where each support variable $x_i$ is a proper number, and for the open intervals where a support variable is either $-\infty$ or $\infty$.
+	
+	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\Re$, to have  $d_k(X,X') \geq \max \{|F_X(x_i) - F_{X'}(x_i)|, |F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})| \}$, and therefore $d_k(X,X') \geq 1/2|F_X(x_i) - F_X(\hat x_{i+1}) + F_{X'}(\hat x_{i+1}) - F_{X'}(x_i)|$. Since it is given that $F_{X'}(\hat x_{i+1}) - F_{X'}(x_i) = P(x_i < X' < x_{i+1})=0$, we have that $d_k(X,X') \geq 1/2|F_X(x_i) - F_X(\hat x_{i+1}) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
+	
+	We saw that $d_k(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$. Therefore by definition of $\varepsilon(X,S)$, proof follows.
 \end{proof}
 
+
+
+%\begin{itemize}
+%	\item The next lemma states a lower bound on the distance $d_K(X,X')$ when a range of elements is excluded from the support of $X'$.
+%\end{itemize}
+%
+%
+%\begin{lemma}\label{lem:geq}
+%	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
+%	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
+%\end{lemma}
+%\begin{proof}
+%	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_{X'}(\hat x) - F_{X'}(x_1)|$. Since it is given that $F_{X'}(\hat x) - F_{X'}(x_1) = P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
+%\end{proof}
+%
+%
+%\begin{itemize}
+%	\item The next lemma strengthen the lower bound.
+%\end{itemize}
+%
+%
+%\begin{lemma}\label{lem:geq2}
+%	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1=-\infty$ or  $x_2=\infty$, if $P(x_1 < X' < x_2)=0$  then 
+%	$d_k(X,X') \geq P(x_1 < X < x_2)$.
+%\end{lemma}
+%\begin{proof}
+%	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_{X'}(\hat x)| \}$ since $F_X(-\infty) = F_{X'}(-\infty) = 0$. Furthermore, $F_{X'}(\hat x) = P(x_1 < X' < x_2)=0$. Therefore $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$. 
+%	If $x_2=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_{X'}(x_1)| \}$ since $F_X(\hat{x}) = F_{X'}(\hat{x}) = F_X(\infty) = F_{X'}(\infty) = 1$. Furthermore, $F_{X'}(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
+%\end{proof}
+%
+%
+%\begin{definition}\label{def:weight} For $x_1,x_2 \in \support(X) \cup \{-\infty,\infty\}$ let
+%	\[
+%	w(x_1,x_2)=
+%	\begin{cases}
+%	P(x_1 < X < x_2) & \text{if $x_1=-\infty$ or $x_2 = \infty$;} \\
+%	P(x_1 < X < x_2)/2 & \text{otherwise.} \\	
+%	\end{cases}
+%	\]
+%\end{definition} 
+%
+%
+%\begin{definition}\label{def:error} For $S=\{x_1<\dots<x_m\} \subseteq \support(X)$, $x_0=-\infty$, and $x_{m+1}=\infty$, let
+%	\[
+%	\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1}).
+%	\]
+%\end{definition} 
+%
+%\begin{itemize}
+%	\item From here on, until the end of the section, $S$ is fixed.
+%\end{itemize}
+
+
+%
+%\begin{proposition}
+%	There is no $X'$ such that $\support(X')=S$ and $d_k(X,X') < \varepsilon(X,S)$.
+%\end{proposition}
+%\begin{proof}
+%	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
+%\end{proof}
+
+[[DF: here I stopped]]
+
 \begin{definition}\label{def:construction}
-Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+	Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 \end{definition}
 
 \begin{lemma}
@@ -235,25 +305,6 @@ Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ fo
 	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ is true by construction, see Definition\ref{def:construction}.
 \end{proof}
 
-%\begin{lemma}
-%	For $i>1$, if $F_{X'}(x_{i-1})-F_{X}(x_{i-1}) = w(x_{i-1}, x_{i})$ then $F_{X'}(x_{i})-F_{X}(x_i) = w(x_i, x_{i+1})$.
-%\end{lemma}
-%\begin{proof}
-%	% TODO switch tdirections to fit the statement of the lemma
-%	% TODO \eqref,  aligment
-%	\begin{align}
-%	&F_X(x_i)-F_{X'}(x_i) = \\
-%	&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\ \nonumber
-%	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
-%	&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
-%	&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
-%	& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
-%	&- w(x_i,x_{i+1})
-%	\end{align}
-%	$*$ by induction hypothesis.
-%	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by Definition~\ref{def:weight}, and
-%	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
-%\end{proof}
 
 \begin{lemma}
 	Base case: $i = 1, F_{X'}(x_{1})-F_{X}(x_{1}) = w(x_{1}, x_{2})$.
@@ -273,52 +324,142 @@ Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ fo
 \begin{proposition}
 	There exists $X'$ such that $\support(X')=S$ and $d_k(X,X') = \varepsilon(X,S)$.
 \end{proposition}
-%\begin{proof}
-%	Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
-%	We need to show that $F_X(x_i)-F_{X'}(x_i) = -w(x_i, x_{i+1})$. Assume this is true for every $j<i$, the induction hypothesis hereby: $F_X(x_{i-1})-F_{X'}(x_{i-1}) = -w(x_{i-1}, x_{i})$.
-%	\begin{align*}
-%		&F_X(x_i)-F_{X'}(x_i) = \\
-%		&f_{X}(x_i) - f_{X'}(x_i) + P(X<x_i) - P(X'<x_i)  = \\
-%		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + P(x_{i-1}< X < x_i)-F_{X'}(x_{i-1}) = \\
-%		&f_{X}(x_i) - f_{X'}(x_i) + F_X(x_{i-1}) + 2w(x_{i-1},x_{i})-F_{X'}(x_{i-1}) =^* \\
-%		&f_{X}(x_i) - f_{X'}(x_i) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) = \\
-%		& -w(x_{i-1},x_i) - w(x_i,x_{i+1}) + 2w(x_{i-1},x_{i}) -w(x_{i-1}, x_{i}) =\\ 
-%		&- w(x_i,x_{i+1})
-%	\end{align*}
-%	$*$ by induction hypothesis.
-%	The probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ by definition~\ref{def:weight}, and
-%	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ by construction.
-%	
-%\end{proof}
 
-
-
-%\begin{proposition}
-%	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is no random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') < \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
-%\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%% Old version - before DF changes %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{An Algorithm for Optimal Approximation}
 %
-%\begin{proof}
-%	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
-%\end{proof}
 %
 %\begin{itemize}
-%	\item The next lemma shows that there is a n not better approximation. 
+%	\item We now start our story: Given $X$ and $m$ how can we find $X'$?
+%	\item We first show that it is enough to limit our search to $X'$s such that $\support(X') \subseteq \support(X)$.
+%\end{itemize}
+%
+%\begin{lemma}
+%	For any discrete random variable $X$ and any $m \in \mathbb{N}$, there is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
+%\end{lemma}
+%\begin{proof}
+%Assume there is a random variable $X''$ with support size $m$ such that $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$.
+%We will show how to transform $X''$ support such that it will be contained in $\support(X)$. Let $v'$ be the first $v'\in\support(X'')$ and $v' \not\in\support(X)$. Let $v=\max\{i: i<v' \wedge i\in\support(X)\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
+%$F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
+%Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
+%\end{proof}
+%
+%\begin{observation}\label{obs:ab}
+%	$max\{|a|,|b|\} \geq |a-b|/2$
+%\end{observation}
+%%\begin{proof}
+%%$$ \frac{|a-b|}{2}	\leq \frac{|a|+|b|}{2} \leq  \max\{|a|,|b|\}.$$
+%%\end{proof}
+%
+%\begin{itemize}
+%	\item The next lemma states a lower bound on the distance $d_K(X,X')$ when a range of elements is excluded from the support of $X'$.
+%\end{itemize}
+%
+%
+%\begin{lemma}\label{lem:geq}
+%	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1 < x_2$, if $P(x_1 < X' < x_2)=0$  then 
+%	$d_k(X,X') \geq P(x_1 < X < x_2)/2$.
+%\end{lemma}
+%\begin{proof}
+%	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition, $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. From Observation~\ref{obs:ab}, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) + F_{X'}(\hat x) - F_{X'}(x_1)|$. Since it is given that $F_{X'}(\hat x) - F_{X'}(x_1) = P(x_1 < X' < x_2)=0$, $d_k(X,X') \geq 1/2|F_X(x_1) - F_X(\hat x) | =  P(x_1 < X \leq \hat x)/2 = P(x_1 < X < x_2)/2$.
+%\end{proof}
+%
+%
+%\begin{itemize}
+%	\item The next lemma strengthen the lower bound.
+%\end{itemize}
+%
+%
+%\begin{lemma}\label{lem:geq2}
+%	For $x_1, x_2 \in \support(X) \cup \{-\infty,\infty\}$ such that $x_1=-\infty$ or  $x_2=\infty$, if $P(x_1 < X' < x_2)=0$  then 
+%	$d_k(X,X') \geq P(x_1 < X < x_2)$.
+%\end{lemma}
+%\begin{proof}
+%	Let $\hat x=\max \{x \in \support(X) \cap\{ -\infty, \infty\}  \colon x < x_2 \}$. By definition $d_k(X,X') \geq \max \{|F_X(x_1) - F_{X'}(x_1)|, |F_X(\hat x) - F_{X'}(\hat x)| \}$. If $x_1=-\infty$ then $d_k(X,X') \geq \{|F_X(\hat x) - F_{X'}(\hat x)| \}$ since $F_X(-\infty) = F_{X'}(-\infty) = 0$. Furthermore, $F_{X'}(\hat x) = P(x_1 < X' < x_2)=0$. Therefore $d_k(X,X') \geq F_X(\hat x) = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$. 
+%	If $x_2=\infty$ then $d_k(X,X') \geq \{|F_X(x_1) - F_{X'}(x_1)| \}$ since $F_X(\hat{x}) = F_{X'}(\hat{x}) = F_X(\infty) = F_{X'}(\infty) = 1$. Furthermore, $F_{X'}(x_1) = 1$ since it is given that $P(x_1 < X' < x_2)=0$. Therefore we get that $d_k(X,X') \geq |F_X(x_1)-1| = |1-F_X(\hat x)-| = P(x_1 < X \leq \hat x) = P(x_1 < X < x_2)$.
+%\end{proof}
+%
+%
+%\begin{definition}\label{def:weight} For $x_1,x_2 \in \support(X) \cup \{-\infty,\infty\}$ let
+%	\[
+%	w(x_1,x_2)=
+%	\begin{cases}
+%		P(x_1 < X < x_2) & \text{if $x_1=-\infty$ or $x_2 = \infty$;} \\
+%		P(x_1 < X < x_2)/2 & \text{otherwise.} \\	
+%	\end{cases}
+%	\]
+%\end{definition} 
+%
+%
+%\begin{definition}\label{def:error} For $S=\{x_1<\dots<x_m\} \subseteq \support(X)$, $x_0=-\infty$, and $x_{m+1}=\infty$, let
+%	\[
+%	\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1}).
+%	\]
+%\end{definition} 
+%
+%\begin{itemize}
+%	\item From here on, until the end of the section, $S$ is fixed.
 %\end{itemize}
 %
 %
 %
 %\begin{proposition}
-%	For any random variable $X$ and an ordered set $S=\{x_1<\dots<x_m\} \subset \support(X)$ there is a random variable $X'$ such that $\support(X')=S$ and $d_k(X,X') = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$ where, to simplify notations, we assume that $x_0=-\infty$ and $x_{m+1}=\infty$.
+%	There is no $X'$ such that $\support(X')=S$ and $d_k(X,X') < \varepsilon(X,S)$.
 %\end{proposition}
 %\begin{proof}
-%Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+%	Let $i$ be the index that maximizes $w(x_{i}, x_{i+1})$. If $0<i<n-1$ then $d_k(X,X') \geq w(x_{i}, x_{i+1})$ by Lemma~\ref{lem:geq}. If $i=0$ or $i=n+1$ the same follows from Lemma~\ref{lem:geq2}.
 %\end{proof}
+%
+%\begin{definition}\label{def:construction}
+%Let $X'$ to by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+%\end{definition}
+%
+%\begin{lemma}
+%	For $i>1$, if $F_{X'}(x_{i})-F_{X}(x_{i}) = w(x_{i}, x_{i+1})$ then $F_{X'}(x_{i+1})-F_{X}(x_{i+1}) = w(x_{i+1}, x_{i+2})$.
+%\end{lemma}
+%\begin{proof}
+%	\begin{align}
+%	&F_{X'}(x_{i+1})-F_{X}(x_{i+1}) = \\ \nonumber
+%	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - P(X<x_{i+1}) + P(X'<x_{i+1})  \\ \nonumber
+%	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - F_X(x_{i}) - P(x_{i}< X < x_{i+1}) + F_{X'}(x_{i}) \\ 
+%	\label{eq:weight}
+%	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - F_X(x_{i}) - 2w(x_{i},x_{i+1}) + F_{X'}(x_{i})  \\ \label{eq:indHip}
+%	& = f_{X'}(x_{i+1}) - f_{X}(x_{i+1}) - 2w(x_{i},x_{i+1}) +w(x_{i}, x_{i+1})  \\ \label{eq:construction}
+%	& = w(x_{i},x_{i+1}) +w(x_{i+1},x_{i+2}) - 2w(x_{i},x_{i+1}) +w(x_{i}, x_{i+1}) \\ \nonumber
+%	& = w(x_{i+1},x_{i+2}) \nonumber
+%	\end{align}
+%	
+%	By Definition~\ref{def:weight} the probability $P(x_{i-1}< X < x_i) = 2w(x_{i-1},x_{i})$ as in Equation~\eqref{eq:weight}. Equation~\eqref{eq:indHip} is deduced by the induction hypothesis and Equation~\eqref{eq:construction} where
+%	$f_{X'}(x_i) - f_{X}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1})$ is true by construction, see Definition\ref{def:construction}.
+%\end{proof}
+%
+%
+%\begin{lemma}
+%	Base case: $i = 1, F_{X'}(x_{1})-F_{X}(x_{1}) = w(x_{1}, x_{2})$.
+%\end{lemma}
+%\begin{proof}
+%	\begin{align*}
+%	F_{X'}(x_{1})-F_{X}(x_{1}) &= \\
+%	& = f_{X'}(x_{1}) - f_{X}(x_{1}) - w(x_0, x_1)  \\
+%	& = w(x_{0},x_1) + w(x_1,x_{2}) - w(x_0, x_1)  \\
+%	& = w(x_1,x_{2})
+%	\end{align*}
+%\end{proof}
+%
+%
+%
+%
+%\begin{proposition}
+%	There exists $X'$ such that $\support(X')=S$ and $d_k(X,X') = \varepsilon(X,S)$.
+%\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
+\subsection{Step 2}
+Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where nodes $x$ or $y$ are the source or target nodes respectively. In this case, the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. The second case is where $x$ and $y$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
 The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 10-17). Every node $n \in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to fine the probability of the event $f_{X'}(n)$ as described in Definition~\ref{def:construction}. For every edge $(i,j)\in l$ we determine: if $(i,j)$ is the first edge in the path $ l$ (i.e.  $i=-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}. For every edge $(x_i,x_j)\in l$ we determine: if $(x_i,x_j)$ is the first edge in the path $ l$ (i.e.  $x_i=-\infty$), then node $x_j$ gets the full weight $w(x_i,x_j)$ and it's own weight in $X$ such that $f_{X'}(x_j) = f_{X}(x_j) +  w(x_i,x_j)$. If $(x_i,x_j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $x_i$ and $x_j$ in addition to their own original weight in $X$ and the probability that already accumulated. If $(x_i,x_j)$ is the last edge in the path $ l$ (i.e.  $i=\infty$) then node $_i$ gets the full weight $w(x_i,x_j)$ in addition to what was already accumulated such that $f_{X'}(x_j) = f_{X'}(x_j) +  w(x_i,x_j)$.
 
 
 
@@ -340,42 +481,42 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 \end{algorithm}
 
 
-\begin{algorithm}\label{alg:optapprox}
-	\DontPrintSemicolon
-	\SetKwFunction{Convolv}{Conv}
-	\SetKwFunction{getPartition}{getPartition}
-	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
-	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{e= (x,y) \in S^2 \colon  x<y \})$ \;
-	
-	\ForEach{$e=(x,y) \in  E $ }{
-		\If {$i=\infty \text{ OR } j=-\infty$}{
-			$w(e) = Pr(i<X<j)$
-		}
-		\Else{$w(e) = Pr(i<X<j)/2$}
-	}
-	
-	/* The following can be obtained, e.g., using the Bellman-Ford algorithm */\;
-	$l^*= \operatorname{argmin}\limits_{l \in paths(G, -\infty, \infty,|l|\leq m}  \max \{ w(e)\colon e \in l  \}$ \;
-	
-	\ForEach{$e=(i,j) \in  l^* $ }{
-		\If {$i=-\infty$}{
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
-		}
-		\ElseIf{$j==\infty$}{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
-		}
-		\Else{
-			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
-			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
-		}
-		
-	}	
-	\Return $X'$\;
-	
-	\caption{$\KlmApprox (X, m)$}  
-	\label{alg:sequence}
-\end{algorithm}
+%\begin{algorithm}\label{alg:optapprox}
+%	\DontPrintSemicolon
+%	\SetKwFunction{Convolv}{Conv}
+%	\SetKwFunction{getPartition}{getPartition}
+%	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
+%	$S = \support(X)\cup \{\infty,-\infty\}$\;
+%	$G=(V,E)=(S, \{e= (x,y) \in S^2 \colon  x<y \})$ \;
+%	
+%	\ForEach{$e=(x,y) \in  E $ }{
+%		\If {$i=\infty \text{ OR } j=-\infty$}{
+%			$w(e) = Pr(i<X<j)$
+%		}
+%		\Else{$w(e) = Pr(i<X<j)/2$}
+%	}
+%	
+%	/* The following can be obtained, e.g., using the Bellman-Ford algorithm */\;
+%	$l^*= \operatorname{argmin}\limits_{l \in paths(G, -\infty, \infty,|l|\leq m}  \max \{ w(e)\colon e \in l  \}$ \;
+%	
+%	\ForEach{$e=(i,j) \in  l^* $ }{
+%		\If {$i=-\infty$}{
+%			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)$
+%		}
+%		\ElseIf{$j==\infty$}{
+%			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)$
+%		}
+%		\Else{
+%			$f_{X'}(i) = f_{X'}(i) + Pr(i\leq X<j)/2$\;
+%			$f_{X'}(j) = f_{X}(j) + Pr(i\leq X<j)/2$\;
+%		}
+%		
+%	}	
+%	\Return $X'$\;
+%	
+%	\caption{$\KlmApprox (X, m)$}  
+%	\label{alg:sequence}
+%\end{algorithm}
 
 \begin{theorem}\label{the:algo}
 	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
@@ -394,59 +535,18 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
-%\begin{example}\textbf{Why one sided Kolmogorov approximation in not sufficient in this case?}
-%	Consider the following random variable $X$: 
-%	$$
-%	f_{X}(t) = \begin{cases}
-%	1/3           & \text{if $t=1$ or $t=2$} ;  \\ 
-%	1/6           & \text{if $t=3$ or $t=4$};  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	
-%	There are various partitioned random variables of size $m=2$ which provide some approximation in regards to Kolmogorov distance, some are presented as follows:
-%	$$
-%	f_{X'_1}(t) = \begin{cases}
-%	2/3           & \text{if } t=1;  \\ 
-%	1/3           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_1) = 1/3$.
-%	
-%	$$
-%	f_{X'_2}(t) = \begin{cases}
-%	1/3           & \text{if } t=1;  \\ 
-%	2/3           & \text{if } t=2;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_2) = 1/3$.
-%	
-%	$$
-%	f_{X'_3}(t) = \begin{cases}
-%	2/3           & \text{if } t=2;  \\ 
-%	1/3           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_3) = 1/3$.
-%	
-%	However, none of the above random variables provides an optimal approximation. Here is an optimal approximation which can not be achieved by a regular partitioned random variable:
-%	
-%	$$ 	f_{X''}(t) = \begin{cases}
-%	1/2           & \text{if } t=1;  \\ 
-%	1/2           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'') = 1/6$.
-%\end{example}
 
-\section{A case study and experimental results}
-%\section{Experiments and Results}
-In the first experiment we focus on the problem of task trees with deadlines, and consider three types of task trees.
-The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2} (see example problem, Figure~\ref{fig:logistics}). 
+
+\section{A case study and experimental results}\label{sec:exp}
+The case study examined in our experiments is the problem of task trees with deadlines~\cite{cohen2015estimating,CohenGW18}. Hierarchical planning is a well-established field in AI~\cite{thomas1988hierarchical,erol1994htn,erol1996complexity}, and is still relevant nowadays~\cite{alford2016hierarchical,xiao2017hierarchical}. A hierarchical plan is a method for representing problems of automated planning in which the dependency among tasks can be given in the form of networks, here we focus on hierarchical plans represented by task trees. The leaves in a task tree are \emph{primitive} actions (or tasks), and the internal nodes are either \emph{sequence} or \emph{parallel} actions. The plans we deal with are of stochastic nature, where the duration of a primitive action is given by a random variable. 
+
+
+A sequence node denotes a series of tasks that should be performed consecutively, whereas a parallel node denotes a set of tasks that begin at the same time. A \emph{valid} plan is one that is fulfilled before some given \emph{deadline}, i.e., its \emph{makespan} is less than or equal to the deadline. The objective in this context is to compute the probability that a given plan is valid, or more formally computing $P(X<T)$, where $X$ is a random variable representing the makespan of the plan and $T$ is the deadline. As said above, resource consumption (task duration) is uncertain, and described as probability distributions in the leaf nodes.
+We assume that the distributions are independent but {\em not} necessarily identically distributed and that the random variables are discrete and have a finite support. 
+
+The problem of finding the probability that a task tree satisfies a deadline is known to be NP-hard. In fact, even the problem of summing a set of random variables is NP-hard~\cite{mohring2001scheduling}. This is an example of an explicitly given random variable that we need to estimate deadline meeting probabilities for.
+
+In the first experiment we focus on is the problem of task trees with deadlines, and consider three types of task trees. The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2} (see example problem, Figure~\ref{fig:logistics}, one parallel node with all descendant task nodes being in sequence). 
 The second type consists of task trees used as execution plans for the ROBIL team entry in the DARPA robotics challenge (DRC simulation phase), and the third type is of linear plans (sequential task trees).
 The primitive tasks in all the trees are modeled as discrete random variables with support of size $M$ obtained by discretization of uniform distributions over various intervals. The number of tasks in a tree is denoted by $N$. 
 \begin{figure}[htb]
@@ -583,26 +683,10 @@ Table~\ref{tab:errors} shows the results of the main experiment. The quality of 
 
 In order to better understand the quality gaps in practice between $\KlmApprox$, $\OptTrim$, and $\Trim$, we investigate their relative errors when applied on single random variables with support size $n = 100$, and different support sizes of the resulting random variable approximation ($m$). In each instance of this experiment, a random variable is randomly generated by choosing the probabilities of each element in the support from a uniform distribution and then normalizing these probabilities so that they sum to one.
 
-Tables~\ref{tab:trimvsoptrim} and Figure~\ref{fig:error} present the error produced by the above methods. The depicted results in the table are averages over several instances of random variables for each entry (50 instances). The columns in the table show the average percentage of the relative error of the $\OptTrim$ and $\Trim$ operators with respect to the error of the optimal approximation provided by $\KlmApprox$; the relative error of each instance is calculated by $(\OptTrim/\KlmApprox)-1$, $(\Trim/\KlmApprox)-1$, respectively. The figure shows the average error of each method, whereas each curve represent a different method as a function of $m$.  
+Figure~\ref{fig:error} present the error produced by the above methods. The depicted results are averages over several instances (50 instances) of random variables. The curves in the figure show the average error of $\OptTrim$ and $\Trim$ operators with comparison to the average error of the optimal approximation provided by $\KlmApprox$ as a function of $m$.  
 
 According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
-\begin{table}[tbp]
-	\scriptsize
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-		m  & Relative error Kolmogorov Vs. $\OptTrim$ 	& Relative error Kolmogorov Vs. $\Trim$	  \\ \hline
-		2  & 1.0054			& 0.994		            \\ \hline
-		4  & 1.0373			& 1.000 	            \\ \hline
-		8  & 1.096 			& 1.002 	            \\ \hline
-		10 & 1.1221			& 0.9946		             \\ \hline
-		20 & 1.2986			& 1.001		             \\ \hline
-		50 & 1.888 			& 0.994 	           \\ \hline
-	\end{tabular}
-	\caption{Relative error $\KlmApprox$ vs. $\OptTrim$ and $\KlmApprox$ vs. $\Trim$ on randomly generated random variables with original support size $n=100$.}
-	\label{tab:trimvsoptrim}
-\end{table}
 
 \begin{figure}[htb]
 	\scriptsize	
@@ -670,26 +754,10 @@ According to the depicted results it is evident that increasing the support size
 \end{figure}
 
 
-%\begin{table}[tbp]
-%	\scriptsize
-%	\centering
-%	\begin{tabular}{|c|c|c|c|}
-%		\hline
-%		m   & $\OptTrim$	& $\Trim$	& Relative error  \\ \hline
-%		50  & 0.0193			& 0.0199	& 3.4\%            \\ \hline
-%		100 & 0.0093			& 0.0099	& 7.1\%            \\ \hline
-%		200 & 0.0043			& 0.0049	& 15.7\%           \\ \hline
-%	\end{tabular}
-%	\caption{$\OptTrim$ vs. $\Trim$ on randomly generated random variables with original support size $M=1000$.}
-%	\label{tab:trimvsoptrim2}
-%\end{table}
-
-%The above experiments display the quality of approximation provided by the $\KlmApprox$ algorithm, as proven before to be optimal approximation under the Kolmogorv metric. 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
 Since it is not trivial to formally analyze the run-time of the LP algorithm, we conclude by the reported experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm whose complexity is proven to be polynomial in Theorem~\ref{the:complexity}.
 
-
-%but it comes with a price tag in the form of run-time performance. The time complexity of both the $\Trim$ operator and the sampling method is linear in the number of variables, resulting in much faster run-time performances than $\KlmApprox$, for which the time complexity is only polynomial (Theorem~\ref{the:complexity}), not linear. The run-time of the exact computation, however,  may grow exponentially. Therefore, we examine in the next experiment the problem sizes in which it becomes beneficial in terms of run-time to use the proposed approximation.
+\section{Discussion}\label{sec:discussion}
 
 
 \bibliography{library,Trim_Optimum}{}
