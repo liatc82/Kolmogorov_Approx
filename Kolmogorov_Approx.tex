@@ -103,7 +103,7 @@ In summary, the exact notion of optimality of the approximation targeted in this
 \end{definition}
 
 The main contribution of the paper is a constructive proof of:
-\begin{theorem}
+\begin{theorem} \label{thm:main}
 	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
 \end{theorem}
 
@@ -128,7 +128,7 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 
 
 
-\section{An Algorithm for Optimal Approximation}
+\section{An Algorithm for Optimal Approximation}\label{sec:alg}
 
 
 [[DF: move somewhere to intro: Obviously every random variable with support of size of at most $m$ serves as some approximation, the challenge is how to find an $m$-\textit{optimal} approximation for $X$.]]
@@ -454,12 +454,12 @@ Formally we have the following.
 %\end{proposition}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Step 2}
+Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
-
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(i,j)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where $i$ or $j$ are the source or target nodes respectively. In this case the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, i.e., $w(e)=Pr(i<X<j)$ (lines 4-5). The second case is where $i$ or $j$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $i$ and $j$, non inclusive, divided by two i.e., $w(e)=Pr(i<X<j)/2$ (lines 6-7). The values taken are non inclusive, since we are interested only in the error value.
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where nodes $x$ or $y$ are the source or target nodes respectively. In this case, the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. The second case is where $x$ and $y$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
 The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (lines 8-9). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 10-17). Every node $n \in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to fine the probability of the event $f_{X'}(n)$ as described in Definition~\ref{def:construction}. For every edge $(i,j)\in l$ we determine: if $(i,j)$ is the first edge in the path $ l$ (i.e.  $i=-\infty$), then node $j$ gets the full weight $w(i,j)$ and it's own weight in $X$ such that $f_{X'}(j) = f_{X}(j) +  w(i,j)$ (lines 11-12). If $(i,j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $i$ and $j$ in addition to their own original weight in $X$ and the probability that already accumulated (lines 16-17). If $(i,j)$ is the last edge in the path $ l$ (i.e.  $i==\infty$) then node $i$ gets the full weight $w(i,j)$ in addition to what was already accumulated such that $f_{X'}(j) = f_{X'}(j) +  w(i,j)$ (lines 13-14).
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}. For every edge $(x_i,x_j)\in l$ we determine: if $(x_i,x_j)$ is the first edge in the path $ l$ (i.e.  $x_i=-\infty$), then node $x_j$ gets the full weight $w(x_i,x_j)$ and it's own weight in $X$ such that $f_{X'}(x_j) = f_{X}(x_j) +  w(x_i,x_j)$. If $(x_i,x_j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $x_i$ and $x_j$ in addition to their own original weight in $X$ and the probability that already accumulated. If $(x_i,x_j)$ is the last edge in the path $ l$ (i.e.  $i=\infty$) then node $_i$ gets the full weight $w(x_i,x_j)$ in addition to what was already accumulated such that $f_{X'}(x_j) = f_{X'}(x_j) +  w(x_i,x_j)$.
 
 
 
@@ -519,7 +519,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 %\end{algorithm}
 
 \begin{theorem}\label{the:algo}
-	$\KlmApprox(X,m) = X' $ where $X'$ is an $m$-optimal-approximation.
+	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
 \end{theorem}
 
 
@@ -535,59 +535,18 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
-%\begin{example}\textbf{Why one sided Kolmogorov approximation in not sufficient in this case?}
-%	Consider the following random variable $X$: 
-%	$$
-%	f_{X}(t) = \begin{cases}
-%	1/3           & \text{if $t=1$ or $t=2$} ;  \\ 
-%	1/6           & \text{if $t=3$ or $t=4$};  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	
-%	There are various partitioned random variables of size $m=2$ which provide some approximation in regards to Kolmogorov distance, some are presented as follows:
-%	$$
-%	f_{X'_1}(t) = \begin{cases}
-%	2/3           & \text{if } t=1;  \\ 
-%	1/3           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_1) = 1/3$.
-%	
-%	$$
-%	f_{X'_2}(t) = \begin{cases}
-%	1/3           & \text{if } t=1;  \\ 
-%	2/3           & \text{if } t=2;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_2) = 1/3$.
-%	
-%	$$
-%	f_{X'_3}(t) = \begin{cases}
-%	2/3           & \text{if } t=2;  \\ 
-%	1/3           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'_3) = 1/3$.
-%	
-%	However, none of the above random variables provides an optimal approximation. Here is an optimal approximation which can not be achieved by a regular partitioned random variable:
-%	
-%	$$ 	f_{X''}(t) = \begin{cases}
-%	1/2           & \text{if } t=1;  \\ 
-%	1/2           & \text{if } t=3;  \\  
-%	0             & \text{otherwise.}
-%	\end{cases}
-%	$$
-%	In this case $d_K(X, X'') = 1/6$.
-%\end{example}
 
-\section{A case study and experimental results}
-%\section{Experiments and Results}
-In the first experiment we focus on the problem of task trees with deadlines, and consider three types of task trees.
-The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2} (see example problem, Figure~\ref{fig:logistics}). 
+
+\section{A case study and experimental results}\label{sec:exp}
+The case study examined in our experiments is the problem of task trees with deadlines~\cite{cohen2015estimating,CohenGW18}. Hierarchical planning is a well-established field in AI~\cite{thomas1988hierarchical,erol1994htn,erol1996complexity}, and is still relevant nowadays~\cite{alford2016hierarchical,xiao2017hierarchical}. A hierarchical plan is a method for representing problems of automated planning in which the dependency among tasks can be given in the form of networks, here we focus on hierarchical plans represented by task trees. The leaves in a task tree are \emph{primitive} actions (or tasks), and the internal nodes are either \emph{sequence} or \emph{parallel} actions. The plans we deal with are of stochastic nature, where the duration of a primitive action is given by a random variable. 
+
+
+A sequence node denotes a series of tasks that should be performed consecutively, whereas a parallel node denotes a set of tasks that begin at the same time. A \emph{valid} plan is one that is fulfilled before some given \emph{deadline}, i.e., its \emph{makespan} is less than or equal to the deadline. The objective in this context is to compute the probability that a given plan is valid, or more formally computing $P(X<T)$, where $X$ is a random variable representing the makespan of the plan and $T$ is the deadline. As said above, resource consumption (task duration) is uncertain, and described as probability distributions in the leaf nodes.
+We assume that the distributions are independent but {\em not} necessarily identically distributed and that the random variables are discrete and have a finite support. 
+
+The problem of finding the probability that a task tree satisfies a deadline is known to be NP-hard. In fact, even the problem of summing a set of random variables is NP-hard~\cite{mohring2001scheduling}. This is an example of an explicitly given random variable that we need to estimate deadline meeting probabilities for.
+
+In the first experiment we focus on is the problem of task trees with deadlines, and consider three types of task trees. The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2} (see example problem, Figure~\ref{fig:logistics}, one parallel node with all descendant task nodes being in sequence). 
 The second type consists of task trees used as execution plans for the ROBIL team entry in the DARPA robotics challenge (DRC simulation phase), and the third type is of linear plans (sequential task trees).
 The primitive tasks in all the trees are modeled as discrete random variables with support of size $M$ obtained by discretization of uniform distributions over various intervals. The number of tasks in a tree is denoted by $N$. 
 \begin{figure}[htb]
@@ -728,22 +687,6 @@ Figure~\ref{fig:error} present the error produced by the above methods. The depi
 
 According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
-%\begin{table}[tbp]
-%	\scriptsize
-%	\centering
-%	\begin{tabular}{|c|c|c|}
-%		\hline
-%		m  & Relative error Kolmogorov Vs. $\OptTrim$ 	& Relative error Kolmogorov Vs. $\Trim$	  \\ \hline
-%		2  & 1.0054			& 0.994		            \\ \hline
-%		4  & 1.0373			& 1.000 	            \\ \hline
-%		8  & 1.096 			& 1.002 	            \\ \hline
-%		10 & 1.1221			& 0.9946		             \\ \hline
-%		20 & 1.2986			& 1.001		             \\ \hline
-%		50 & 1.888 			& 0.994 	           \\ \hline
-%	\end{tabular}
-%	\caption{Relative error $\KlmApprox$ vs. $\OptTrim$ and $\KlmApprox$ vs. $\Trim$ on randomly generated random variables with original support size $n=100$.}
-%	\label{tab:trimvsoptrim}
-%\end{table}
 
 \begin{figure}[htb]
 	\scriptsize	
@@ -811,26 +754,10 @@ According to the depicted results it is evident that increasing the support size
 \end{figure}
 
 
-%\begin{table}[tbp]
-%	\scriptsize
-%	\centering
-%	\begin{tabular}{|c|c|c|c|}
-%		\hline
-%		m   & $\OptTrim$	& $\Trim$	& Relative error  \\ \hline
-%		50  & 0.0193			& 0.0199	& 3.4\%            \\ \hline
-%		100 & 0.0093			& 0.0099	& 7.1\%            \\ \hline
-%		200 & 0.0043			& 0.0049	& 15.7\%           \\ \hline
-%	\end{tabular}
-%	\caption{$\OptTrim$ vs. $\Trim$ on randomly generated random variables with original support size $M=1000$.}
-%	\label{tab:trimvsoptrim2}
-%\end{table}
-
-%The above experiments display the quality of approximation provided by the $\KlmApprox$ algorithm, as proven before to be optimal approximation under the Kolmogorv metric. 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
 Since it is not trivial to formally analyze the run-time of the LP algorithm, we conclude by the reported experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm whose complexity is proven to be polynomial in Theorem~\ref{the:complexity}.
 
-
-%but it comes with a price tag in the form of run-time performance. The time complexity of both the $\Trim$ operator and the sampling method is linear in the number of variables, resulting in much faster run-time performances than $\KlmApprox$, for which the time complexity is only polynomial (Theorem~\ref{the:complexity}), not linear. The run-time of the exact computation, however,  may grow exponentially. Therefore, we examine in the next experiment the problem sizes in which it becomes beneficial in terms of run-time to use the proposed approximation.
+\section{Discussion}\label{sec:discussion}
 
 
 \bibliography{library,Trim_Optimum}{}
