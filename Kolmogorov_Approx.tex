@@ -131,9 +131,9 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
 
 
-[[DF: move somewhere to intro: Obviously every random variable with support of size of at most $m$ serves as some approximation, the challenge is how to find an $m$-\textit{optimal} approximation for $X$.]]
-[[DF: move to intro: we call the distance between $X$ and the $m$-optimal-approximation random variable of $X$, the \textit{ $m$-optimal distance} from $X$. ]]
-
+%[[DF: move somewhere to intro: Obviously every random variable with support of size of at most $m$ serves as some approximation, the challenge is how to find an $m$-\textit{optimal} approximation for $X$.]]
+%[[DF: move to intro: we call the distance between $X$ and the $m$-optimal-approximation random variable of $X$, the \textit{ $m$-optimal distance} from $X$. ]]
+% Gera: these are already in the intro.
 
 We next describe in details the proof of theorem \ref{thm:main}. 
 
@@ -283,7 +283,7 @@ Formally we have the following.
 [[DF: here I stopped]]
 
 
-Let $X'$ defined by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+Let $X'$ be defined by $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 
 \begin{lemma}
 	For $i>1$, if $F_{X'}(x_{i})-F_{X}(x_{i}) = w(x_{i}, x_{i+1})$ then $F_{X'}(x_{i+1})-F_{X}(x_{i+1}) = w(x_{i+1}, x_{i+2})$.
