@@ -150,7 +150,7 @@ Let $X''$ be any $m$-optimal approximation of $X$.	Let $\{x_1,\dots,x_n\} = \sup
 
 Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-Since from Lemma \ref{lem:supContained} we can assume wlog that if  $X'$ is an $m$-optimal approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
+Since from Lemma \ref{lem:supContained} we can assume without loss of generality that if  $X'$ is an $m$-optimal approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
 
 \subsection{Step 1}
 
@@ -172,7 +172,9 @@ Next, as the elements of $S$ are also elements of $\support(X)$, we can define t
 
 Note that $x_i = -\infty$ for $i=0$ and $x_i=\infty$ for $i=m+1$. Also note that $P(x_i < X < x_{i+1}) = F_X(\hat x_{i+1}) - F_X(x_i)$, a fact that we will use throughout this section.
 
-Finally define $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
+\begin{definition}
+Let $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
+\end{definition}
 
 
 
@@ -183,15 +185,15 @@ The intuition behind choosing these specific weights and $\varepsilon(X,S)$ bein
 Formally we have the following.
 
 \begin{proposition}\label{prop:minimal}
-	For every random variable $X'$ with $\support(X')=S$ we have $d_k(X,X') \geq \varepsilon(X,S)$.
+	If $X'\in\mathbb{X}_S$ then $d_k(X,X') \geq \varepsilon(X,S)$.
 \end{proposition}
 
 \begin{proof}
 	
 	
-	Let $X'$ be a random variable with support $S$. Then by definition, for every $0\leq i\leq m$, $d_k(X,X') \geq \max \{|F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})|,|F_X(x_i) - F_{X'}(x_i)| \}$. Note that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$ since the probability values for all the elements not in $S$ are set to $0$.
+	By definition, for every $0\leq i\leq m$, $d_k(X,X') \geq \max \{|F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})|,|F_X(x_i) - F_{X'}(x_i)| \}$. Note that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$ since the probability values for all the elements not in $S$ are set to $0$.
 	
-	If $i=0$, that is $x_i=-\infty$, we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ and therefore $d_k(X,X') \geq |F_X(\hat x_{i+1})| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1})== w(x_i,x_{i+1})$.
+	If $i=0$, that is $x_i=-\infty$, we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ and therefore $d_k(X,X') \geq |F_X(\hat x_{i+1})| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1})= w(x_i,x_{i+1})$.
 	
 	If $i =m$, that is $x_{i+1}=\infty$, we have that $F_X(\hat x_{i+1})=F_{X'}(\hat x_{i+1})=F_{X'}(x_i)=1$. 
 	and therefore $d_k(X,X') \geq |1-F_X(\hat x_i)| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1}) = w(x_i,x_{i+1})$. 
@@ -202,7 +204,7 @@ Formally we have the following.
 	% 
 	% We break the proof for the closed intervals where each support variable $x_i$ is a proper number, and for the open intervals where a support variable is either $-\infty$ or $\infty$.
 	
-	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\Re$, to have $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
+	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\mathbb{R}$, to have $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
 	
 	Therefore since $d_k(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$, by definition of $\varepsilon(X,S)$ proof follows.
 \end{proof}
