@@ -256,7 +256,7 @@ Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. 
 
 Finally the $m$-optimality of $X'$ w.r.t. $\mathbb{X}_S$ is straightforward from Lemma \ref{lem:balance} and the definition of $\varepsilon(X,S)$. Therefore we have.
 
-\begin{corrolary}
+\begin{corrolary} \label{col:Xprime}
 	$d_k(X,X') = \varepsilon(X,S)$.
 \end{corrolary}
 
@@ -457,7 +457,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
 	$S = \support(X)\cup \{\infty,-\infty\}$\;
 	$G=(V,E)=(S, \{ (x,y)  \colon  x<y \})$  \;
-	$(x_0,\dots,x_{m+1}) = l = \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
+	$(x_0,\dots,x_{m+1}) = l \in \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
 	\For{$0<i<m+1$ }{
 		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
 	}	
@@ -509,7 +509,7 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
 \end{theorem}
 \begin{proof}
-If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \in paths(G,-\infty,\infty),|l|\leq m$ we have that $\max \{ w(e)\colon e \in l  \} = \varepsilon(X,S)$.
+If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \in paths(G,-\infty,\infty)$ we have that $\max \{ w(e)\colon e \in l  \} = \varepsilon(X,S)$. Therefore, line 3 of the algorithm essentially computes a set $S \in \operatorname{argmin}_{S \subseteq \support(X), |S|\leq m} \varepsilon(X,S)$. By Corollary~\ref{col:Xprime}, the variable $X'$ constructed in lines 4 and 5 satisfies $d_K(X,X') = \varepsilon(X,S)$ and by the minimality of $S$ and by Proposition~\ref{prop:minimal}, it is an optimal approximation.
 \end{proof}
 
 
