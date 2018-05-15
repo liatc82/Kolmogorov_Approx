@@ -155,7 +155,7 @@ Since from Lemma \ref{lem:supContained} we can assume without loss of generality
 \subsection{Step 1}
 
 
-We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. To that, set $S=\{x_1<\dots<x_m\} \subseteq \support(X)$. To simplify the proofs set $x_0=-\infty$, and $x_{m+1}=\infty$. Then $x_0<x_1$ and $x_m<x_{m+1}$. In addition recall that for every random variable $X''$ $F_{X''}(-\infty) = 0$ and $F_{X''}(\infty)=1$. Finally, for every $1\leq i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
+We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. To that, set $S=\{x_1<\dots<x_m\} \subseteq \support(X)$. To simplify the proofs set $x_0=-\infty$, and $x_{m+1}=\infty$. Then $x_0<x_1$ and $x_m<x_{m+1}$. In addition recall that for every random variable $X''$, $F_{X''}(-\infty) = 0$ and $F_{X''}(\infty)=1$. Finally, for every $1\leq i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
 For the rest of this section we assume $S$ is fixed and therefore is not necessarily included in the notation.
 
 Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function that we use to find the $m$-optimal distance $\varepsilon(X,S)$. 
@@ -214,13 +214,13 @@ Formally we have the following.
 Next we show a random variable $X'\in\mathbb{X}_S$ with a distance of $\varepsilon(X,S)$ from $X$. Thus $X'$ is an $m$-optimal approximation among the set $\mathbb{X}_S$. We define $X'$ as follows:
 
 \begin{definition}\label{def:construction}
-	Let $X'$ be defined as follows.  $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
+	Let $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 \end{definition}
 
 We first see that $X'$ is a properly defined random variable. We then discuss the properties of $X'$.
 
 \begin{lemma}
-	$X'$ is a proper random variable. 
+	$f_{X'}$ is a probability mass function. 
 \end{lemma}
 
 \begin{proof}
@@ -234,7 +234,7 @@ We first see that $X'$ is a properly defined random variable. We then discuss th
 Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. Intuitively the setting of $X'$ allows to take an "advantage" of distance from $X$ at the elements of $\support(X')$, to avoid the overall increased distance of $X$ from $X'$ at the elements that are not at $\support(X)$ and in which $f_{X'}$ is set to $0$. Formally we have the following.
 
 \begin{lemma}\label{lem:balance}
-	Let $j\in\support(X)$ and let $0\leq i\leq m$ such that $x_i\leq j\leq x_{i+1}$. Then $-w(x_i,x_{i+1})\leq F_X(j)-F_{X'}(j)\leq  w(x_i,x_{i+1})$.
+	Let $x\in\support(X)$ and let $0\leq i\leq m$ such that $x_i\leq x \leq x_{i+1}$. Then $-w(x_i,x_{i+1})\leq F_X(j)-F_{X'}(j)\leq  w(x_i,x_{i+1})$.
 \end{lemma}
 
 \begin{proof}	
