@@ -148,13 +148,13 @@ Next, note that every random variable $X''$ with support of size at most $m$ tha
 
 Denote the set of random variables with support $S \subset \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$.
 
-\subsection{Step 1: Finding a random variable $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
+\subsection{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
 
-We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. To that, set $S=\{x_1<\dots<x_m\} \subseteq \support(X)$. To simplify the proofs set $x_0=-\infty$, and $x_{m+1}=\infty$. Then $x_0<x_1$ and $x_m<x_{m+1}$. In addition recall that for every random variable $X''$, $F_{X''}(-\infty) = 0$ and $F_{X''}(\infty)=1$. Finally, for every $1\leq i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
-For the rest of this section we assume $S$ is fixed and therefore is not necessarily included in the notation.
+We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. Denote the elements of $S$ in increasing order by $S=\{x_1<\dots<x_m\}$ and let $x_0=-\infty$, and $x_{m+1}=\infty$. For every $1 <  i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
 
-Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function that we use to find the $m$-optimal distance $\varepsilon(X,S)$. 
+
+Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function:
 
 \begin{definition}\label{def:weight} For $0\leq i \leq m$ let
 	\[
