@@ -62,6 +62,7 @@
 \newtheorem{claim}[thm]{Claim}
 \newtheorem{example}[thm]{Example}
 \newtheorem{proposition}[thm]{Proposition}
+\newtheorem{corrolary}[thm]{Corrolary}
 \usepackage{color,soul}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes.geometric,shapes.arrows}
@@ -234,7 +235,7 @@ We first see that $X'$ is a properly defined random variable. We then discuss th
 Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. Intuitively the setting of $X'$ allows to take an "advantage" of distance from $X$ at the elements of $\support(X')$, to avoid the overall increased distance of $X$ from $X'$ at the elements that are not at $\support(X)$ and in which $f_{X'}$ is set to $0$. Formally we have the following.
 
 \begin{lemma}\label{lem:balance}
-	Let $x\in\support(X)$ and let $0\leq i\leq m$ such that $x_i\leq x \leq x_{i+1}$. Then $-w(x_i,x_{i+1})\leq F_X(j)-F_{X'}(j)\leq  w(x_i,x_{i+1})$.
+	Let $x\in\support(X)$ and $0\leq i\leq m$ be such that $x_i\leq x \leq x_{i+1}$ then $-w(x_i,x_{i+1})\leq F_X(x)-F_{X'}(x)\leq  w(x_i,x_{i+1})$.
 \end{lemma}
 
 \begin{proof}	
@@ -255,11 +256,9 @@ Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. 
 
 Finally the $m$-optimality of $X'$ w.r.t. $\mathbb{X}_S$ is straightforward from Lemma \ref{lem:balance} and the definition of $\varepsilon(X,S)$. Therefore we have.
 
-[[DF: change to corollary]]
-
-\begin{proposition}
+\begin{corrolary}
 	$d_k(X,X') = \varepsilon(X,S)$.
-\end{proposition}
+\end{corrolary}
 
 %\begin{proof}
 %	We first see by induction that for every $1\leq i \leq m$ that $F_X(\hat x_i)-F_{X'}(\hat x_i)=w(x_{i-1},x_i)$ and $F_X(x_i)-F_{X'}(x_i) = -w(x_i,x_{i+1})$. 
@@ -509,6 +508,9 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 \begin{theorem}\label{the:algo}
 	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
 \end{theorem}
+\begin{proof}
+If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \in paths(G,-\infty,\infty),|l|\leq m$ we have that $\max \{ w(e)\colon e \in l  \} = \varepsilon(X,S)$.
+\end{proof}
 
 
 \begin{theorem}\label{the:complexity}
