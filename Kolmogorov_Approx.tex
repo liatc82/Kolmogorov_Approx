@@ -136,16 +136,11 @@ Let, in the scope of this section, $X$ be a given random variable with a finite 
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
 \begin{lemma}\label{lem:supContained}
-	There is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
+	There is an optimal $m$-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
 \begin{proof}
-Let $X''$ be any optimal approximation of $X$.	Let $\{x_1,\dots,x_n\} = \support(X)$. The random variable $X'$ whose probability mass function is $f_{X'}(x_i)=$.
-
-%	Assume towards contradiction that there is a random variable $X''$ whose support is of size $m$ and $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$. We will show how to transform $X''$ to a random variable $X'$ whose support is contained in $\support(X)$
-%	and $d_K(X,X') \leq d_K(X,X'')$.
-%	Let $v'$ be the first $v'\in\support(X'') \setminus \support(X)$. Let $v=\max\{x\in\support(X) \colon x<v'\}$. Every $v'$ we will replace with $v$ and name the new random variable $X'$, we will show that $d_K(X,X'') = d_K(X,X')$. First, note that:
-%	$F_{X''}(v')=F_{X'}(v)$, $F_{X}(v')=F_{X}(v)$.
-%	Second,  $F_{X'}(v')-F_{X}(v') = F_{X'}(v)-F_{X}(v)$. Therefore, $d_K(X,X'') = d_K(X,X')$ and $X'$ is also an optimal approximation of $X$.
+Since minimizing $d_K(X,X')$ subject to the constraints that $\support(X') \subseteq \support(X)$ and $|\support(X')|=m$ is a convex optimization problem, it has a solution $\varepsilon$. 
+Let $X''$ be any random variable,  let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is $f_{X'}(x_i) = P(x_i \leq X'' < x_{i+1})$ for $i=1,\dots,n$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support(X)$, we get that $d_{K}(X,X'') \geq \varepsilon$. Thus, $\varepsilon$ is a global minimum and any $X' \in \operatorname{argmin}\{ d_K(X,X')\colon \support(X') \subseteq \support(X), |\support(X')|=m \}$ is an $m$-optimal approximation of $X$.
 \end{proof}
 
 
