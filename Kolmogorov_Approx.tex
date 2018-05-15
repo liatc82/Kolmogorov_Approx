@@ -131,15 +131,15 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
-Let, in the scope of this section, $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We will now develop notations and collect facts towards an algorithm for finding an $m$-optimal approximation of $X$.
+Let, in the scope of this section, $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We will now develop notations and collect facts towards an algorithm for finding an optimal $m$-approximation of $X$.
 
-The first step is to show that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$.
+The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
 \begin{lemma}\label{lem:supContained}
 	There is an $m$-optimal-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
 \begin{proof}
-Let $X''$ be any $m$-optimal approximation of $X$.	Let $\{x_1,\dots,x_n\} = \support(X)$. The random variable $X'$ whose probability mass function is $f_{X'}(x_i)=$.
+Let $X''$ be any optimal approximation of $X$.	Let $\{x_1,\dots,x_n\} = \support(X)$. The random variable $X'$ whose probability mass function is $f_{X'}(x_i)=$.
 
 %	Assume towards contradiction that there is a random variable $X''$ whose support is of size $m$ and $d_K(X,X'')$ is minimal but $\support(X'')\nsubseteq\support(X)$. We will show how to transform $X''$ to a random variable $X'$ whose support is contained in $\support(X)$
 %	and $d_K(X,X') \leq d_K(X,X'')$.
@@ -151,7 +151,7 @@ Let $X''$ be any $m$-optimal approximation of $X$.	Let $\{x_1,\dots,x_n\} = \sup
 
 Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-Since from Lemma \ref{lem:supContained} we can assume without loss of generality that if  $X'$ is an $m$-optimal approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
+Since from Lemma \ref{lem:supContained} we can assume without loss of generality that if  $X'$ is an optimal $m$-approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the optimal $m$-approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
 
 \subsection{Step 1}
 
@@ -179,7 +179,7 @@ Let $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
 
 
 
-We first show that $\varepsilon(X,S)$ is a lower bound. That is, every random variable in $\mathbb{X}_S$ has a distance at least $\varepsilon(X,S)$. Then, we present a random variable $X'\in \mathbb{X}_S$ with distance $\varepsilon(X,S)$. It then follows that such $X'$ is an $m$-optimal approximation random variable among all random variables in $\mathbb{X}_S$.
+We first show that $\varepsilon(X,S)$ is a lower bound. That is, every random variable in $\mathbb{X}_S$ has a distance at least $\varepsilon(X,S)$. Then, we present a random variable $X'\in \mathbb{X}_S$ with distance $\varepsilon(X,S)$. It then follows that such $X'$ is an optimal $m$-approximation random variable among all random variables in $\mathbb{X}_S$.
 
 The intuition behind choosing these specific weights and $\varepsilon(X,S)$ being a lower bound is as follows.  Since for every $X'\in\mathbb{X}_S$ the probability values of $X'$ for the elements not in $S$ are set to $0$, we have that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$. Therefore the distance between $X'$ and $X$ at points $x_i$ and $\hat x_{i+1}$ that we have to take into additional account is increased by $F_X(\hat x_{i+1})-F_X(x_i) = P(x_i < X < x_{i+1})$.
 
@@ -212,7 +212,7 @@ Formally we have the following.
 
 
 
-Next we show a random variable $X'\in\mathbb{X}_S$ with a distance of $\varepsilon(X,S)$ from $X$. Thus $X'$ is an $m$-optimal approximation among the set $\mathbb{X}_S$. We define $X'$ as follows:
+Next we show a random variable $X'\in\mathbb{X}_S$ with a distance of $\varepsilon(X,S)$ from $X$. Thus $X'$ is an optimal $m$-approximation among the set $\mathbb{X}_S$. We define $X'$ as follows:
 
 \begin{definition}\label{def:construction}
 	Let $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
