@@ -520,8 +520,12 @@ If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \i
 \begin{proof}
 	Constructing the graph $G$ takes $O(n^2)$. The number of edges is $O(E)\approx O(n^2)$ and for every edge the weight is at most the sum of all probabilities between the source node $-\infty$ and the target node $\infty$, which can be done efficiently by aggregating the weights of already calculated edges. 
 	The construction is also the only stage that requires memory allocation, specifically $O(E+V)=O(n^2)$.
-	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. Since $G$ is DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
-	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$. 
+	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. 
+	
+	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
+	
+	Since $G$ is DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
+	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$ steps. 
 	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
