@@ -144,11 +144,11 @@ Let $X''$ be any random variable whose support is of size smaller or equal to $m
 \end{proof}
 
 
-Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
+Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-Since from Lemma \ref{lem:supContained} we can assume without loss of generality that if  $X'$ is an optimal $m$-approximation variable for $X$ then $\support(X') \subseteq \support(X)$, our search to find such $X'$ takes two steps. Denote the set of random variables with support $S$ by $\mathbb{X}_S$. In step 1, we find the optimal $m$-approximation random variable among all random variables in $\mathbb{X}_S$, and denote the $m$-optimal distance for $\mathbb{X}_S$ by $\varepsilon(X,S)$. Next, in Step 2, among all the possible supports we find the support setting $S$ of size $\leq m$ for which $\varepsilon(X,S)$ is minimal: We describe an efficient way to do so.
+Denote the set of random variables with support $S \subset \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$.
 
-\subsection{Step 1}
+\subsection{Step 1: Finding a random variable $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
 
 We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. To that, set $S=\{x_1<\dots<x_m\} \subseteq \support(X)$. To simplify the proofs set $x_0=-\infty$, and $x_{m+1}=\infty$. Then $x_0<x_1$ and $x_m<x_{m+1}$. In addition recall that for every random variable $X''$, $F_{X''}(-\infty) = 0$ and $F_{X''}(\infty)=1$. Finally, for every $1\leq i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
@@ -436,7 +436,7 @@ From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then h
 %\begin{proof}
 %Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 %\end{proof}
-\subsection{Step 2}
+\subsection{Step 2: Finding an $S$ that minimizes $\varepsilon(X,S)$}
 Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
 The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where nodes $x$ or $y$ are the source or target nodes respectively. In this case, the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. The second case is where $x$ and $y$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
