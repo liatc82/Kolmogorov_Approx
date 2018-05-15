@@ -131,7 +131,7 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
-Let, in the scope of this section, $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We describe an algorithm for finding find an $m$-optimal approximation of $X$ in steps.
+Let, in the scope of this section, $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We will now develop notations and collect facts towards an algorithm for finding an $m$-optimal approximation of $X$.
 
 The first step is to show that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$.
 
@@ -161,7 +161,7 @@ For the rest of this section we assume $S$ is fixed and therefore is not necessa
 
 Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function that we use to find the $m$-optimal distance $\varepsilon(X,S)$. 
 
-\begin{definition}\label{def:weight} For $0\leq i < m$ let
+\begin{definition}\label{def:weight} For $0\leq i \leq m$ let
 	\[
 	w(x_i,x_{i+1})=
 	\begin{cases}
