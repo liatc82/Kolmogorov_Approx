@@ -254,7 +254,7 @@ Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. 
 	Finally for $x_m\leq j \leq x_{m+1}$ we have that $F_{X'}(x_m)=1$ therefore $F_X(x_m)-F_{X'}(x_m) = (1- P(x_m<X < x_{m+1})) - 1 =  P(x_m<X < x_{m+1}) = w(x_m,x_{m+1})$, and for every $x_m<j<x_{m+1}$ we have $F_X(j) - F_{X'}(j) < (1- P(x_m<X < x_{m+1})) - 1 <  - P(x_m<X < x_{m+1}))  = -w(x_m,x_{m+1})$ as required.
 \end{proof}
 
-Finally the $m$-optimality of $X'$ w.r.t. $\mathbb{X}_S$ is straightforward from Lemma \ref{lem:balance} and the definition of $\varepsilon(X,S)$. Therefore we have.
+From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then have:
 
 \begin{corrolary} \label{col:Xprime}
 	$d_k(X,X') = \varepsilon(X,S)$.
