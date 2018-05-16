@@ -127,22 +127,42 @@ $$
 $$
 where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$ is one if $i\leq j$ and zero otherwise), $x$ is related to $X$ such that the $i$th coordinate of $x$ is $F_X(x_i)$ where $\support(X)=\{x_1 < x_2 < \cdots < x_n\}$ and $\alpha$ is related to $X'$ such that the $i$th coordinate of $\alpha$ is $f_{X'}(x_i)$. The functions $F_X$ and $f_{X'}$ represent, respectively, the cumulative distribution function of $X$ and the mass distribution function of $X'$. This, of course, means that the coordinates of $x$ are assumed to be positive and monotonically increasing and that the last coordinate of $x$ is assumed to be one. We demonstrate an application for this specific sparse representation problem and show that it can be solve in $O(n^2m)$ time and $O(m^2)$ memory.
 
+The present study is also a continuation of the work of Pavlikov and Uryasev~\cite{pavlikov2016cvar}, where a procedure to produce a random variable $X'$ that optimally approximates a random variable $X$ is presented. Their approximation scheme, achieved using convex and linear programming, is designed for a different notion of distance (called CVaR). The new contribution of the present work in this context is that our method is direct, not using linear or convex programming, thus allowing tighter analysis of time and memory complexity. 
+
 
 
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
+In the scope of this section, let $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We first develop notations and collect facts towards an algorithm for finding an optimal $m$-approximation of $X$.
 
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
 \begin{lemma}\label{lem:supContained}
 	There is an optimal $m$-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
+
 \begin{proof}
+	
+	[[DF: will continue tomorrow, please don't touch]]
+Let $X''$ be any random variable whose support is of size smaller or equal to $m$, we find a random variable $X'$ with $\support(X') \subseteq \support(X)$ and $d_{K}(X,X')=d_{K}(X,X'')$.
+Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is
+$f_{X'}(x_i) = P(x_{i-1} < X'' < x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. 
+First see that for every $x_i<x<x_{i+1}$ for $i=0,\dots,n-1$ we have $|F_{X}(x)-F_{X'}(x)| \leq |F_{X}(x_i)-F_{X'}(x)|$  
+
+
+
+By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support(X)$ and $|\support(X')|<|\support(X'')|\leq m$, we get that $d_{K}(X,X'') \geq \varepsilon$. Thus, $\varepsilon$ is a global minimum and any $X' \in \operatorname{argmin}\{ d_K(X,X')\colon \support(X') \subseteq \support(X), |\support(X')|\leq m \}$ is an $m$-optimal approximation of $X$.
 \end{proof}
+
+%\begin{proof}
+%Since minimizing $d_K(X,X')$ subject to the constraints that $\support(X') \subseteq \support(X)$ and $|\support(X')| \leq m$ is a convex optimization problem, it has a solution $\varepsilon$. 
+%Let $X''$ be any random variable whose support is of size smaller or equal to $m$,  let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is $f_{X'}(x_i) = P(x_i \leq X'' < x_{i+1})$ for $i=1,\dots,n$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support(X)$ and $|\support(X')|<|\support(X'')|\leq m$, we get that $d_{K}(X,X'') \geq \varepsilon$. Thus, $\varepsilon$ is a global minimum and any $X' \in \operatorname{argmin}\{ d_K(X,X')\colon \support(X') \subseteq \support(X), |\support(X')|\leq m \}$ is an $m$-optimal approximation of $X$.
+%\end{proof}
 
 
 Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
+Denote the set of random variables with support $S \subseteq \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$. Then the minimized random variable $\mathbb{X_S}$ from the minimal $S$, is the $m$-optimal approximation to $X$.
 
 \subsection{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
@@ -164,7 +184,7 @@ Next, as the elements of $S$ are also elements of $\support(X)$, we can define t
 
 Note that $x_i = -\infty$ for $i=0$ and $x_i=\infty$ for $i=m+1$. Also note that $P(x_i < X < x_{i+1}) = F_X(\hat x_{i+1}) - F_X(x_i)$, a fact that we will use throughout this section.
 
-\begin{definition}
+\begin{definition}\label{def:error}
 Let $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
 \end{definition}
 
@@ -435,10 +455,9 @@ From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then h
 \subsection{Step 2: Finding an $S$ that minimizes $\varepsilon(X,S)$}
 Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. The first is where nodes $x$ or $y$ are the source or target nodes respectively. In this case, the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. The second case is where $x$ and $y$ are not a source or target nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. If nodes $x$ or $y$ are the $-\infty$ or $\infty$ nodes respectively then the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. If $x$ and $y$ are not a $-\infty$ or $\infty$ nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
 The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}. For every edge $(x_i,x_j)\in l$ we determine: if $(x_i,x_j)$ is the first edge in the path $ l$ (i.e.  $x_i=-\infty$), then node $x_j$ gets the full weight $w(x_i,x_j)$ and it's own weight in $X$ such that $f_{X'}(x_j) = f_{X}(x_j) +  w(x_i,x_j)$. If $(x_i,x_j)$ in not the first nor the last edge in path $l$ then we divide it's weight between nodes $x_i$ and $x_j$ in addition to their own original weight in $X$ and the probability that already accumulated. If $(x_i,x_j)$ is the last edge in the path $ l$ (i.e.  $i=\infty$) then node $_i$ gets the full weight $w(x_i,x_j)$ in addition to what was already accumulated such that $f_{X'}(x_j) = f_{X'}(x_j) +  w(x_i,x_j)$.
-
+The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{guerin2002computing, shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}.
 
 
 \begin{algorithm}\label{alg:optapprox}
@@ -515,9 +534,12 @@ If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \i
 	
 	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
 	
-	Since $G$ is DAG (directed acyclic graph) finding shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
-	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the probability $P(s<X<\infty)$ takes at most $n$ steps. 
-	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+	Since $G$ is DAG (directed acyclic graph) finding a shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
+	Deriving the new random variable $X'$ from the computed path $l$ takes $O(m)$. For every node $x_i$ in $l$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
+	To conclude, the worst case run-time complexity is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+	
+%	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the weight $P(-\infty<X<\infty)$ takes at most $n$ steps. 
+%	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
 
@@ -590,6 +612,70 @@ Figure~\ref{fig:error} present the error produced by the above methods. The depi
 According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
 
+\begin{figure}[htb]
+	\scriptsize	
+	\centering 
+	\begin{tikzpicture}
+	\begin{axis}[
+	scale=.95,
+	xlabel={Support size, $m$},
+	ylabel={Error, $d_K(X,X')$},
+	xmin=2, xmax=50,
+	ymin=0, ymax=0.5,
+	xtick={2,4,8,10,20,50},
+	legend pos=north west,
+	ymajorgrids=true,
+	grid style=dashed,
+	]
+	
+	\addplot[
+	color=blue,
+	mark=square,
+	]
+	coordinates { 
+		(2 , 0.246) 
+		(4 , 0.121) 
+		(8 , 0.0591) 
+		(10 , 0.046) 
+		(20, 0.0215) 
+		(50, 0.0068) 
+		
+	};
+	\addlegendentry{$\KlmApprox$}
+	
+	\addplot[
+	color=green,
+	mark=x,
+	]
+	coordinates {
+		(2 , 0.491) 
+		(4 , 0.2428) 
+		(8 , 0.1184) 
+		(10 , 0.0929) 
+		(20, 0.0430) 
+		(50, 0.0136) 
+	};
+	\addlegendentry{$\OptTrim$}
+	
+	\addplot[
+	color=red,
+	mark=x,
+	]
+	coordinates {
+		(2 , 0.494) 
+		(4 , 0.2473) 
+		(8 , 0.124) 
+		(10 , 0.0988) 
+		(20, 0.0494) 
+		(50, 0.01971)  
+	};
+	\addlegendentry{$\Trim$}
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
+	\label{fig:error}
+\end{figure}
 
 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
