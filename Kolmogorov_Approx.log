@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.9.9)  15 MAY 2018 14:40
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.9.9)  15 MAY 2018 23:03
 entering extended mode
 **Kolmogorov_Approx.tex
 
@@ -1395,108 +1395,118 @@ LaTeX Warning: Reference `thm:main' on page 1 undefined on input line 112.
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
+(hyperref)                removing `math shift' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
+(hyperref)                removing `math shift' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
+(hyperref)                removing `math shift' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 151.
+(hyperref)                removing `subscript' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
+(hyperref)                removing `math shift' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
+(hyperref)                removing `math shift' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 151.
+(hyperref)                removing `subscript' on input line 165.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 151.
-
-[3] [4]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 439.
+(hyperref)                removing `math shift' on input line 165.
 
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 439.
+Underfull \vbox (badness 1270) has occurred while \output is active []
 
+ [3]
+[4]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 439.
+(hyperref)                removing `math shift' on input line 453.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\varepsilon' on input line 439.
+(hyperref)                removing `math shift' on input line 453.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 439.
+(hyperref)                removing `math shift' on input line 453.
 
 
-LaTeX Warning: Reference `def:error' on page 5 undefined on input line 444.
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\varepsilon' on input line 453.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 453.
+
+
+LaTeX Warning: Reference `def:error' on page 5 undefined on input line 458.
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 453.
-[5pdfTeX warning (ext4): destination with the same identifier (name{algocf.1}) 
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 467.
+[5] [6pdfTeX warning (ext4): destination with the same identifier (name{algocf.
+1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.551 
+      ]
+Underfull \vbox (badness 1888) has occurred while \output is active []
+
+ [7pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.686 
+      ]
+
+LaTeX Warning: Reference `fig:error' on page 8 undefined on input line 689.
+
+
+(C:\Users\Dror\Dropbox\Work\OnGoing\Kdistance\Kolmogorov_Approx\Kolmogorov_Appr
+ox.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8pdfTeX warning (ext4): destination with the same identifier (name{table.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.508 \end{proof}
-                 ] [6] [7pdfTeX warning (ext4): destination with the same ident
-ifier (name{figure.1}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.672 
-      pdfTeX warning (ext4): destination with the same identifier (name{table.1
-}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.672 
-      ]
-
-LaTeX Warning: Reference `fig:error' on page 8 undefined on input line 675.
-
-
-(C:\Users\Dror\Dropbox\Work\OnGoing\Kdistance\Kolmogorov_Approx\Kolmogorov_Appr
-ox.bbl [8]) [9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 755.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 755.
+l.8 
+    ]) [9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 769.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 769.
 
 (C:\Users\Dror\Dropbox\Work\OnGoing\Kdistance\Kolmogorov_Approx\Kolmogorov_Appr
 ox.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 755.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 755.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 769.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 769.
 Package rerunfilecheck Info: File `Kolmogorov_Approx.out' has not changed.
 (rerunfilecheck)             Checksum: 897F7976241C7BE8B3E17B68990030E9;485.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 755.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 769.
  ) 
 Here is how much of TeX's memory you used:
- 34811 strings out of 493921
- 780869 string characters out of 3147286
- 1079405 words of memory out of 3000000
+ 34805 strings out of 493921
+ 780818 string characters out of 3147286
+ 1075405 words of memory out of 3000000
  37283 multiletter control sequences out of 15000+200000
- 55578 words of font info for 168 fonts, out of 3000000 for 9000
+ 55318 words of font info for 164 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  62i,13n,96p,1962b,1021s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
@@ -1517,7 +1527,7 @@ amsfonts/symbols/msbm7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier
 :/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/M
 iKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/urw/times/utmri8a.pfb>
-Output written on Kolmogorov_Approx.pdf (9 pages, 259725 bytes).
+Output written on Kolmogorov_Approx.pdf (9 pages, 260867 bytes).
 PDF statistics:
  234 PDF objects out of 1000 (max. 8388607)
  54 named destinations out of 1000 (max. 500000)

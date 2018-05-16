@@ -140,12 +140,9 @@ The first useful fact is that it is enough to limit our search to approximations
 \end{lemma}
 
 \begin{proof}
-	
-	[[DF: will continue tomorrow, please don't touch]]
 Let $X''$ be any random variable whose support is of size smaller or equal to $m$, we find a random variable $X'$ with $\support(X') \subseteq \support(X)$ and $d_{K}(X,X')=d_{K}(X,X'')$.
 Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is
 $f_{X'}(x_i) = P(x_{i-1} < X'' < x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. 
-First see that for every $x_i<x<x_{i+1}$ for $i=0,\dots,n-1$ we have $|F_{X}(x)-F_{X'}(x)| \leq |F_{X}(x_i)-F_{X'}(x)|$  
 
 
 
@@ -160,7 +157,7 @@ By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support
 
 Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-Denote the set of random variables with support $S \subseteq \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$. Then the minimized random variable $\mathbb{X_S}$ from the minimal $S$, is the $m$-optimal approximation to $X$.
+Denote the set of random variables with support $S \subset \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$.
 
 \subsection{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
