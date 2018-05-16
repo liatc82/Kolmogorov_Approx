@@ -6,6 +6,11 @@ R.~Alford, V.~Shivashankar, M.~Roberts, J.~Frank, and D.~W. Aha.
   sharing.
 \newblock In {\em IJCAI}, pages 3022--3029, 2016.
 
+\bibitem{bolton2010logistic}
+C.~Bolton et~al.
+\newblock {\em Logistic regression and its application in credit scoring}.
+\newblock PhD thesis, Citeseer, 2010.
+
 \bibitem{chakravarty1982partitioning}
 A.~Chakravarty, J.~Orlin, and U.~Rothblum.
 \newblock A partitioning problem with additive objective with an application to
@@ -55,6 +60,11 @@ R.~Gu{\'e}rin and A.~Orda.
 \newblock {\em IEEE/ACM Transactions on Networking (TON)}, 10(5):613--620,
   2002.
 
+\bibitem{mays2001handbook}
+E.~Mays.
+\newblock {\em Handbook of credit scoring}.
+\newblock Global Professional Publishi, 2001.
+
 \bibitem{AMCR83}
 A.~C. Miller and T.~R. Rice.
 \newblock Discrete approximations of probability distributions.
@@ -82,15 +92,34 @@ A.~N. Pettitt and M.~A. Stephens.
   grouped data.
 \newblock {\em Technometrics}, 19(2):205--210, 1977.
 
+\bibitem{refaat2011credit}
+M.~Refaat.
+\newblock {\em Credit Risk Scorecard: Development and Implementation Using
+  SAS}.
+\newblock Lulu. com, 2011.
+
 \bibitem{shufan2011two}
 E.~Shufan, H.~Ilani, and T.~Grinshpoun.
 \newblock A two-campus transport problem.
 \newblock In {\em MISTA}, pages 173--184, 2011.
+
+\bibitem{siddiqi2012credit}
+N.~Siddiqi.
+\newblock {\em Credit risk scorecards: developing and implementing intelligent
+  credit scoring}, volume~3.
+\newblock John Wiley \& Sons, 2012.
 
 \bibitem{xiao2017hierarchical}
 Z.~Xiao, A.~Herzig, L.~Perrussel, H.~Wan, and X.~Su.
 \newblock Hierarchical task network planning with task insertion and state
   constraints.
 \newblock In {\em IJCAI}, pages 4463--4469, 2017.
+
+\bibitem{zeng2017comparison}
+G.~Zeng.
+\newblock A comparison study of computational methods of kolmogorov--smirnov
+  statistic in credit scoring.
+\newblock {\em Communications in Statistics-Simulation and Computation},
+  46(10):7744--7760, 2017.
 
 \end{thebibliography}

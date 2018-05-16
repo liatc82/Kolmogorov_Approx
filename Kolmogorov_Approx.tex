@@ -1,3 +1,4 @@
+
 \documentclass{article}
 
 % if you need to pass options to natbib, use, e.g.:
@@ -96,11 +97,9 @@ The main contribution of this paper is an efficient algorithm for computing the 
 
 We measure the quality of an approximation by the distance between the original variable and the approximate one. Specifically, we use the Kolmogorov distance which is one of the most used in statistical practice and literature. Given two random variables $X$ and $X'$ whose cumulative distribution functions (cdfs) are $F_X$ and $F_{X'}$, respectively, the Kolmogorov distance between $X$ and $X'$ is $d_K(X,X')= \sup_t |F_X(t) - F_{X'}(t)|$ (see, e.g.,~\cite{gibbons2011nonparametric}). We say taht $X'$ is a good approximation of $X$ if $d_K(X,X')$ is small.
 
-The complexity of a random variable is measured by the size of its support, the number of values that it can take, $|\support(X)|=|\{x\colon Pr(X=x) \neq 0\}|$. When distributions are maintained as explicit tables, as done in many implementations of statistical software, the size of the support of a variable is proportional to the amount of memory needed to store it and to the complexity of the computations around it. 
-
-In summary, the exact notion of optimality of the approximation targeted in this paper is:
+The complexity of a random variable is measured by the size of its support, the number of values that it can take, $|\support(X)|=|\{x\colon Pr(X=x) \neq 0\}|$. When distributions are maintained as explicit tables, as done in many implementations of statistical software, the size of the support of a variable is proportional to the amount of memory needed to store it and to the complexity of the computations around it. In summary, the exact notion of optimality of the approximation targeted in this paper is:
 \begin{definition}
-	A random variable $X'$ is an optimal $m$-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_k(X,X'') < d_k(X,X')$.
+	A random variable $X'$ is an optimal $m$-approximation of a random variable $X$ if $|\support(X')| \leq m$ and there is no random variable $X''$ such that $|\support(X'')| \leq m$ and $d_K(X,X'') < d_K(X,X')$.
 \end{definition}
 
 The main contribution of the paper is an efficient algorithm that takes $X$ and $m$ as parameters and constructs an optimal $m$-approximation of $X$.
@@ -109,7 +108,7 @@ The main contribution of the paper is an efficient algorithm that takes $X$ and 
 %	Given a random variable $X$ and a number $m$, there is an algorithm with memory and time complexity $O(|\support(X)|^2 \cdot m)$  that computes an optimal $m$-approximation of $X$.
 %\end{theorem}
 
-The rest of the paper is organized as follows. In Section~\ref{sec:rel-work} we describe how our work relates to other algorithms and problems studied in the literature. In Section~\ref{sec:alg} we detail the proposed algorithm, analyze its properties, and prove Theorem~\ref{thm:main}. In Section~\ref{sec:exp} we demonstrate how the proposed approach performs on the problem of estimating the probability of hitting deadlines is plans and compare it to alternatives approximation approaches from the literature. We also demonstrate the performance of our approximation algorithm on some randomly generated random variables. The paper is concluded with a discussion in Section~\ref{sec:discussion}.
+The rest of the paper is organized as follows. In Section~\ref{sec:rel-work} we describe how our work relates to other algorithms and problems studied in the literature. In Section~\ref{sec:alg} we detail the proposed algorithm, analyze its properties, and prove the main theorem. In Section~\ref{sec:exp} we demonstrate how the proposed approach performs on the problem of estimating the probability of hitting deadlines is plans and compare it to alternatives approximation approaches from the literature. We also demonstrate the performance of our approximation algorithm on some randomly generated random variables. The paper is concluded with a discussion in Section~\ref{sec:discussion}.
 
 \section{Related Work}
 \label{sec:rel-work}
@@ -127,6 +126,12 @@ $$
 $$
 where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$ is one if $i\leq j$ and zero otherwise), $x$ is related to $X$ such that the $i$th coordinate of $x$ is $F_X(x_i)$ where $\support(X)=\{x_1 < x_2 < \cdots < x_n\}$ and $\alpha$ is related to $X'$ such that the $i$th coordinate of $\alpha$ is $f_{X'}(x_i)$. The functions $F_X$ and $f_{X'}$ represent, respectively, the cumulative distribution function of $X$ and the mass distribution function of $X'$. This, of course, means that the coordinates of $x$ are assumed to be positive and monotonically increasing and that the last coordinate of $x$ is assumed to be one. We demonstrate an application for this specific sparse representation problem and show that it can be solve in $O(n^2m)$ time and $O(m^2)$ memory.
 
+Another related research is dealing with credit scoring~\cite{zeng2017comparison} where the main objective is to separate good applicants from bad applicants. The Kolmogorov–Smirnov statistic KS is a standard measure of model strength or model
+performance in credit scoring. There are three computational methods of KS in terms of score binning: (1) the method with equal-width binning~\cite{mays2001handbook}, (2) the method with equal-size binning~\cite{refaat2011credit}, and (3) the method without binning~\cite{bolton2010logistic,siddiqi2012credit}, this method uses
+a kind of binning in which each score is treated as a bin, or equal-width binning with a width of 0. Essentially, this work aims at presenting a comparison study of the three methods in 3 aspects: Values, Rank Ordering of Scores and Geometrical Way.
+%Their results indicate that among the three computational methods of KS, the method without binning always gives the largest value of KS. 
+We would like to suggest our approximation method, the $\KlmApprox$ algorithm, described in this work as another comparison method which provides optimality guarantees that are not given in the binning technique.
+
 The present study is also a continuation of the work of Pavlikov and Uryasev~\cite{pavlikov2016cvar}, where a procedure to produce a random variable $X'$ that optimally approximates a random variable $X$ is presented. Their approximation scheme, achieved using convex and linear programming, is designed for a different notion of distance (called CVaR). The new contribution of the present work in this context is that our method is direct, not using linear or convex programming, thus allowing tighter analysis of time and memory complexity. 
 
 
@@ -143,13 +148,13 @@ The first useful fact is that it is enough to limit our search to approximations
 
 \begin{proof}
 	
-
-Let $X''$ be a random variable whose support is of size smaller or equal to $m$. We find a random variable $X'$ with $\support(X') \subseteq \support(X)$ such that $d_{K}(X,X')\leq d_{K}(X,X'')$.
-Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the random variable $X'$ whose probability mass function is
-$f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f$ is a probability mass function and therefore $X'$ is well defined.
-
-First see by construction that $|F_{X}(x_i)-F_{X'}(x_i)| = |F_{X}(x_i)-F_{X''}(x_i)|$ for every  $1\leq i\leq n-1$. For $i=n$ we have $|F_{X}(x_n)-F_{X'}(x_n)| = |1-1|=0$.
-Finally see that   $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$ for every  $0\leq   i < n+1$  and $x_i<x<x_{i+1}$. Therefore we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
+	
+	Let $X''$ be a random variable whose support is of size smaller or equal to $m$. We find a random variable $X'$ with $\support(X') \subseteq \support(X)$ such that $d_{K}(X,X')\leq d_{K}(X,X'')$.
+	Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the random variable $X'$ whose probability mass function is
+	$f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f$ is a probability mass function and therefore $X'$ is well defined.
+	
+	First see by construction that $|F_{X}(x_i)-F_{X'}(x_i)| = |F_{X}(x_i)-F_{X''}(x_i)|$ for every  $1\leq i\leq n-1$. For $i=n$ we have $|F_{X}(x_n)-F_{X'}(x_n)| = |1-1|=0$.
+	Finally see that   $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$ for every  $0\leq   i < n+1$  and $x_i<x<x_{i+1}$. Therefore we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
 \end{proof}
 
 %\begin{proof}
@@ -195,18 +200,18 @@ The intuition behind choosing these specific weights and $\varepsilon(X,S)$ bein
 Formally we have the following.
 
 \begin{proposition}\label{prop:minimal}
-	If $X'\in\mathbb{X}_S$ then $d_k(X,X') \geq \varepsilon(X,S)$.
+	If $X'\in\mathbb{X}_S$ then $d_K(X,X') \geq \varepsilon(X,S)$.
 \end{proposition}
 
 \begin{proof}
 	
 	
-	By definition, for every $0\leq i\leq m$, $d_k(X,X') \geq \max \{|F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})|,|F_X(x_i) - F_{X'}(x_i)| \}$. Note that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$ since the probability values for all the elements not in $S$ are set to $0$.
+	By definition, for every $0\leq i\leq m$, $d_K(X,X') \geq \max \{|F_X(\hat x_{i+1}) - F_{X'}(\hat x_{i+1})|,|F_X(x_i) - F_{X'}(x_i)| \}$. Note that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$ since the probability values for all the elements not in $S$ are set to $0$.
 	
-	If $i=0$, that is $x_i=-\infty$, we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ and therefore $d_k(X,X') \geq |F_X(\hat x_{i+1})| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1})= w(x_i,x_{i+1})$.
+	If $i=0$, that is $x_i=-\infty$, we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ and therefore $d_K(X,X') \geq |F_X(\hat x_{i+1})| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1})= w(x_i,x_{i+1})$.
 	
 	If $i =m$, that is $x_{i+1}=\infty$, we have that $F_X(\hat x_{i+1})=F_{X'}(\hat x_{i+1})=F_{X'}(x_i)=1$. 
-	and therefore $d_k(X,X') \geq |1-F_X(\hat x_i)| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1}) = w(x_i,x_{i+1})$. 
+	and therefore $d_K(X,X') \geq |1-F_X(\hat x_i)| = |F_X(\hat x_{i+1}) - F_{X}(x_i)| =  P(x_i < X < x_{i+1}) = w(x_i,x_{i+1})$. 
 	
 	%  we have that $F_X(x_i)=F_{X'}(x_i)=F_{X'}(\hat x_{i+1})=0$ 
 	% 
@@ -214,9 +219,9 @@ Formally we have the following.
 	% 
 	% We break the proof for the closed intervals where each support variable $x_i$ is a proper number, and for the open intervals where a support variable is either $-\infty$ or $\infty$.
 	
-	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\mathbb{R}$, to have $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_k(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
+	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\mathbb{R}$, to have $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
 	
-	Therefore since $d_k(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$, by definition of $\varepsilon(X,S)$ proof follows.
+	Therefore since $d_K(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$, by definition of $\varepsilon(X,S)$ proof follows.
 \end{proof}
 
 
@@ -266,7 +271,7 @@ Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. 
 From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then have:
 
 \begin{corrolary} \label{col:Xprime}
-	$d_k(X,X') = \varepsilon(X,S)$.
+	$d_K(X,X') = \varepsilon(X,S)$.
 \end{corrolary}
 
 %\begin{proof}
@@ -453,8 +458,9 @@ From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then h
 \subsection{Step 2: Finding an $S$ that minimizes $\varepsilon(X,S)$}
 Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. If nodes $x$ or $y$ are the $-\infty$ or $\infty$ nodes respectively then the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. If $x$ and $y$ are not a $-\infty$ or $\infty$ nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. The values taken are non inclusive, since we are interested only in the error value. 
-The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
+The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. 
+%If nodes $x$ or $y$ are the $-\infty$ or $\infty$ nodes respectively then the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. If $x$ and $y$ are not a $-\infty$ or $\infty$ nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. 
+The values taken are non inclusive, since we are interested only in the error value. The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
 The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{guerin2002computing, shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}.
 
 
@@ -535,23 +541,17 @@ If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \i
 	Since $G$ is DAG (directed acyclic graph) finding a shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
 	Deriving the new random variable $X'$ from the computed path $l$ takes $O(m)$. For every node $x_i$ in $l$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
 	To conclude, the worst case run-time complexity is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
-	
-%	Deriving the new random variable $X'$ from the computed path $l$ takes $O(mn)$. For every node in $l$ (at most $m$ nodes), calculating the weight $P(-\infty<X<\infty)$ takes at most $n$ steps. 
-%	To conclude, the worst case run-time complexity is $O(n^2+mn^2+mn)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
 \end{proof}
 
 
 
 \section{A case study and experimental results}\label{sec:exp}
-The case study examined in our experiments is the problem of task trees with deadlines~\cite{cohen2015estimating,CohenGW18}. Hierarchical planning is a well-established field in AI~\cite{thomas1988hierarchical,erol1994htn,erol1996complexity}, and is still relevant nowadays~\cite{alford2016hierarchical,xiao2017hierarchical}. A hierarchical plan is a method for representing problems of automated planning in which the dependency among tasks can be given in the form of networks, here we focus on hierarchical plans represented by task trees. The leaves in a task tree are \emph{primitive} actions (or tasks), and the internal nodes are either \emph{sequence} or \emph{parallel} actions. The plans we deal with are of stochastic nature, where the duration of a primitive action is given by a random variable. 
+The case study examined in our experiments is the problem of task trees with deadlines~\cite{cohen2015estimating,CohenGW18}. Hierarchical planning is a well-established field in AI~\cite{thomas1988hierarchical,erol1994htn,erol1996complexity}, and is still relevant nowadays~\cite{alford2016hierarchical,xiao2017hierarchical}. A hierarchical plan is a method for representing problems of automated planning in which the dependency among tasks can be given in the form of networks, here we focus on hierarchical plans represented by task trees. The leaves in a task tree are \emph{primitive} actions (or tasks), and the internal nodes are either \emph{sequence} or \emph{parallel} actions. The plans we deal with are of stochastic nature, and the task duration is described as probability distributions in the leaf nodes. We assume that the distributions are independent but {\em not} necessarily identically distributed and that the random variables are discrete and have a finite support. 
 
 
-A sequence node denotes a series of tasks that should be performed consecutively, whereas a parallel node denotes a set of tasks that begin at the same time. A \emph{valid} plan is one that is fulfilled before some given \emph{deadline}, i.e., its \emph{makespan} is less than or equal to the deadline. The objective in this context is to compute the probability that a given plan is valid, or more formally computing $P(X<T)$, where $X$ is a random variable representing the makespan of the plan and $T$ is the deadline. As said above, resource consumption (task duration) is uncertain, and described as probability distributions in the leaf nodes.
-We assume that the distributions are independent but {\em not} necessarily identically distributed and that the random variables are discrete and have a finite support. 
+A sequence node denotes a series of tasks that should be performed consecutively, whereas a parallel node denotes a set of tasks that begin at the same time. A \emph{valid} plan is one that is fulfilled before some given \emph{deadline}, i.e., its \emph{makespan} is less than or equal to the deadline. The objective in this context is to compute the probability that a given plan is valid, or more formally computing $P(X<T)$, where $X$ is a random variable representing the makespan of the plan and $T$ is the deadline. The problem of finding the probability that a task tree satisfies a deadline is known to be NP-hard. In fact, even the problem of summing a set of random variables is NP-hard~\cite{mohring2001scheduling}. This is an example of an explicitly given random variable that we need to estimate deadline meeting probabilities for.
 
-The problem of finding the probability that a task tree satisfies a deadline is known to be NP-hard. In fact, even the problem of summing a set of random variables is NP-hard~\cite{mohring2001scheduling}. This is an example of an explicitly given random variable that we need to estimate deadline meeting probabilities for.
-
-In the first experiment we focus on is the problem of task trees with deadlines, and consider three types of task trees. The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2} (see example problem, Figure~\ref{fig:logistics}, one parallel node with all descendant task nodes being in sequence). 
+The first experiment we focus on is the problem of task trees with deadlines, and consider three types of task trees. The first type includes logistic problems of transporting packages by trucks and airplanes (from IPC2 http://ipc.icaps-conference.org/). Hierarchical plans of those logistic problems were generated by the JSHOP2 planner \cite{nau2003shop2}, one parallel node with all descendant task nodes being in sequence. 
 The second type consists of task trees used as execution plans for the ROBIL team entry in the DARPA robotics challenge (DRC simulation phase), and the third type is of linear plans (sequential task trees).
 The primitive tasks in all the trees are modeled as discrete random variables with support of size $M$ obtained by discretization of uniform distributions over various intervals. The number of tasks in a tree is denoted by $N$. 
 
@@ -581,7 +581,7 @@ The parameter $m$ of $\OptTrim$ and $\KlmApprox$ corresponds to the inverse of $
 		
 		%N=47
 		\multirow{2}{*}{DRC-Drive}  
-		&2	& 0 & 0.004&  0.009  & 0.0072 & 0.0009  
+		&2	& 0.0014 & 0.004&  0.009  & 0.0072 & 0.0009  
 		\\ \Xcline{2-7}{1pt}
 		
 		{\tiny $(N{=}47)$}& {4}& 0.001 & 0.008&  0.019   & 0.0075  & 0.0011 
@@ -589,92 +589,88 @@ The parameter $m$ of $\OptTrim$ and $\KlmApprox$ corresponds to the inverse of $
 		
 		
 		%N=10
-		\multirow{3}{*}{Sequential}  & {2} & 0.0093 & 0.015 &  0.024 & 0 & 0 \\ \Xcline{2-7}{1pt}  
-		& {4} & 0.008 & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xcline{2-7}{1pt} 
-		{\tiny $(N{=}10)$} & {10} & 0 & 0.028  &  0.06  & 0.0117  & 0.001 \\\Xhline{1pt}
+		\multirow{2}{*}{Sequential}  & {2} & 0.0093 & 0.015 &  0.024 & 0.0063 & 0.0008 \\ \Xcline{2-7}{1pt}  
+		{\tiny $(N{=}10)$} & {4} & 0.008 & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xhline{1pt}
 		
 		
 		
 	\end{tabular}
 	\caption{Comparison of estimated errors with respect to the reference exact computation on various task trees.}
 	\label{tab:errors}
-	
-\end{table}
+\end{table} 
 
-Table~\ref{tab:errors} shows the results of the main experiment. The quality of the solutions provided by using the $\OptTrim$ operator are better (lower errors) than those provided by the $\Trim$ operator, following the optimality guarantees, but is interesting to see that the quality gaps happen in practice in each of the examined task trees. However, in some of the task trees the sampling method produced better results than the approximation algorithm with $\OptTrim$. Nevertheless, the approximation algorithm comes with an inherent advantage of providing an exact quality guarantees, as opposed to the probabilistic guarantees provided by sampling.
+Table~\ref{tab:errors} shows the results of the case study experiment. The quality of the solutions provided by using the $\KlmApprox$ operator are better than those provided by the $\Trim$ and $\OptTrim$ operators, following the optimality guarantees, but is interesting to see that the quality gaps happen in practice in each of the examined task trees. However, in some of the task trees the sampling method produced better results than the approximation algorithm with $\KlmApprox$. Nevertheless, the approximation algorithm comes with an inherent advantage of providing an exact quality guarantees, as opposed to the probabilistic guarantees provided by sampling.
 
-In order to better understand the quality gaps in practice between $\KlmApprox$, $\OptTrim$, and $\Trim$, we investigate their relative errors when applied on single random variables with support size $n = 100$, and different support sizes of the resulting random variable approximation ($m$). In each instance of this experiment, a random variable is randomly generated by choosing the probabilities of each element in the support from a uniform distribution and then normalizing these probabilities so that they sum to one.
+In order to better understand the quality gaps in practice between $\KlmApprox$, $\OptTrim$, and $\Trim$, we investigate their relative errors when applied on single random variables with support size $n = 100$, and different support sizes of the resulting random variable approximation ($m$). In each instance of this experiment, a random variable is randomly generated by choosing the probabilities of each element in the support uniformly and then normalizing these probabilities so that they sum to 1.
 
-Figure~\ref{fig:error} present the error produced by the above methods. The depicted results are averages over several instances (50 instances) of random variables. The curves in the figure show the average error of $\OptTrim$ and $\Trim$ operators with comparison to the average error of the optimal approximation provided by $\KlmApprox$ as a function of $m$.  
+Figure~\ref{fig:error} present the error produced by the above methods. The depicted results are averages over several instances (50 instances) of random variables. The curves in the figure show the average error of $\OptTrim$ and $\Trim$ operators with comparison to the average error of the optimal approximation provided by $\KlmApprox$ as a function of $m$. According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, a half of the error produced by $\OptTrim$ and $\Trim$.
 
-According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
-
-
-\begin{figure}[htb]
-	\scriptsize	
-	\centering 
-	\begin{tikzpicture}
-	\begin{axis}[
-	scale=.95,
-	xlabel={Support size, $m$},
-	ylabel={Error, $d_K(X,X')$},
-	xmin=2, xmax=50,
-	ymin=0, ymax=0.5,
-	xtick={2,4,8,10,20,50},
-	legend pos=north west,
-	ymajorgrids=true,
-	grid style=dashed,
-	]
-	
-	\addplot[
-	color=blue,
-	mark=square,
-	]
-	coordinates { 
-		(2 , 0.246) 
-		(4 , 0.121) 
-		(8 , 0.0591) 
-		(10 , 0.046) 
-		(20, 0.0215) 
-		(50, 0.0068) 
-		
-	};
-	\addlegendentry{$\KlmApprox$}
-	
-	\addplot[
-	color=green,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.491) 
-		(4 , 0.2428) 
-		(8 , 0.1184) 
-		(10 , 0.0929) 
-		(20, 0.0430) 
-		(50, 0.0136) 
-	};
-	\addlegendentry{$\OptTrim$}
-	
-	\addplot[
-	color=red,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.494) 
-		(4 , 0.2473) 
-		(8 , 0.124) 
-		(10 , 0.0988) 
-		(20, 0.0494) 
-		(50, 0.01971)  
-	};
-	\addlegendentry{$\Trim$}
-	
-	\end{axis}
-	\end{tikzpicture}
-	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
-	\label{fig:error}
-\end{figure}
-
+%
+%\begin{figure}[htb]
+%	\scriptsize	
+%	\centering 
+%	\begin{tikzpicture}
+%	\begin{axis}[
+%	scale=.8,
+%	xlabel={Support size, $m$},
+%	ylabel={Error, $d_K(X,X')$},
+%	xmin=2, xmax=50,
+%	ymin=0, ymax=0.5,
+%	xtick={2,4,8,10,20,50},
+%	legend pos=north west,
+%	ymajorgrids=true,
+%	grid style=dashed,
+%	]
+%	
+%	\addplot[
+%	color=blue,
+%	mark=square,
+%	]
+%	coordinates { 
+%		(2 , 0.246) 
+%		(4 , 0.121) 
+%		(8 , 0.0591) 
+%		(10 , 0.046) 
+%		(20, 0.0215) 
+%		(50, 0.0068) 
+%		
+%	};
+%	\addlegendentry{$\KlmApprox$}
+%	
+%	\addplot[
+%	color=green,
+%	mark=x,
+%	]
+%	coordinates {
+%		(2 , 0.491) 
+%		(4 , 0.2428) 
+%		(8 , 0.1184) 
+%		(10 , 0.0929) 
+%		(20, 0.0430) 
+%		(50, 0.0136) 
+%	};
+%	\addlegendentry{$\OptTrim$}
+%	
+%	\addplot[
+%	color=red,
+%	mark=x,
+%	]
+%	coordinates {
+%		(2 , 0.494) 
+%		(4 , 0.2473) 
+%		(8 , 0.124) 
+%		(10 , 0.0988) 
+%		(20, 0.0494) 
+%		(50, 0.01971)  
+%	};
+%	\addlegendentry{$\Trim$}
+%	
+%	\end{axis}
+%	\end{tikzpicture}
+%	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
+%	\label{fig:error}
+%\end{figure}
+%
 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
 Since it is not trivial to formally analyze the run-time of the LP algorithm, we conclude by the reported experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm whose complexity is proven to be polynomial in Theorem~\ref{the:complexity}.
@@ -687,3 +683,4 @@ Since it is not trivial to formally analyze the run-time of the LP algorithm, we
 
 \end{document}
 
+>>>>>>> 0dba3420e36aa5510182c81f0f49f8403cebb009
