@@ -79,7 +79,9 @@
 \DeclareMathOperator{\KlmApprox}{KolmogorovApprox}
 %\DeclareMathOperator{\OptTrim}{KolmogorovApprox}
 \DeclareMathOperator{\OptTrim}{OptTrim}
-\title{Kolmogorov Approximation}
+
+
+\title{An algorithm for computing an optimal approximation of a random variable with respect to the Kolmogorov distance}
 
 
 
@@ -91,7 +93,7 @@
 \section{Introduction}
 
 Many different approaches to approximation of probability distributions are studied in the literature~\cite{AMCR83,pavlikov2016cvar,PS77}. 
-The papers vary in the types random variables involved, how they are represented, and in the criteria used for evaluation of the quality of the approximations. This paper is on approximating discrete distributions represented as explicit probability mass functions with ones that are simpler to store and to manipulate. This is needed, for example, when a discrete distribution is given as a large data-set, obtained, e.g., by sampling, and we want to represent it approximately with a small table.  
+The approaches vary in the types random variables involved, how they are represented, and in the criteria used for evaluation of the quality of the approximations. This paper is on approximating discrete distributions represented as explicit probability mass functions with ones that are simpler to store and to manipulate. This is needed, for example, when a discrete distribution is given as a large data-set, obtained, e.g., by sampling, and we want to represent it approximately with a small table.  
 
 The main contribution of this paper is an efficient algorithm for computing the best possible approximation of a given random variable with a random variable whose complexity is not above a prescribed threshold, where the measures of the quality of the approximation and the complexity of the random variable are as specified in the following two paragraphs. 
 
