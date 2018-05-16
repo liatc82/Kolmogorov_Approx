@@ -149,7 +149,7 @@ Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. 
 $f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f$ is a probability mass function and therefore $X'$ is well defined.
 
 First see by construction that $|F_{X}(x_i)-F_{X'}(x_i)| = |F_{X}(x_i)-F_{X''}(x_i)|$ for every  $1\leq i\leq n-1$. For $i=n$ we have $|F_{X}(x_n)-F_{X'}(x_n)| = |1-1|=0$.
-Finally see that   $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$ for every  $0\leq   i < n+1$  and $x_i<x<x_{i+1}$. Therefore we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
+Finally see that for every $x_i<x<x_{i+1}$ for $0\leq   i < n+1$ we have  $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$. Therefore we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
 \end{proof}
 
 %\begin{proof}
@@ -609,71 +609,71 @@ Figure~\ref{fig:error} present the error produced by the above methods. The depi
 
 According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
-
-\begin{figure}[htb]
-	\scriptsize	
-	\centering 
-	\begin{tikzpicture}
-	\begin{axis}[
-	scale=.95,
-	xlabel={Support size, $m$},
-	ylabel={Error, $d_K(X,X')$},
-	xmin=2, xmax=50,
-	ymin=0, ymax=0.5,
-	xtick={2,4,8,10,20,50},
-	legend pos=north west,
-	ymajorgrids=true,
-	grid style=dashed,
-	]
-	
-	\addplot[
-	color=blue,
-	mark=square,
-	]
-	coordinates { 
-		(2 , 0.246) 
-		(4 , 0.121) 
-		(8 , 0.0591) 
-		(10 , 0.046) 
-		(20, 0.0215) 
-		(50, 0.0068) 
-		
-	};
-	\addlegendentry{$\KlmApprox$}
-	
-	\addplot[
-	color=green,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.491) 
-		(4 , 0.2428) 
-		(8 , 0.1184) 
-		(10 , 0.0929) 
-		(20, 0.0430) 
-		(50, 0.0136) 
-	};
-	\addlegendentry{$\OptTrim$}
-	
-	\addplot[
-	color=red,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.494) 
-		(4 , 0.2473) 
-		(8 , 0.124) 
-		(10 , 0.0988) 
-		(20, 0.0494) 
-		(50, 0.01971)  
-	};
-	\addlegendentry{$\Trim$}
-	
-	\end{axis}
-	\end{tikzpicture}
-	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
-	\label{fig:error}
-\end{figure}
+%
+%\begin{figure}[htb]
+%	\scriptsize	
+%	\centering 
+%	\begin{tikzpicture}
+%	\begin{axis}[
+%	scale=.95,
+%	xlabel={Support size, $m$},
+%	ylabel={Error, $d_K(X,X')$},
+%	xmin=2, xmax=50,
+%	ymin=0, ymax=0.5,
+%	xtick={2,4,8,10,20,50},
+%	legend pos=north west,
+%	ymajorgrids=true,
+%	grid style=dashed,
+%	]
+%	
+%	\addplot[
+%	color=blue,
+%	mark=square,
+%	]
+%	coordinates { 
+%		(2 , 0.246) 
+%		(4 , 0.121) 
+%		(8 , 0.0591) 
+%		(10 , 0.046) 
+%		(20, 0.0215) 
+%		(50, 0.0068) 
+%		
+%	};
+%	\addlegendentry{$\KlmApprox$}
+%	
+%	\addplot[
+%	color=green,
+%	mark=x,
+%	]
+%	coordinates {
+%		(2 , 0.491) 
+%		(4 , 0.2428) 
+%		(8 , 0.1184) 
+%		(10 , 0.0929) 
+%		(20, 0.0430) 
+%		(50, 0.0136) 
+%	};
+%	\addlegendentry{$\OptTrim$}
+%	
+%	\addplot[
+%	color=red,
+%	mark=x,
+%	]
+%	coordinates {
+%		(2 , 0.494) 
+%		(4 , 0.2473) 
+%		(8 , 0.124) 
+%		(10 , 0.0988) 
+%		(20, 0.0494) 
+%		(50, 0.01971)  
+%	};
+%	\addlegendentry{$\Trim$}
+%	
+%	\end{axis}
+%	\end{tikzpicture}
+%	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
+%	\label{fig:error}
+%\end{figure}
 
 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
