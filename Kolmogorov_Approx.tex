@@ -126,7 +126,7 @@ $$
 where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$ is one if $i\leq j$ and zero otherwise), $x$ is related to $X$ such that the $i$th coordinate of $x$ is $F_X(x_i)$ where $\support(X)=\{x_1 < x_2 < \cdots < x_n\}$ and $\alpha$ is related to $X'$ such that the $i$th coordinate of $\alpha$ is $f_{X'}(x_i)$. The functions $F_X$ and $f_{X'}$ represent, respectively, the cumulative distribution function of $X$ and the mass distribution function of $X'$. This, of course, means that the coordinates of $x$ are assumed to be positive and monotonically increasing and that the last coordinate of $x$ is assumed to be one. We demonstrate an application for this specific sparse representation problem and show that it can be solve in $O(n^2m)$ time and $O(m^2)$ memory.
 
 Another related research is dealing with credit scoring~\cite{zeng2017comparison} where the main objective is to separate good applicants from bad applicants. The Kolmogorov–Smirnov statistic KS is a standard measure of model strength or model
-performance in credit scoring. currently there are three computational methods of KS in terms of score binning: (1) the method with equal-width binning~\cite{mays2001handbook}, (2) the method with equal-size binning~\cite{refaat2011credit}, and (3) the method without binning~\cite{bolton2010logistic,siddiqi2012credit}, this method uses
+performance in credit scoring. There are three computational methods of KS in terms of score binning: (1) the method with equal-width binning~\cite{mays2001handbook}, (2) the method with equal-size binning~\cite{refaat2011credit}, and (3) the method without binning~\cite{bolton2010logistic,siddiqi2012credit}, this method uses
 a kind of binning in which each score is treated as a bin, or equal-width binning with a width of 0. Essentially, this work aims at presenting a comparison study of the three methods in 3 aspects: Values, Rank Ordering of Scores and Geometrical Way.%Their results indicate that among the three computational methods of KS, the method without binning always gives the largest value of KS. 
 We would like to suggest our approximation method, the $\KlmApprox$ algorithm, described in this work as another comparison method which provides optimality guarantees that are not given in the binning technique.
 
@@ -589,9 +589,8 @@ The parameter $m$ of $\OptTrim$ and $\KlmApprox$ corresponds to the inverse of $
 		
 		
 		%N=10
-		\multirow{3}{*}{Sequential}  & {2} & 0.0093 & 0.015 &  0.024 & 0 & 0.0009 \\ \Xcline{2-7}{1pt}  
-		& {4} & 0.008 & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xcline{2-7}{1pt} 
-		{\tiny $(N{=}10)$} & {10} & 0 & 0.028  &  0.06  & 0.0117  & 0.001 \\\Xhline{1pt}
+		\multirow{2}{*}{Sequential}  & {2} & 0.0093 & 0.015 &  0.024 & 0.0063 & 0.0008 \\ \Xcline{2-7}{1pt}  
+		{\tiny $(N{=}10)$} & {4} & 0.008 & 0.024 &  0.04 & 0.008 & 0.0016 \\ \Xhline{1pt}
 		
 		
 		
