@@ -112,7 +112,10 @@ The rest of the paper is organized as follows. In Section~\ref{sec:rel-work} we 
 
 \section{Related Work}
 \label{sec:rel-work}
-The problem studied in this paper is related to the theory of Sparse Approximation (aka Sparse Representation) that deals with sparse solutions for systems of linear equations, as follows. 
+The most relevant work related to this paper is the papers by Cohen at. al.~\cite{cohen2015estimating,CohenGW18}. These papers study approximations of random variables in the context of estimating deadlines. In this context, $X'$ is defined to be a good approximation of $X$ if $F_{X'}(t) > F_{X}(t)$ for any $t$ and $\sup_t F_{X'}(t) - F_{X}(t)$ is small. This is not a distance because it is not symmetric. The motivation given by Cohen at. al. for using this notion is for cases where overestimation of the probability of missing a deadline is acceptable but underestimation is not. In Section~\ref{sec:exp}, we consider the same examples examined by Cohen at. al. and show how the algorithm proposed in this paper performs relative to the algorithms proposed there when both over- and under- estimations are allowed. As expected, the Kolmogorov distance between the approximation and the original random variable is smaller by a factor of one half, on average.
+
+
+Another very relevant work is the theory of Sparse Approximation (aka Sparse Representation) that deals with sparse solutions for systems of linear equations, as follows. 
 
 Given a matrix $D \in \mathbb{R}^{n \times p}$ and a vector $x \in \mathbb{R}^n$, the most studied sparse representation problem is finding the sparsest possible representation $\alpha \in \mathbb{R}^p$ satisfying $x = D\alpha$:
 $$
@@ -133,9 +136,6 @@ a kind of binning in which each score is treated as a bin, or equal-width binnin
 We would like to suggest our approximation method, the $\KlmApprox$ algorithm, described in this work as another comparison method which provides optimality guarantees that are not given in the binning technique.
 
 The present study is also a continuation of the work of Pavlikov and Uryasev~\cite{pavlikov2016cvar}, where a procedure to produce a random variable $X'$ that optimally approximates a random variable $X$ is presented. Their approximation scheme, achieved using convex and linear programming, is designed for a different notion of distance (called CVaR). The new contribution of the present work in this context is that our method is direct, not using linear or convex programming, thus allowing tighter analysis of time and memory complexity. 
-
-Another type of approximation related to the Kolmogorov distance is the one sided Kolmogorov distance presented in~\cite{cohen2015estimating,CohenGW18}.
-
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
 In the scope of this section, let $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We first develop notations and collect facts towards an algorithm for finding an optimal $m$-approximation of $X$.
