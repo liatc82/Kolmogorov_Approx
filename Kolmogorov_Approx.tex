@@ -131,7 +131,6 @@ where $D$ is the all-ones triangular matrix (the entry at row $i$ and column $j$
 
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
-Let, in the scope of this section, $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We will now develop notations and collect facts towards an algorithm for finding an optimal $m$-approximation of $X$.
 
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
@@ -139,14 +138,11 @@ The first useful fact is that it is enough to limit our search to approximations
 	There is an optimal $m$-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
 \end{lemma}
 \begin{proof}
-Since minimizing $d_K(X,X')$ subject to the constraints that $\support(X') \subseteq \support(X)$ and $|\support(X')| \leq m$ is a convex optimization problem, it has a solution $\varepsilon$. 
-Let $X''$ be any random variable whose support is of size smaller or equal to $m$,  let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is $f_{X'}(x_i) = P(x_i \leq X'' < x_{i+1})$ for $i=1,\dots,n$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support(X)$ and $|\support(X')|<|\support(X'')|\leq m$, we get that $d_{K}(X,X'') \geq \varepsilon$. Thus, $\varepsilon$ is a global minimum and any $X' \in \operatorname{argmin}\{ d_K(X,X')\colon \support(X') \subseteq \support(X), |\support(X')|\leq m \}$ is an $m$-optimal approximation of $X$.
 \end{proof}
 
 
 Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-Denote the set of random variables with support $S \subset \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$.
 
 \subsection{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
@@ -594,70 +590,6 @@ Figure~\ref{fig:error} present the error produced by the above methods. The depi
 According to the depicted results it is evident that increasing the support size of the approximation $m$ reduces the error, as expected, in all three methods. However, errors produced by the $\KlmApprox$ are significantly smaller, safe to say, a half of the error produced by $\OptTrim$ and $\Trim$, it is clear both in the table (the relative error is mostly above 1) and in the graph.
 
 
-\begin{figure}[htb]
-	\scriptsize	
-	\centering 
-	\begin{tikzpicture}
-	\begin{axis}[
-	scale=.95,
-	xlabel={Support size, $m$},
-	ylabel={Error, $d_K(X,X')$},
-	xmin=2, xmax=50,
-	ymin=0, ymax=0.5,
-	xtick={2,4,8,10,20,50},
-	legend pos=north west,
-	ymajorgrids=true,
-	grid style=dashed,
-	]
-	
-	\addplot[
-	color=blue,
-	mark=square,
-	]
-	coordinates { 
-		(2 , 0.246) 
-		(4 , 0.121) 
-		(8 , 0.0591) 
-		(10 , 0.046) 
-		(20, 0.0215) 
-		(50, 0.0068) 
-		
-	};
-	\addlegendentry{$\KlmApprox$}
-	
-	\addplot[
-	color=green,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.491) 
-		(4 , 0.2428) 
-		(8 , 0.1184) 
-		(10 , 0.0929) 
-		(20, 0.0430) 
-		(50, 0.0136) 
-	};
-	\addlegendentry{$\OptTrim$}
-	
-	\addplot[
-	color=red,
-	mark=x,
-	]
-	coordinates {
-		(2 , 0.494) 
-		(4 , 0.2473) 
-		(8 , 0.124) 
-		(10 , 0.0988) 
-		(20, 0.0494) 
-		(50, 0.01971)  
-	};
-	\addlegendentry{$\Trim$}
-	
-	\end{axis}
-	\end{tikzpicture}
-	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
-	\label{fig:error}
-\end{figure}
 
 
 We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
