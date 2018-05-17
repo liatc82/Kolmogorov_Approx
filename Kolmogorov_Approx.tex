@@ -477,7 +477,7 @@ We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Alg
 	\DontPrintSemicolon
 	Construct a weighted graph $G=(V,E)$ where $V=\support(X) \cup \{-\infty,\infty\}$, $E=\{(x_1,x_2) \in V^2\colon x_1 < x_2 \}$, and the weights are as in Definition~\ref{def:weight}.\;
 
-	Find a path $\vec{p}=(v_0,\dots,v_{m+1})$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) \colon \vec{p'}\in paths_m(G, -\infty, \infty)\}$.   \;
+	Find a path $\vec{p}=(x_0,\dots,x_{m+1})\in paths_m(G, -\infty, \infty)\}$ such that $w(\vec{p}) = \min \{w(\vec{p}) \colon \vec{p}\in paths_m(G, -\infty, \infty)\}$.   \;
 
 	Return a random variable whose probability mass function is 
 		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for all $i=1,\dots,m$ and zero otherwise. \;
@@ -523,7 +523,7 @@ Finally we analyze the complexity of $\KlmApprox$ as follows.
 	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
 \end{theorem}
 \begin{proof}
-	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. Computing the shortest path can be achieved by the algorithm described in~\cite{guerin2002computing} in time time $O(n^2 m)$ and no additional memory allocation.
+	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. Computing the shortest path can be achieved by the algorithm described in~\cite{guerin2002computing} in time $O(n^2 m)$ and no additional memory allocation.
 \end{proof}
 
 %\begin{proof}
