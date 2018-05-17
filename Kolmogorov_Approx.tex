@@ -79,7 +79,8 @@
 \DeclareMathOperator{\OptTrim}{OptTrim}
 
 
-\title{An algorithm for Kolmogorov distance based approximation of discrete random variables}
+%\title{An algorithm for Kolmogorov distance based approximation of discrete random variables}
+\title{Minimizing the Kolmogorov distance between a random variable and an approximation of it with a fixes support size}
 
 \begin{document}
 
@@ -498,7 +499,7 @@ We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Alg
 	$\KlmApprox$ returns an $m$-optimal-approximation of $X$.
 \end{theorem}
 \begin{proof}
-From Corollary \ref{cor:Bellman} and the construction of $G$ we get that the path $\vec{p}$ obtained in line 4 of  $\KlmApprox$ describes a set $S$ of support os size at most $m$ for which $\varepsilon{S,X}$ is minimal. Then from Definition \ref{def:construction} and Corollary \ref{col:Xprime} we construct $X'$ in lines 4-5 of 	$\KlmApprox$ such that $d_K(X,X') = \varepsilon(X,S)$. Therefore $X'$ is an $m$-approximation among all random variables with support contained in $\support(X)$. Finally from Lemma \ref{lem:supContained} we have that $X'$ is  $m$-approximation among all random variables os support of size at most $m$, thus  $X'$ is an $m$-optimal-approximation of $X$.
+From Corollary \ref{cor:Bellman} and the construction of $G$ we get that the path $\vec{p}$ obtained in line 4 of  $\KlmApprox$ describes a set $S$ of support of size at most $m$ for which $\varepsilon(S,X)$ is minimal. Then from Definition \ref{def:construction} and Corollary \ref{col:Xprime} we construct $X'$ in lines 4-5 of 	$\KlmApprox$ such that $d_K(X,X') = \varepsilon(X,S)$. Therefore $X'$ is an $m$-approximation among all random variables with support contained in $\support(X)$. Finally from Lemma \ref{lem:supContained} we have that $X'$ is  $m$-approximation among all random variables os support of size at most $m$, thus  $X'$ is an $m$-optimal-approximation of $X$.
 \end{proof}
 
 
@@ -516,10 +517,6 @@ Finally we analyze the complexity of $\KlmApprox$ as follows.
 	Next using the Bellman-Ford algorithm on $G$ for $m$ iterations   takes $O(m(|E|+|V|))\approx O(mn^2)$. [[DF: cite Corman or some algorithms book]]. 
 	Finally deriving the new random variable $X'$ from the computed path $\vec{p}$ takes $O(m)$ time: For every node $x_i$ in $\vec{p}$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
 	To conclude, the time complexity  of $\KlmApprox(X,m)$ is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
-	
-	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
-
-	
 \end{proof}
 
 
