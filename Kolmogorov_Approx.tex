@@ -137,7 +137,7 @@ In this context, our algorithm can be consider as a new binning strategy that pr
 The present study is also related to the work of Pavlikov and Uryasev~\cite{pavlikov2016cvar}, where a procedure for producing a random variable $X'$ that optimally approximates a random variable $X$ is presented. Their approximation scheme, achieved using linear programming, is designed for a different notion of distance (called CVaR). The new contribution of the present work in this context is that our method is direct, not using linear programming, thus allowing tighter analysis of time and memory complexity. Also, our method is designed for optimizing the Kolmogorov distance that is more prevalent in applications. For comparison, in Section~\ref{sec:exp} we briefly discuss the performance of linear programming approach similar to the one proposed in~\cite{pavlikov2016cvar} for the Kolmogorov distance and compare it to the algorithm proposed in this paper. 
 
 \section{An Algorithm for Optimal Approximation}\label{sec:alg}
-In the scope of this section, let $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. We first develop notations and collect facts towards an algorithm for finding an optimal $m$-approximation of $X$.
+In the scope of this section, let $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. The section evolves by developing notations and by collecting facts towards an algorithm for finding an optimal $m$-approximation of $X$.
 
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
@@ -146,9 +146,6 @@ The first useful fact is that it is enough to limit our search to approximations
 \end{lemma}
 
 \begin{proof}
-	
-	
-	Let $X''$ be a random variable whose support is of size smaller or equal to $m$. We find a random variable $X'$ with $\support(X') \subseteq \support(X)$ such that $d_{K}(X,X')\leq d_{K}(X,X'')$.
 	Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the random variable $X'$ whose probability mass function is
 	$f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f$ is a probability mass function and therefore $X'$ is well defined.
 	
