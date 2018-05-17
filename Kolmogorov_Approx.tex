@@ -147,7 +147,7 @@ The first useful fact is that it is enough to limit our search to approximations
 
 \begin{proof}
 	Let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_0 = -\infty, x_{n+1}=\infty$. Consider the random variable $X'$ whose probability mass function is
-	$f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f$ is a probability mass function and therefore $X'$ is well defined.
+	$f_{X'}(x_i) = P(x_{i-1} < X'' \leq x_i)$ for $i=1,\dots,n-1$,  $f_{X'}(x_n) = P(x_n-1 < X'' < x_{n+1})$, and $F_{X'}(x)=0$ if $x\notin \support(X)$.  Since $X'$ "accumulates" the non-zero probabilities of $X''$ to the support of $X$, we have that $f_{X'}$ is a probability mass function and therefore $X'$ is well defined.
 	
 	First see by construction that $|F_{X}(x_i)-F_{X'}(x_i)| = |F_{X}(x_i)-F_{X''}(x_i)|$ for every  $1\leq i\leq n-1$. For $i=n$ we have $|F_{X}(x_n)-F_{X'}(x_n)| = |1-1|=0$.
 	Finally see that   $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$ for every  $0\leq   i < n+1$  and $x_i<x<x_{i+1}$. Therefore we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
