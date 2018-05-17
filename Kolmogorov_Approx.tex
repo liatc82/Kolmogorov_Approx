@@ -113,7 +113,7 @@ The main contribution of the paper is an efficient algorithm that takes $X$ and 
 
 The rest of the paper is organized as follows. In Section~\ref{sec:rel-work} we describe how our work relates to other algorithms and problems studied in the literature. In Section~\ref{sec:alg} we detail the proposed algorithm, analyze its properties, and prove the main theorem. In Section~\ref{sec:exp} we demonstrate how the proposed approach performs on the problem of estimating the probability of hitting deadlines is plans and compare it to alternatives approximation approaches from the literature. We also demonstrate the performance of our approximation algorithm on some randomly generated random variables. The paper is concluded with a discussion in Section~\ref{sec:discussion}.
 
-\section{Related Work}
+\section{Related work}
 \label{sec:rel-work}
 The most relevant work related to this paper is the papers by Cohen at. al.~\cite{cohen2015estimating,CohenGW18}. These papers study approximations of random variables in the context of estimating deadlines. In this context, $X'$ is defined to be a good approximation of $X$ if $F_{X'}(t) > F_{X}(t)$ for any $t$ and $\sup_t F_{X'}(t) - F_{X}(t)$ is small. This is not a distance because it is not symmetric. The motivation given by Cohen at. al. for using this type of approximation is for cases where overestimation of the probability of missing a deadline is acceptable but underestimation is not. In Section~\ref{sec:exp}, we consider the same examples examined by Cohen at. al. and show how the algorithm proposed in this paper performs relative to the algorithms proposed there when both over- and under- estimations are allowed. As expected, the Kolmogorov distance between the approximation and the original random variable is smaller by a factor of one half, on average, when using the algorithm proposed here. 
 
@@ -137,7 +137,7 @@ In this context, our algorithm can be consider as a new binning strategy that pr
 
 The present study is also related to the work of Pavlikov and Uryasev~\cite{pavlikov2016cvar}, where a procedure for producing a random variable $X'$ that optimally approximates a random variable $X$ is presented. Their approximation scheme, achieved using linear programming, is designed for a different notion of distance (called CVaR). The new contribution of the present work in this context is that our method is direct, not using linear programming, thus allowing tighter analysis of time and memory complexity. Also, our method is designed for optimizing the Kolmogorov distance that is more prevalent in applications. For comparison, in Section~\ref{sec:exp} we briefly discuss the performance of linear programming approach similar to the one proposed in~\cite{pavlikov2016cvar} for the Kolmogorov distance and compare it to the algorithm proposed in this paper. 
 
-\section{An Algorithm for Optimal Approximation}\label{sec:alg}
+\section{An algorithm for optimal approximation}\label{sec:alg}
 In the scope of this section, let $X$ be a given random variable with a finite support of size $n$, and let  $0<m\leq n$ be a given complexity bound. The section evolves by developing notations and by collecting facts towards an algorithm for finding an optimal $m$-approximation of $X$.
 
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
@@ -153,23 +153,14 @@ The first useful fact is that it is enough to limit our search to approximations
 	Since $|F_{X}(x)-F_{X'}(x)| = |F_{X}(x_i)-F_{X'}(x_i)|$ for every  $0\leq   i < n+1$  and $x_i<x<x_{i+1}$, we have that $d_K(X,X')=max_{i}|F_{X}(x_i)-F_{X'}(x_i)|\leq max_{i}|F_{X}(x_i)-F_{X''}(x_i)|\leq d_K(X,X'')$.
 \end{proof}
 
-%\begin{proof}
-%Since minimizing $d_K(X,X')$ subject to the constraints that $\support(X') \subseteq \support(X)$ and $|\support(X')| \leq m$ is a convex optimization problem, it has a solution $\varepsilon$. 
-%Let $X''$ be any random variable whose support is of size smaller or equal to $m$,  let $\{x_1,\dots,x_n\} = \support(X)$, and let $x_{n+1}=\infty$. Consider the the random variable $X'$ whose probability mass function is $f_{X'}(x_i) = P(x_i \leq X'' < x_{i+1})$ for $i=1,\dots,n$ and $F_{X'}(x)=0$ if $x\notin \support(X)$. By definition $d_{K}(X,X')=d_{K}(X,X'')$. Since $\support(X') \subseteq \support(X)$ and $|\support(X')|<|\support(X'')|\leq m$, we get that $d_{K}(X,X'') \geq \varepsilon$. Thus, $\varepsilon$ is a global minimum and any $X' \in \operatorname{argmin}\{ d_K(X,X')\colon \support(X') \subseteq \support(X), |\support(X')|\leq m \}$ is an $m$-optimal approximation of $X$.
-%\end{proof}
+%Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
 
-
-Next, note that every random variable $X''$ with support of size at most $m$ that is contained in $\support(X)$ can be described by first setting the (at most $m$) elements of the support of $X''$; then for every such option, determine $X''$ by setting probability values for the elements in the chosen support of $X'$, and setting $0$ for rest of the elements.
-
-Denote the set of random variables with support $S \subseteq \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$. Then the minimized random variable $\mathbb{X_S}$ from the minimal $S$, is the $m$-optimal approximation to $X$.
+For a set $S\subseteq \support(X)$, let $\mathbb{X}_S$ denote the set of random variables whose supports are contained in $S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$  that minimizes the Kolmogorov distance from $X$. We denote the Kolmogorov distance between this variable and $X$ by $\varepsilon(X,S)$. Then, in Step 2, we show how to efficiently find a set $S \subseteq \support(X)$ whose size is smaller or equal to $m$ that minimizes $\varepsilon(X,S)$. Then, in Step 3, an optimal $m$-approximation is constructed by taking a minimal approximation in $\mathbb{X_S}$ where $S$ is the set that that minimizes $\varepsilon(X,S)$. 
 
 \subsection*{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
 
-We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. Denote the elements of $S$ in increasing order by $S=\{x_1<\dots<x_m\}$ and let $x_0=-\infty$, and $x_{m+1}=\infty$. For every $1 <  i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
-
-
-Next, as the elements of $S$ are also elements of $\support(X)$, we can define the following weight function:
+We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. Denote the elements of $S$ in increasing order by $S=\{x_1<\dots<x_m\}$ and let $x_0=-\infty$ and $x_{m+1}=\infty$. For every $1 <  i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$. Consider the following weight function 
 
 \begin{definition}\label{def:weight} For $0\leq i \leq m$ let
 	\[
@@ -181,7 +172,7 @@ Next, as the elements of $S$ are also elements of $\support(X)$, we can define t
 	\]
 \end{definition}
 
-Note that $x_i = -\infty$ for $i=0$ and $x_i=\infty$ for $i=m+1$. Also note that $P(x_i < X < x_{i+1}) = F_X(\hat x_{i+1}) - F_X(x_i)$, a fact that we will use throughout this section.
+Note that $P(x_i < X < x_{i+1}) = F_X(\hat x_{i+1}) - F_X(x_i)$, a fact that we will use throughout this section.
 
 \begin{definition}\label{def:error}
 Let $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
@@ -189,11 +180,11 @@ Let $\varepsilon(X,S) = \max\limits_{i=0,\dots,m} w(x_{i}, x_{i+1})$.
 
 
 
-We first show that $\varepsilon(X,S)$ is a lower bound. That is, every random variable in $\mathbb{X}_S$ has a distance at least $\varepsilon(X,S)$. Then, we present a random variable $X'\in \mathbb{X}_S$ with distance $\varepsilon(X,S)$. It then follows that such $X'$ is an optimal $m$-approximation random variable among all random variables in $\mathbb{X}_S$.
+We first show that $\varepsilon(X,S)$ is a lower bound for the distance between random variable in $\mathbb{X}_S$ and $X$. Then, we present a random variable $X'\in \mathbb{X}_S$ such that $d_K(X,X')=\varepsilon(X,S)$. It then follows that $X'$ is an optimal $m$-approximation random variable among all random variables in $\mathbb{X}_S$.
 
-The intuition behind choosing these specific weights and $\varepsilon(X,S)$ being a lower bound is as follows.  Since for every $X'\in\mathbb{X}_S$ the probability values of $X'$ for the elements not in $S$ are set to $0$, we have that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$. Therefore the distance between $X'$ and $X$ at points $x_i$ and $\hat x_{i+1}$ that we have to take into additional account is increased by $F_X(\hat x_{i+1})-F_X(x_i) = P(x_i < X < x_{i+1})$.
+%The intuition behind choosing these specific weights and $\varepsilon(X,S)$ being a lower bound is as follows.  Since for every $X'\in\mathbb{X}_S$ the probability mass of $X'$ for the elements not in $S$ are set to $0$, we have that $F_{X'}(\hat x_{i+1})=F_{X'}(x_i)$. Therefore the distance between $X'$ and $X$ at points $x_i$ and $\hat x_{i+1}$ that we have to take into additional account is increased by $F_X(\hat x_{i+1})-F_X(x_i) = P(x_i < X < x_{i+1})$.
 
-Formally we have the following.
+%Formally we have the following.
 
 \begin{proposition}\label{prop:minimal}
 	If $X'\in\mathbb{X}_S$ then $d_K(X,X') \geq \varepsilon(X,S)$.
@@ -215,14 +206,14 @@ Formally we have the following.
 	% 
 	% We break the proof for the closed intervals where each support variable $x_i$ is a proper number, and for the open intervals where a support variable is either $-\infty$ or $\infty$.
 	
-	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\mathbb{R}$, to have $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 == w(x_i,x_{i+1})$. 
+	Otherwise for every $1\leq i< m$,  we use the fact that $max\{|a|,|b|\} \geq |a-b|/2$ for every $a,b\in\mathbb{R}$, to deduce that $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) + F_{X'}(x_i) -F_{X'}(\hat x_{i+1})|$. So $d_K(X,X') \geq 1/2| F_X(\hat x_{i+1}) - F_X(x_i) | =P(x_1 < X < x_2)/2 = w(x_i,x_{i+1})$. 
 	
-	Therefore since $d_K(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$, by definition of $\varepsilon(X,S)$ proof follows.
+	Since $d_K(X,X') \geq  w(x_i,x_{i+1})$ for every $0\leq i\leq m$, the proof follows by the definition of $\varepsilon(X,S)$.
 \end{proof}
 
 
 
-Next we show a random variable $X'\in\mathbb{X}_S$ with a distance of $\varepsilon(X,S)$ from $X$. Thus $X'$ is an optimal $m$-approximation among the set $\mathbb{X}_S$. We define $X'$ as follows:
+Next we describe a random variable $X'\in\mathbb{X}_S$ with a distance of $\varepsilon(X,S)$ from $X$. Thus $X'$ is an optimal $m$-approximation among the set $\mathbb{X}_S$. The variable $X'$ is described by its probability mass function:
 
 \begin{definition}\label{def:construction}
 	Let $f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
@@ -238,12 +229,12 @@ We first show that $X'$ is a properly defined random variable:
 	From definition $f_{X'}(x_{i})\geq 0$ for every $i$. To see that $\sum_i f_{X'}(x_{i}) =1$, 
 	we have $\sum_i f_{X'}(x_{i}) = \sum_i (w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)) = 	
 	\sum _{x_i\in S} f_{X}(x_i)) + w(x_0,x_1)+ \sum_{0 < i < m} 2 w(x_i,x_{i+1}) + w(x_m,x_{m+1}) = 
-	\sum _{x_i\in S} P(X= x_i) + P(x_0 < X < X_1)+ \sum_{0 < i < m} P(x_i < X < X_{i+1}) +P(x_m < X < X_{m+1}) = 1$ since this sum is the entire cpt of $X$.	
+	\sum _{x_i\in S} P(X{=}x_i) + P(x_0 {<} X {<} x_1)+ \sum_{0 < i < m} P(x_i < X < x_{i+1}) +P(x_m < X < x_{m+1}) = 1$ since this is the entire support of $X$.	
 \end{proof}
 
 
-Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. Intuitively the setting of $X'$ allows to take an "advantage" of distance from $X$ at the elements of $\support(X')$, to avoid the overall increased distance of $X$ from $X'$ at the elements that are not at $\support(X)$ and in which $f_{X'}$ is set to $0$. Formally we have the following.
-
+Note that $X'$ can be constructed in time linear in the size of the support of $X$. %Intuitively the setting of $X'$ allows to take an "advantage" of distance from $X$ at the elements of $\support(X')$, to avoid the overall increased distance of $X$ from $X'$ at the elements that are not at $\support(X)$ and in which $f_{X'}$ is set to $0$. Formally we have the following.
+Its main property, of course, the distance between the cumulative distribution functions of $X$ and $X'$ are bounded by $w(x_i,x_{i+1})$, as follows:
 \begin{lemma}\label{lem:balance}
 	Let $x\in\support(X)$ and $0\leq i\leq m$ be such that $x_i\leq x \leq x_{i+1}$ then $-w(x_i,x_{i+1})\leq F_X(x)-F_{X'}(x)\leq  w(x_i,x_{i+1})$.
 \end{lemma}
@@ -265,9 +256,12 @@ Note that $X'$ can be constructed in linear time to the size of the cdf of $X$. 
 \end{proof}
 
 From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then have:
-
 \begin{corollary} \label{col:Xprime}
 	$d_K(X,X') = \varepsilon(X,S)$.
+\end{corollary}
+From Proposition~\ref{prop:minimal} we also have:
+\begin{corollary} \label{col:Xprimeopt}
+	$\varepsilon(X,S)$ is the distance between $X$ and the variable closest to it in $\mathbb{X}_S$.
 \end{corollary}
 
 %\begin{proof}
@@ -457,9 +451,9 @@ From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then h
 
 \subsection*{Step 2: Finding a set $S$ that minimizes $\varepsilon(X,S)$}
 
-Finding the $m$-optimal random variable with a distance  $\varepsilon(X,S)$ among the set $\mathbb{X}_S$, we next proceed to find an $S$ that minimizes $\varepsilon(X,S)$. To obtain that we use a dynamic programming approach, motivated by a method described in~\cite{chakravarty1982partitioning}. Intuitively we construct a directed graph with a source and a target, in which every (acyclic)  source-target path of size $\leq m$ corresponds to a possible support set of the same size, and the weights along that path correspond to the weight as defined in Definition ~\ref{def:weight}. Thus the problem of finding the $S$ that minimizes $\varepsilon(X,S)$ is reduced to the problem of finding the source-target path $\vec{p}$ of size $\leq m$ in that graph such that the maximal weight of an edge in $\vec{p}$ is minimal among all other such maximal edges in all other paths of size $\leq m$. 
+We proceed to finding an $S$ that minimizes $\varepsilon(X,S)$. To obtain that we use a graph search approach, motivated by a method described in~\cite{chakravarty1982partitioning}. We construct a directed graph with a source and a target in which each source-to-target path of length smaller or equal to $m$ corresponds to a possible support set of the same size, and the weights along that path correspond to the weight as defined in Definition~\ref{def:weight}. Thus the problem of finding an $S$ that minimizes $\varepsilon(X,S)$ is reduced to the problem of finding a source-to-target path $\vec{p}$ of length smaller or equal to $m$ in that graph such that the maximal weight of an edge in $\vec{p}$ is minimal among all other such maximal edges in all other such paths. 
 
-In details, we initially constructs a directed weighted graph $G=(V,E,s,t,w)$, where $V=v_0,\cdots v_{n+1}$ correspond to the support of $X$ with the additional  $v_0 = s$  as the source vertex and $v_{n+1}=t$ as the target vertex. We set an edge $(v_i,v_j)$ for every $i<j$ and a weight that is defined as follows. If $1<i<j<n$ then $w(v_i,v_j)=P(x_i<X<x_{i+1})/2$. For $i=0$ or $j=n+1$ we set $w(v_i,v_j)=P(x_i<X<x_{i+1})$. Thus the weight of every edge $(i,j)$ corresponds to Definition ~\ref{def:weight} for a case in which $x_i,x_j$ where consecutive elements in an optional set $S$ of size $\leq m$. Note that there is a 1-1 correspondence between a subset $S$ of $\support(X)$ of size $m$, and an $s-t$ path $\vec{p}_S$ in $G$ where every $x_i\in S$ corresponds to the vertex $v_i\in \vec{p}_S$. On that sense note that the maximal weight of an edge on $\vec{p}_S$ is identical to $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $s$-to-$t$ paths in $G$ with at most $m$ edges is called $paths_m(G, s, t)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is trivially reduced to the problem of finding a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$. This problem can be solved by the standard Bellman-Ford algorithm in $m$ iterations (e.g. ~\cite{guerin2002computing, shufan2011two}) denoted by $BellmanFord(G,m)$. We thus have the following from the standard Bellman-Ford technique.
+In details, we initially constructs a directed weighted graph $G=(V,E,s,t,w)$, where $V=\{v_0,\cdots v_{n+1}\}$ correspond to the support of $X$ with the additional  $v_0 = s$  as the source vertex and $v_{n+1}=t$ as the target vertex. We set an edge $(v_i,v_j)$ for every $i<j$ and a weight that is defined as follows. If $1<i<j<n$ then $w(v_i,v_j)=P(x_i<X<x_{i+1})/2$. For $i=0$ or $j=n+1$ we set $w(v_i,v_j)=P(x_i<X<x_{i+1})$. Thus the weight of every edge $(i,j)$ corresponds to Definition ~\ref{def:weight} for a case in which $x_i,x_j$ where consecutive elements in an optional set $S$ of size $\leq m$. Note that there is a 1-1 correspondence between a subset $S$ of $\support(X)$ of size $m$, and an $s-t$ path $\vec{p}_S$ in $G$ where every $x_i\in S$ corresponds to the vertex $v_i\in \vec{p}_S$. On that sense note that the maximal weight of an edge on $\vec{p}_S$ is identical to $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $s$-to-$t$ paths in $G$ with at most $m$ edges is called $paths_m(G, s, t)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is trivially reduced to the problem of finding a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$. This problem can be solved by the standard Bellman-Ford algorithm in $m$ iterations (e.g. ~\cite{guerin2002computing, shufan2011two}) denoted by $BellmanFord(G,m)$. We thus have the following from the standard Bellman-Ford technique.
 
 \begin{corollary}\label{cor:Bellman}
 $BellmanFord(G,m)$ returns a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$.
