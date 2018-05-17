@@ -457,7 +457,7 @@ We proceed to finding an $S$ that minimizes $\varepsilon(X,S)$. To obtain that w
 More specifically, the vertexes of the graph are $V=\support(X) \cup \{-\infty,\infty\}$ and the edges, $E$, are all the pairs $(x_1,x_2) \in V^2$ such that $x_1 < x_2$. The weight 
 of each edge is as specified in Definition~\ref{def:weight}. Note that there is a one-to-one correspondence between a set $S \subseteq \support(X)$ of size $m$, and an $-\infty$-to-$\infty$ path $\vec{p}_S$ in $G$, obtained by removing the $-\infty$ and $\infty$ from the path in one way and by adding these elements and the sorting on the other way. 
 With this correspondence the maximal weight of an edge on $\vec{p}_S$ is $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $-\infty$-to-$\infty$ paths in $G$ with at most $m$ edges by $paths_m(G, -\infty, \infty)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is now reduced to the problem of finding a path $\vec{p}\in paths_m(G, -\infty, \infty)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) \colon \vec{p'}\in paths_m(G, -\infty, \infty)\}$. 
-This problem can be solved by a variant of the Bellman-Ford algorithm as described in~\cite{guerin2002computing, shufan2011two}.
+This problem can be solved by a variant of the Bellman-Ford algorithm and by the improved algorithm described in~\cite{guerin2002computing}.
 
 
 %\begin{corollary}\label{cor:Bellman}
