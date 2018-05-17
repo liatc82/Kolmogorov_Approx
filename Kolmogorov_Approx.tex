@@ -522,14 +522,17 @@ Finally we analyze the complexity of $\KlmApprox$ as follows.
 \begin{theorem}\label{the:complexity}
 	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
 \end{theorem}
-
 \begin{proof}
-	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. The number of edges in $G$ is $O(|E|)=O(n^2)$, for every edge the weight is at most the sum of all probabilities between the source node $s$ and the target node $t$, which can be calculated efficiently by aggregating the weights of already calculated edges. 
-	The construction is also the only stage that requires memory allocation, specifically $O(|E|+|V|)=O(n^2)$.
-	Next using the Bellman-Ford algorithm on $G$ for $m$ iterations   takes $O(m(|E|+|V|))\approx O(mn^2)$. [[DF: cite Corman or some algorithms book]]. 
-	Finally deriving the new random variable $X'$ from the computed path $\vec{p}$ takes $O(m)$ time: For every node $x_i$ in $\vec{p}$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
-	To conclude, the time complexity  of $\KlmApprox(X,m)$ is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. Computing the shortest path can be achieved by the algorithm described in~\cite{guerin2002computing} in time time $O(n^2 m)$ and no additional memory allocation.
 \end{proof}
+
+%\begin{proof}
+%	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. The number of edges in $G$ is $O(|E|)=O(n^2)$, for every edge the weight is at most the sum of all probabilities between the source node $s$ and the target node $t$, which can be calculated efficiently by aggregating the weights of already calculated edges. 
+%	The construction is also the only stage that requires memory allocation, specifically $O(|E|+|V|)=O(n^2)$.
+%	Next using the Bellman-Ford algorithm on $G$ for $m$ iterations   takes $O(m(|E|+|V|))\approx O(mn^2)$. [[DF: cite Corman or some algorithms book]]. 
+%	Finally deriving the new random variable $X'$ from the computed path $\vec{p}$ takes $O(m)$ time: For every node $x_i$ in $\vec{p}$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
+%	To conclude, the time complexity  of $\KlmApprox(X,m)$ is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+%\end{proof}
 
 
 
