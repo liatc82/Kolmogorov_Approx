@@ -147,7 +147,7 @@ In the scope of this section, let $X$ be a given random variable with a finite s
 The first useful fact is that it is enough to limit our search to approximations $X'$s such that $\support(X') \subseteq \support(X)$:
 
 \begin{lemma}\label{lem:supContained}
-	There is an optimal $m$-approximation $X'$ of $X$ such that $\support(X') \subseteq \support(X)$.
+	For every random variable $X''$ there is a random variable $X'$ such that $\support(X') \subseteq \support(X)$ and $d_{K}(X,X')\leq d_{K}(X,X'')$.
 \end{lemma}
 
 \begin{proof}
@@ -171,7 +171,7 @@ Next, note that every random variable $X''$ with support of size at most $m$ tha
 
 Denote the set of random variables with support $S \subseteq \support(X)$ by $\mathbb{X}_S$. In Step 1 below, we find a random variable in $\mathbb{X}_S$ that minimizes the Kolmogorov distance from $X$, and denote this distance by $\varepsilon(X,S)$. Next, in Step 2, that we will describe later, we will show how to efficiently find $S$ that minimizes $\varepsilon(X,S)$ among all the sets that satisfy $S \subset \support(X)$ and $|S| \leq m$. Then the minimized random variable $\mathbb{X_S}$ from the minimal $S$, is the $m$-optimal approximation to $X$.
 
-\subsection{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
+\subsection*{Step 1: Finding an $X'$ in $\mathbb{X}_S$ that minimizes $d_K(X,X')$}
 
 
 We first fix a set $S\subseteq \support(X)$ of size at most $m$, and among all the random variables in $\mathbb{X}_S$ find one with a minimal distance from $X$. Denote the elements of $S$ in increasing order by $S=\{x_1<\dots<x_m\}$ and let $x_0=-\infty$, and $x_{m+1}=\infty$. For every $1 <  i \leq m$ let $\hat x_i$ be the maximal element of $\support(X)$ that is smaller than $x_i$.
@@ -459,13 +459,28 @@ From Lemma \ref{lem:balance}, by the definition of $\varepsilon(X,S)$, we then h
 %\begin{proof}
 %Define $X'$ to by $f_{X'}(x_i) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for $i=1,\dots,m$ and $f_{X'}(x)=0$ for $x \notin S$.
 %\end{proof}
-\subsection{Step 2: Finding an $S$ that minimizes $\varepsilon(X,S)$}
-Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
 
-The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. 
-%If nodes $x$ or $y$ are the $-\infty$ or $\infty$ nodes respectively then the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. If $x$ and $y$ are not a $-\infty$ or $\infty$ nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. 
-The values taken are non inclusive, since we are interested only in the error value. The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
-The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{guerin2002computing, shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}.
+%%%%%%%%%%%%%%%%%%%% New sec 3.2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection*{Step 2: Finding a set $S$ that minimizes $\varepsilon(X,S)$}
+
+Finding the $m$-optimal random variable with a distance  $\varepsilon(X,S)$ among the set $\mathbb{X}_S$, we next proceed to find an $S$ that minimizes $\varepsilon(X,S)$. To obtain that we use a dynamic programming approach, motivated by a method described in~\cite{chakravarty1982partitioning}. Intuitively we construct a directed graph with a source and a target, in which every (acyclic)  source-target path of size $\leq m$ corresponds to a possible support set of the same size, and the weights along that path correspond to the weight as defined in Definition ~\ref{def:weight}. Thus the problem of finding the $S$ that minimizes $\varepsilon(X,S)$ is reduced to the problem of finding the source-target path $\vec{p}$ of size $\leq m$ in that graph such that the maximal weight of an edge in $\vec{p}$ is minimal among all other such maximal edges in all other paths of size $\leq m$. 
+
+In details, we initially constructs a directed weighted graph $G=(V,E,s,t,w)$, where $V=v_0,\cdots v_{n+1}$ correspond to the support of $X$ with the additional  $v_0 = s$  as the source vertex and $v_{n+1}=t$ as the target vertex. We set an edge $(v_i,v_j)$ for every $i<j$ and a weight that is defined as follows. If $1<i<j<n$ then $w(v_i,v_j)=P(x_i<X<x_{i+1})/2$. For $i=0$ or $j=n+1$ we set $w(v_i,v_j)=P(x_i<X<x_{i+1})$. Thus the weight of every edge $(i,j)$ corresponds to Definition ~\ref{def:weight} for a case in which $x_i,x_j$ where consecutive elements in an optional set $S$ of size $\leq m$. Note that there is a 1-1 correspondence between a subset $S$ of $\support(X)$ of size $m$, and an $s-t$ path $\vec{p}_S$ in $G$ where every $x_i\in S$ corresponds to the vertex $v_i\in \vec{p}_S$. On that sense note that the maximal weight of an edge on $\vec{p}_S$ is identical to $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $s$-to-$t$ paths in $G$ with at most $m$ edges is called $paths_m(G, s, t)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is trivially reduced to the problem of finding a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$. This problem can be solved by the standard Bellman-Ford algorithm in $m$ iterations (e.g. ~\cite{guerin2002computing, shufan2011two}) denoted by $BellmanFord(G,m)$. We thus have the following from the standard Bellman-Ford technique.
+
+\begin{corollary}\label{cor:Bellman}
+$BellmanFord(G,m)$ returns a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$.
+\end{corollary}
+
+
+\subsection*{Constructing the overall algorithm}
+
+We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Algorithm~\ref{alg:optapprox}) that follows naturally from the two steps. Given $X$ and $\support(X)$ we add $x_0,x_{n+1}$ and construct the graph (line 2) as in Step 2. Then we execute the Bellman-Ford algorithm on $G$ for $m$ iterations to obtained a path $\vec{p}=(v_0,\dots,v_{m+1})$ (line 2) as described in Corollary \ref{cor:Bellman}. Finally we use Definition \ref{def:construction} to construct $X'$ from the weights of $\vec{p}$ (lines 4-5).
+
+
+
+
 
 
 \begin{algorithm}\label{alg:optapprox}
@@ -473,17 +488,79 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 	\SetKwFunction{Convolv}{Conv}
 	\SetKwFunction{getPartition}{getPartition}
 	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
-	$S = \support(X)\cup \{\infty,-\infty\}$\;
-	$G=(V,E)=(S, \{ (x,y)  \colon  x<y \})$  \;
-	$(x_0,\dots,x_{m+1}) = l \in \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
+	$\support(X)\cup \{x_0,x_{n+1}\}$\;
+	Construct $G=(V,E,s,t,w)$ according to Step 2 \;
+	$\vec{p}=(v_0,\dots,v_{m+1}) = Belmman-Ford(G,m)$  \;
 	\For{$0<i<m+1$ }{
-		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
+		$f_{X'}(x_{i}) = w(v_{i-1},v_i) + w(v_i,v_{i+1}) + f_{X}(x_i)$
 	}	
 	\Return $X'$\;
 	
 	\caption{$\KlmApprox (X, m)$}  
 	\label{alg:sequence}
 \end{algorithm}
+
+
+
+\begin{theorem}\label{the:algo}
+	$\KlmApprox$ returns an $m$-optimal-approximation of $X$.
+\end{theorem}
+\begin{proof}
+From Corollary \ref{cor:Bellman} and the construction of $G$ we get that the path $\vec{p}$ obtained in line 4 of  $\KlmApprox$ describes a set $S$ of support os size at most $m$ for which $\varepsilon{S,X}$ is minimal. Then from Definition \ref{def:construction} and Corollary \ref{col:Xprime} we construct $X'$ in lines 4-5 of 	$\KlmApprox$ such that $d_K(X,X') = \varepsilon(X,S)$. Therefore $X'$ is an $m$-approximation among all random variables with support contained in $\support(X)$. Finally from Lemma \ref{lem:supContained} we have that $X'$ is  $m$-approximation among all random variables os support of size at most $m$, thus  $X'$ is an $m$-optimal-approximation of $X$.
+\end{proof}
+
+
+
+Finally we analyze the complexity of $\KlmApprox$ as follows.
+
+
+\begin{theorem}\label{the:complexity}
+	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
+\end{theorem}
+
+\begin{proof}
+	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$. The number of edges in $G$ is $O(|E|)=O(n^2)$, for every edge the weight is at most the sum of all probabilities between the source node $s$ and the target node $t$, which can be calculated efficiently by aggregating the weights of already calculated edges. 
+	The construction is also the only stage that requires memory allocation, specifically $O(|E|+|V|)=O(n^2)$.
+	Next using the Bellman-Ford algorithm on $G$ for $m$ iterations   takes $O(m(|E|+|V|))\approx O(mn^2)$. [[DF: cite Corman or some algorithms book]]. 
+	Finally deriving the new random variable $X'$ from the computed path $\vec{p}$ takes $O(m)$ time: For every node $x_i$ in $\vec{p}$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
+	To conclude, the time complexity  of $\KlmApprox(X,m)$ is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+	
+	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
+
+	
+\end{proof}
+
+
+
+
+
+%%%%%%%%%OLD SEC 3.2 %%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+%\subsection{Step 2: Finding an $S$ that minimizes $\varepsilon(X,S)$}
+%Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning} proposed a polynomial-time method that, given a certain objective functions (additive), finds an optimal consecutive partition. Their method involves the construction of a graph such that the (consecutive) set partitioning problem is reduced to the problem of finding the shortest path in that graph.
+
+%The $\KlmApprox$ algorithm (Algorithm~\ref{alg:optapprox}) starts by constructing a directed weighted graph $G$ similar to the method of Chakravarty, Orlin, and Rothblum~\cite{chakravarty1982partitioning}. The nodes $V$ consist of the support of $X$ together with an extra two nodes, $-\infty$ and $\infty$ for technical reasons, whereas the edges $E$ connect every pair of nodes in one direction (lines 1-2). The weight $w$ of each edge $e=(x,y)\in E$ is determined by one of two cases as in Definition~\ref{def:weight}. 
+%If nodes $x$ or $y$ are the $-\infty$ or $\infty$ nodes respectively then the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, i.e., $w(e)=Pr(x<X<y)$. If $x$ and $y$ are not a $-\infty$ or $\infty$ nodes, here the weight is the probability of $X$ to get a value between $x$ and $y$, non inclusive, divided by two i.e., $w(e)=Pr(x<X<y)/2$. 
+%The values taken are non inclusive, since we are interested only in the error value. The source node of the shortest path problem at hand corresponds to the $-\infty$ node added to $G$ in the construction phase, and the target node is the extra node $\infty$.
+%The set of all solution paths in $G$, i.e., those starting at $-\infty$ and ending in $\infty$ with at most $m$ edges, is called $paths(G, -\infty, \infty)$. The goal is to find the path $l$ in $paths(G, -\infty, \infty)$ with the lightest bottleneck (line 3). This can be achieved by using the $Bellman-Ford$ algorithm with two tweaks. The first is to iterate the graph $G$ in order to find only paths with length of at most $m$ edges. The second is to find the lightest bottleneck as opposed to the traditional objective of finding the shortest path. This is performed by modifying the manner of ``relaxation'' to $bottleneck(x) = min[max(bottleneck(v),w(e))]$, done also in~\cite{guerin2002computing, shufan2011two}. Consequently, we find the lightest maximal edge in a path of length $\leq m$, which represents the minimal error, $\varepsilon(X,S)$, defined in Definition~\ref{def:error} where the nodes in path $l$ represent the elements in set $S$. The approximated random variable $X'$ is then derived from the resulting path $l$ (lines 4-5). Every node $x\in l$ represent a value in the new calculated random variable $X'$, we than iterate the path $l$ to find the probability of the event $f_{X'}(x)$ as described in Definition~\ref{def:construction}.
+
+
+%\begin{algorithm}\label{alg:optapprox}
+%	\DontPrintSemicolon
+%	\SetKwFunction{Convolv}{Conv}
+%	\SetKwFunction{getPartition}{getPartition}
+%	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
+%	$S = \support(X)\cup \{\infty,-\infty\}$\;
+%	$G=(V,E)=(S, \{ (x,y)  \colon  x<y \})$  \;
+%	$(x_0,\dots,x_{m+1}) = l \in \operatorname{argmin}\limits_{l \in paths(G,-\infty,\infty),|l|\leq m}  \max \{ w(e)\colon e \in l  \}$  \;
+%	\For{$0<i<m+1$ }{
+%		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$
+%	}	
+%	\Return $X'$\;
+%	
+%	\caption{$\KlmApprox (X, m)$}  
+%	\label{alg:sequence}
+%\end{algorithm}
 
 
 %\begin{algorithm}\label{alg:optapprox}
@@ -523,29 +600,29 @@ The set of all solution paths in $G$, i.e., those starting at $-\infty$ and endi
 %	\label{alg:sequence}
 %\end{algorithm}
 
-\begin{theorem}\label{the:algo}
-	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
-\end{theorem}
-\begin{proof}
-If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \in paths(G,-\infty,\infty)$ we have that $\max \{ w(e)\colon e \in l  \} = \varepsilon(X,S)$. Therefore, line 3 of the algorithm essentially computes a set $S \in \operatorname{argmin}_{S \subseteq \support(X), |S|\leq m} \varepsilon(X,S)$. By Corollary~\ref{col:Xprime}, the variable $X'$ constructed in lines 4 and 5 satisfies $d_K(X,X') = \varepsilon(X,S)$ and by the minimality of $S$ and by Proposition~\ref{prop:minimal}, it is an optimal approximation.
-\end{proof}
+%\begin{theorem}\label{the:algo}
+%	$\KlmApprox(X,m)$ is an $m$-optimal-approximation of $X$.
+%\end{theorem}
+%\begin{proof}
+%If we consider the vertexes $S= l \setminus \{-\infty,\infty\}$ for a path $l \in paths(G,-\infty,\infty)$ we have that $\max \{ w(e)\colon e \in l  \} = \varepsilon(X,S)$. Therefore, line 3 of the algorithm essentially computes a set $S \in \operatorname{argmin}_{S \subseteq \support(X), |S|\leq m} \varepsilon(X,S)$. By Corollary~\ref{col:Xprime}, the variable $X'$ constructed in lines 4 and 5 satisfies $d_K(X,X') = \varepsilon(X,S)$ and by the minimality of $S$ and by Proposition~\ref{prop:minimal}, it is an optimal approximation.
+%\end{proof}
 
 
-\begin{theorem}\label{the:complexity}
-	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
-\end{theorem}
+%\begin{theorem}\label{the:complexity}
+%	The $\KlmApprox(X,m)$ algorithm runs in time $O(mn^2)$, using $O(n^2)$ memory where $n=|\support(X)|$.
+%\end{theorem}
 
-\begin{proof}
-	Constructing the graph $G$ takes $O(n^2)$. The number of edges is $O(E)\approx O(n^2)$ and for every edge the weight is at most the sum of all probabilities between the source node $-\infty$ and the target node $\infty$, which can be done efficiently by aggregating the weights of already calculated edges. 
-	The construction is also the only stage that requires memory allocation, specifically $O(E+V)=O(n^2)$.
-	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. 
+%\begin{proof}
+%	Constructing the graph $G$ takes $O(n^2)$. The number of edges is $O(E)\approx O(n^2)$ and for every edge the weight is at most the sum of all probabilities between the source node $-\infty$ and the target node $\infty$, which can be done efficiently by aggregating the weights of already calculated edges. 
+%	The construction is also the only stage that requires memory allocation, specifically $O(E+V)=O(n^2)$.
+%	Finding the shortest path takes $O(m(E+V))\approx O(mn^2)$. 
 	
-	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
+%	[[GW: put a reference to the work of the fellows from the Technion to avoid some of this?]]
 	
-	Since $G$ is DAG (directed acyclic graph) finding a shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
-	Deriving the new random variable $X'$ from the computed path $l$ takes $O(m)$. For every node $x_i$ in $l$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
-	To conclude, the worst case run-time complexity is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
-\end{proof}
+%	Since $G$ is DAG (directed acyclic graph) finding a shortest path takes $O(E+V)$. We only need to find paths of length $\leq m$, which takes $O(m(E+V))$.
+%	Deriving the new random variable $X'$ from the computed path $l$ takes $O(m)$. For every node $x_i$ in $l$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
+%	To conclude, the worst case run-time complexity is $O(n^2+mn^2+m)=O(mn^2)$ and memory complexity is $O(E+V)=O(n^2)$.
+%\end{proof}
 
 
 
