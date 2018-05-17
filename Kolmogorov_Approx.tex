@@ -466,7 +466,7 @@ $BellmanFord(G,m)$ returns a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\ve
 \end{corollary}
 
 
-\subsection*{Constructing the overall algorithm}
+\subsection*{Step 3: Constructing the overall algorithm}
 
 We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Algorithm~\ref{alg:optapprox}) that follows naturally from the two steps. Given $X$ and $\support(X)$ we add $x_0,x_{n+1}$ and construct the graph (line 2) as in Step 2. Then we execute the Bellman-Ford algorithm on $G$ for $m$ iterations to obtained a path $\vec{p}=(v_0,\dots,v_{m+1})$ (line 2) as described in Corollary \ref{cor:Bellman}. Finally we use Definition \ref{def:construction} to construct $X'$ from the weights of $\vec{p}$ (lines 4-5).
 
