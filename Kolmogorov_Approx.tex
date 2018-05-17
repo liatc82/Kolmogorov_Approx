@@ -451,19 +451,23 @@ From Proposition~\ref{prop:minimal} we also have:
 
 \subsection*{Step 2: Finding a set $S$ that minimizes $\varepsilon(X,S)$}
 
-We proceed to finding an $S$ that minimizes $\varepsilon(X,S)$. To obtain that we use a graph search approach, motivated by a method described in~\cite{chakravarty1982partitioning}. We construct a directed graph with a source and a target in which each source-to-target path of length smaller or equal to $m$ corresponds to a possible support set of the same size, and the weights along that path correspond to the weight as defined in Definition~\ref{def:weight}. Thus the problem of finding an $S$ that minimizes $\varepsilon(X,S)$ is reduced to the problem of finding a source-to-target path $\vec{p}$ of length smaller or equal to $m$ in that graph such that the maximal weight of an edge in $\vec{p}$ is minimal among all other such maximal edges in all other such paths. 
+We proceed to finding an $S$ that minimizes $\varepsilon(X,S)$. To obtain that we use a graph search approach motivated by a method described in~\cite{chakravarty1982partitioning}. We construct a directed graph with a source and a target in which each source-to-target path of length smaller or equal to $m$ corresponds to a possible support set of the same size, and the weights along that path correspond to the weight as defined in Definition~\ref{def:weight}. Thus the problem of finding an $S$ that minimizes $\varepsilon(X,S)$ is reduced to the problem of finding a source-to-target path $\vec{p}$ of length smaller or equal to $m$ in that graph such that the maximal weight of an edge in $\vec{p}$ is minimal among all other such maximal edges in all other such paths. 
 
-In details, we initially constructs a directed weighted graph $G=(V,E,s,t,w)$, where $V=\{v_0,\cdots v_{n+1}\}$ correspond to the support of $X$ with the additional  $v_0 = s$  as the source vertex and $v_{n+1}=t$ as the target vertex. We set an edge $(v_i,v_j)$ for every $i<j$ and a weight that is defined as follows. If $1<i<j<n$ then $w(v_i,v_j)=P(x_i<X<x_{i+1})/2$. For $i=0$ or $j=n+1$ we set $w(v_i,v_j)=P(x_i<X<x_{i+1})$. Thus the weight of every edge $(i,j)$ corresponds to Definition ~\ref{def:weight} for a case in which $x_i,x_j$ where consecutive elements in an optional set $S$ of size $\leq m$. Note that there is a 1-1 correspondence between a subset $S$ of $\support(X)$ of size $m$, and an $s-t$ path $\vec{p}_S$ in $G$ where every $x_i\in S$ corresponds to the vertex $v_i\in \vec{p}_S$. On that sense note that the maximal weight of an edge on $\vec{p}_S$ is identical to $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $s$-to-$t$ paths in $G$ with at most $m$ edges is called $paths_m(G, s, t)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is trivially reduced to the problem of finding a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$. This problem can be solved by the standard Bellman-Ford algorithm in $m$ iterations (e.g. ~\cite{guerin2002computing, shufan2011two}) denoted by $BellmanFord(G,m)$. We thus have the following from the standard Bellman-Ford technique.
 
-\begin{corollary}\label{cor:Bellman}
-$BellmanFord(G,m)$ returns a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$.
-\end{corollary}
+More specifically, the vertexes of the graph are $V=\support(X) \cup \{-\infty,\infty\}$ and the edges, $E$, are all the pairs $(x_1,x_2) \in V^2$ such that $x_1 < x_2$. The weight 
+of each edge is as specified in Definition~\ref{def:weight}. Note that there is a one-to-one correspondence between a set $S \subseteq \support(X)$ of size $m$, and an $-\infty$-to-$\infty$ path $\vec{p}_S$ in $G$ obtained by removing the $-\infty$ and $\infty$ from the path in one way and by adding these elements and the sorting on the other way. 
+With this correspondence the maximal weight of an edge on $\vec{p}_S$ is $\varepsilon(X,S)$. We denote this maximal weight of an edge  by $w(\vec{p}_S)$, and denote the set of all acyclic $-\infty$-to-$\infty$ paths in $G$ with at most $m$ edges by $paths_m(G, -\infty, \infty)$. Thus, the problem of finding the set $S$ with the minimal  $\varepsilon(X,S)$ is now reduced to the problem of finding a path $\vec{p}\in paths_m(G, -\infty, \infty)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) \colon \vec{p'}\in paths_m(G, -\infty, \infty)\}$. 
+This problem can be solved by a variant of the Bellman-Ford algorithm as described in~\cite{guerin2002computing, shufan2011two}.
+
+
+%\begin{corollary}\label{cor:Bellman}
+%$BellmanFord(G,m)$ returns a path $\vec{p}\in paths_m(G, s, t)$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) | \vec{p'}\in paths_m(G, s, t)\}$.
+%\end{corollary}
 
 
 \subsection*{Step 3: Constructing the overall algorithm}
 
-We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Algorithm~\ref{alg:optapprox}) that follows naturally from the two steps. Given $X$ and $\support(X)$ we add $x_0,x_{n+1}$ and construct the graph (line 2) as in Step 2. Then we execute the Bellman-Ford algorithm on $G$ for $m$ iterations to obtained a path $\vec{p}=(v_0,\dots,v_{m+1})$ (line 2) as described in Corollary \ref{cor:Bellman}. Finally we use Definition \ref{def:construction} to construct $X'$ from the weights of $\vec{p}$ (lines 4-5).
-
+We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Algorithm~\ref{alg:optapprox}) that follows naturally from the two steps. Given $X$ and $\support(X)$ we add $x_0,x_{n+1}$ and construct the graph (line 2) as in Step 2. Then we execute a variant of the Bellman-Ford algorithm on $G$ for $m$ iterations to obtain a path $\vec{p}=(v_0,\dots,v_{m+1})$ (line 2) as described in Corollary \ref{cor:Bellman}. Finally we use Definition \ref{def:construction} to construct $X'$ from the weights of $\vec{p}$ (lines 4-5).
 
 
 
@@ -471,16 +475,12 @@ We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Alg
 
 \begin{algorithm}\label{alg:optapprox}
 	\DontPrintSemicolon
-	\SetKwFunction{Convolv}{Conv}
-	\SetKwFunction{getPartition}{getPartition}
-	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
-	$\support(X)\cup \{x_0,x_{n+1}\}$\;
-	Construct $G=(V,E,s,t,w)$ according to Step 2 \;
-	$\vec{p}=(v_0,\dots,v_{m+1}) = Belmman-Ford(G,m)$  \;
-	\For{$0<i<m+1$ }{
-		$f_{X'}(x_{i}) = w(v_{i-1},v_i) + w(v_i,v_{i+1}) + f_{X}(x_i)$
-	}	
-	\Return $X'$\;
+	Construct a weighted graph $G=(V,E)$ where $V=\support(X) \cup \{-\infty,\infty\}$, $E=\{(x_1,x_2) \in V^2\colon x_1 < x_2 \}$, and the weights are as in Definition~\ref{def:weight}.\;
+
+	Find a path $\vec{p}=(v_0,\dots,v_{m+1})$ such that $w(\vec{p})$ is minimal among all $\{w(\vec{p'}) \colon \vec{p'}\in paths_m(G, -\infty, \infty)\}$.   \;
+
+	Return a random variable whose probability mass function is 
+		$f_{X'}(x_{i}) = w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)$ for all $i=1,\dots,m$ and zero otherwise. \;
 	
 	\caption{$\KlmApprox (X, m)$}  
 	\label{alg:sequence}
@@ -488,11 +488,30 @@ We combine Step 1 and Step 2 in the following algorithm called $\KlmApprox$ (Alg
 
 
 
+%\begin{algorithm}\label{alg:optapprox}
+%	\DontPrintSemicolon
+%	\SetKwFunction{Convolv}{Conv}
+%	\SetKwFunction{getPartition}{getPartition}
+%	\SetKwFunction{bellmanFordMinMaxM}{bellmanFordMinMaxM}
+%	$\support(X)\cup \{x_0,x_{n+1}\}$\;
+%	Construct $G=(V,E,s,t,w)$ according to Step 2 \;
+%	$\vec{p}=(v_0,\dots,v_{m+1}) = Belmman-Ford(G,m)$  \;
+%	\For{$0<i<m+1$ }{
+%		$f_{X'}(x_{i}) = w(v_{i-1},v_i) + w(v_i,v_{i+1}) + f_{X}(x_i)$
+%	}	
+%	\Return $X'$\;
+%	
+%	\caption{$\KlmApprox (X, m)$}  
+%	\label{alg:sequence}
+%\end{algorithm}
+
+
+
 \begin{theorem}\label{the:algo}
 	$\KlmApprox$ returns an $m$-optimal-approximation of $X$.
 \end{theorem}
 \begin{proof}
-From Corollary \ref{cor:Bellman} and the construction of $G$ we get that the path $\vec{p}$ obtained in line 4 of  $\KlmApprox$ describes a set $S$ of support of size at most $m$ for which $\varepsilon(S,X)$ is minimal. Then from Definition \ref{def:construction} and Corollary \ref{col:Xprime} we construct $X'$ in lines 4-5 of 	$\KlmApprox$ such that $d_K(X,X') = \varepsilon(X,S)$. Therefore $X'$ is an $m$-approximation among all random variables with support contained in $\support(X)$. Finally from Lemma \ref{lem:supContained} we have that $X'$ is  $m$-approximation among all random variables os support of size at most $m$, thus  $X'$ is an $m$-optimal-approximation of $X$.
+By the construction of $G$ we get that the path $\vec{p}$ obtained in line 4 of  $\KlmApprox$ describes a set $S$ of support of size at most $m$ for which $\varepsilon(S,X)$ is minimal. Then from Definition \ref{def:construction} and Corollary \ref{col:Xprime} we construct $X'$ in lines 4-5 of 	$\KlmApprox$ such that $d_K(X,X') = \varepsilon(X,S)$. Therefore $X'$ is an $m$-approximation among all random variables with support contained in $\support(X)$. Finally from Lemma \ref{lem:supContained} we have that $X'$ is  $m$-approximation among all random variables os support of size at most $m$, thus  $X'$ is an $m$-optimal-approximation of $X$.
 \end{proof}
 
 
@@ -505,7 +524,7 @@ Finally we analyze the complexity of $\KlmApprox$ as follows.
 \end{theorem}
 
 \begin{proof}
-	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$. The number of edges in $G$ is $O(|E|)=O(n^2)$, for every edge the weight is at most the sum of all probabilities between the source node $s$ and the target node $t$, which can be calculated efficiently by aggregating the weights of already calculated edges. 
+	Constructing the graph $G$ as described in Step 2 takes $O(n^2)$ time and memory. The number of edges in $G$ is $O(|E|)=O(n^2)$, for every edge the weight is at most the sum of all probabilities between the source node $s$ and the target node $t$, which can be calculated efficiently by aggregating the weights of already calculated edges. 
 	The construction is also the only stage that requires memory allocation, specifically $O(|E|+|V|)=O(n^2)$.
 	Next using the Bellman-Ford algorithm on $G$ for $m$ iterations   takes $O(m(|E|+|V|))\approx O(mn^2)$. [[DF: cite Corman or some algorithms book]]. 
 	Finally deriving the new random variable $X'$ from the computed path $\vec{p}$ takes $O(m)$ time: For every node $x_i$ in $\vec{p}$ (at most $m$ nodes), use the already calculated weights to find the probability mass function $f_{X'}(x_i)$. 
