@@ -247,6 +247,7 @@
 		Next assume that $F_X(\hat x_i)-F_{X'}(\hat x_i) = w(x_{i-1},x_i)$.
 		Then $F_X(x_i)-F_{X'}(x_i) =  F_X(\hat x_i) +f_{X}(x_i) - (w(x_{i-1},x_i) + w(x_i,x_{i+1}) + f_{X}(x_i)) =  w(x_{i-1},x_i) +f_{X}(x_{i}) - (w(x_{i-1},x_i) + w(x_{i},x_{i+1}) + f_{X}(x_{i})) = -w(x_{i},x_{i+1})$.
 		
+<<<<<<< HEAD
 		As before we have that for all $x_i< j< x_{i+1}$, we have $F_X(j)-F_{X'}(j) = F_X(j)-F_{X'}(\hat x_{i+1}) \leq  F_X(\hat x_{i+1})-F_{X'}(\hat x_{i+1})$. Then $F_X(\hat x_{i+1})-F_{X'}(\hat x_{i+1}) = (F_X(x_i)+ P(x_i < x <x_{i+1})) - F_{X'}(x_i) = -w(x_{i},x_{i+1}) + 2w(x_{i},x_{i+1}) = w(x_{i},x_{i+1}) $.
 		
 		
@@ -770,4 +771,57 @@
 	\bibliography{library,Trim_Optimum}{}
 	\bibliographystyle{abbrv}
 	
+=======
+	};
+	\addlegendentry{$\KlmApprox$}
+	
+	\addplot[
+	color=green,
+	mark=x,
+	]
+	coordinates {
+		(2 , 0.491) 
+		(4 , 0.2428) 
+		(8 , 0.1184) 
+		(10 , 0.0929) 
+		(20, 0.0430) 
+		(50, 0.0136) 
+	};
+	\addlegendentry{$\OptTrim$}
+	
+	\addplot[
+	color=red,
+	mark=x,
+	]
+	coordinates {
+		(2 , 0.494) 
+		(4 , 0.2473) 
+		(8 , 0.124) 
+		(10 , 0.0988) 
+		(20, 0.0494) 
+		(50, 0.01971)  
+	};
+	\addlegendentry{$\Trim$}
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Error comparison between $\KlmApprox$, $\OptTrim$, and $\Trim$, on randomly generated random variables as function of $m$.}
+	\label{fig:error}
+\end{figure}
+
+
+We also examined how our algorithm compares to linear programing as described and discussed, for example, in~\cite{pavlikov2016cvar}. We ran an experiment to compare the run-time between the $\KlmApprox$ algorithm with the run-time of a state-of-art implementation of linear programing. We used the ``Minimize'' function of Wolfram Mathematica and fed it with the equations $\min_{\alpha \in \mathbb{R}^n} \| x - \alpha\|_\infty$ subject to $\|\alpha\|_0 \leq m$ and $\| \alpha \|_1 =1$ . The run-time comparison results were clear and persuasive, for a random variable with support size $n=10$ and $m=5$, the LP algorithm run-time was 850 seconds, where the $\KlmApprox$ algorithm run-time was less than a tenth of a second. For $n=100$ and $m=5$, the $\KlmApprox$ algorithm run-time was 0.14 seconds and the LP algorithm took more than a day. Due to these timing results of the LP algorithm we did not proceed to examine it any further.
+Since it is not trivial to formally analyze the run-time of the LP algorithm, we conclude by the reported experiment that in this case the LP algorithm might not be as efficient as $\KlmApprox$ algorithm whose complexity is proven to be polynomial in Theorem~\ref{the:complexity}.
+
+\section{Discussion and future work}\label{sec:discussion}
+%Compact representations of distributions is mentioned in the literature in various contexts for various applications. In this paper, we are interested in finding optimal approximation of a random variables under the Kolmogorov metric which we define as optimal $m$-approximation. In order to achieve this optimal approximation two steps were taken, find the support of the optimal random variable and then calculate the pmf of each and every value in that support to minimize the error. Proofs of existences, optimality and run-time were detailed in Section~\ref{sec:alg} and the main algorithm was presented, the $\KlmApprox$ algorithm. Establishing the main contribution of this paper which is to present an optimal approximation scheme and to show it can be achieved in polynomial run-time. Furthermore, empirical evaluation was conducted on different domains and application to examine the algorithm performance in practice. We were interested in two aspects of performance - accuracy and run-time. Regarding to accuracy, as expected, the suggested $\KlmApprox$ algorithm results much smaller error compared to the other methods, sometimes, in more then factor 0f 2. Regarding to run-time, $\KlmApprox$ algorithm run-time is significantly much faster then LP approach. However, compared to other approximation methods accuracy vs. run-time is a trade off yet to be examined. Another interesting experiment that can be conducted in future work is to add the presented approach as one of the methods examined in~\cite{zeng2017comparison} and compare it to the binning approaches.
+
+We developed an algorithm for computing optimal approximations of random variables where the approximation quality is measured by the Kolmogorov distance.
+As demonstrated in the experiments, our algorithm improves on the approach of Cohen, Shimony and Weiss~\cite{cohen2015estimating} and~\cite{CohenGW18} in that it finds an optimal two sided Kolmogorov approximation, and not just one sided. Beyond the Kolmogorov measure studied here we believe that similar approaches may apply also to total variation, to the Wasserstein distance, and to other measures of approximations. Another direction for future work is extensions to tables that represent other objects, not necessarily random variables. To this end, we need to extend the algorithm to support tables that do not always sum to one and tables that may contain negative entries.
+
+
+\bibliography{library,Trim_Optimum}{}
+\bibliographystyle{abbrv}
+
+>>>>>>> 50daa186e9fecfd4114ff25c24f03406fc3d7177
 \end{document}
